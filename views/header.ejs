@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title><%= title %></title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
+    <link href="/stylesheets/style.css" rel="stylesheet">
+  </head>
+
+  <body>
+
+    <div class="container">
+      <header class="blog-header py-3">
+        <div class="row flex-nowrap justify-content-between align-items-center">
+          <div class="col-6 pt-1">
+            <h1 class="text-muted">大學生社會責任平台</h1>
+            University  Social Responsibility
+          </div>
+          <div class="col-2 text-center">
+            <a class="blog-header-logo text-dark" href="#"></a>
+          </div>
+          <div class="col-4 d-flex justify-content-end align-items-center">
+            <% if (success) { %>
+            <div><%= success %></div>
+            <% } %>
+            <% if (error) { %>
+            <div><%= error %></div>
+            <% } %>
+            <% if (!user) {%>
+            <a class="btn btn-sm btn-outline-secondary" href="/login">管理後臺</a>
+            <% } else { %>
+            <a class="btn btn-sm btn-outline-secondary" href="/logout">登出</a>
+            <% } %>
+          </div>
+        </div>
+      </header>
