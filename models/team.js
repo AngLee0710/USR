@@ -1,12 +1,13 @@
 const mongodb = require('./db');
 
-function Team(name, introduction, pro_introduction, leader, achievement, website, email) {
-	this.name = name;
-	this.introduction = introduction;
-	this.pro_introduction = pro_introduction;
-	this.leader = leader;
-	this.website = website;
-	this.email = email;
+function Team(team) {
+	this.name = team.name;
+	this.leader = team.leader;
+	this.purpose = team.purpose;
+	this.introduction = team.introduction;
+	this.pro_introduction = team.pro_introduction;
+	this.website = team.website;
+	this.email = team.email;
 }
 
 module.exports = Team;
@@ -14,12 +15,14 @@ module.exports = Team;
 Team.prototype.save = function(callback) {
 	let team = {
 		name: this.name,
+		leader: this.leader,
+		purpose: this.purpose,
 		introduction: this.introduction,
 		pro_introduction: this.pro_introduction,
-		leader: this.leader,
-		achievement: [],
 		website: this.website,
-		email: this.email
+		email: this.email,
+		achievement: [],
+		pv: 0
 	};
 
 	mongodb.open(function(err, db) {
@@ -31,14 +34,14 @@ Team.prototype.save = function(callback) {
 				mongodb.close();
 				return callback(err);
 			}
-			collection.insert(post, {
+			collection.insert(team, {
 				safe: true
-			}, function(err) {
+			}, function(err, team) {
 				mongodb.close();
 				if(err) {
 					return callback(err);
 				}
-				callback(null);
+				callback(null, team[0]);
 			});
 		});
 	});
@@ -49,7 +52,7 @@ Team.get = function(name, callback) {
 		if(err) {
 			return callback(err);
 		}
-		db.collection(function(err, collection) {
+		db.collection('teams', function(err, collection) {
 			if(err) {
 				mongodb.close();
 				return callback(err);
@@ -62,6 +65,84 @@ Team.get = function(name, callback) {
 					return callback(err);
 				}
 				callback(null, team);
+			});
+		});
+	});
+}
+
+Team.getSix = function(name, page, callback) {
+	mongodb.open(function(err, db) {
+		if(err) {
+			return callback(err);
+		}
+		db.collection('teams', function(err, collection) {
+			if(err) {
+				mongodb.close();
+				return callback(err);
+			}
+			let query = {};
+			if(name) {
+				query.name = name;
+			}
+
+			collection.count(query, function(err, total) {
+				collection.find(query, {
+					skip: (page - 1) * 6,
+					limit: 6
+				}).sort({
+					time: -1
+				}).toArray(function(err, docs) {
+					mongodb.close();
+					if(err) {
+						return callback(err);
+					}
+					callback(null, docs, total);
+				});
+			});
+		});
+	});
+};
+
+Team.getOne = function(name, callback) {
+	//open database
+	mongodb.open(function(err, db) {
+		if (err) {
+			return callback(err);
+		}
+		db.collection('teams', function(err, collection) {
+			if (err) {
+				mongodb.close();
+				return callback(err);
+			}
+			//according to user-name、post-date and post-title to search
+			collection.findOne({
+				"name": name,
+			}, function(err, doc) {
+				if (err) {
+					mongodb.close();
+					return callback(err);
+				}
+				if(doc == null) {
+					mongodb.close();
+					err = 'data is null';
+					return callback(err);
+				}
+				//analysis markdown is html
+				if(doc) {
+					collection.update({
+						"name": name
+					}, {
+						$inc: {
+							"pv": 1
+						}
+					}, function(err) {
+						mongodb.close();
+						if(err) {
+							return callback(err);
+						}
+					});
+				}
+				callback(null, doc); //return query 
 			});
 		});
 	});

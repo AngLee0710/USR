@@ -1,0 +1,12 @@
+<%- include header %>
+<% teams.forEach(function(team, index) {%>
+<p>
+	<h2>
+		<a href="/team/<%= team.name %>"><%= team.name %></a>
+	</h2>
+	<h4>
+		服務宗旨:<%= team.purpose %>
+	</h4>
+</p>
+<% }) %>
+<%- include footer %>

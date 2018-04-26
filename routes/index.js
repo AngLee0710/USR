@@ -12,6 +12,50 @@ module.exports = function(app) {
 		});
 	});
 
+	app.get('/team', function(req, res) {
+		let page = req.query.p ? parseInt(req.query.p) : 1;
+
+		Team.getSix(null, page, function(err, teams, total) {
+			if(err) {
+				teams = [];
+			}
+			console.log(teams);
+			res.render('teamList', {
+				title: '團隊介紹',
+				teams: teams,
+				page: page,
+				isFirstPage: (page - 1) == 0,
+				isLastPage: ((page - 1) * 6 + teams.length) == total,
+				user: req.session.user,
+				success: req.flash('success').toString(),
+				error: req.flash('error').toString()
+			});
+		});
+	});
+
+	app.get('/team/:name', function(req, res) {
+		Team.get(req.params.name, function(err, team) {
+			if(!team) {
+				req.flash('error', '隊伍不存在');
+				return res.redirect('/');
+			}
+			//query nad return user all post
+			Team.getOne(team.name, function(err, teams){
+				if(err) {
+					req.flash('error', err);
+					return res.redirect('/');
+				}
+				res.render('team', {
+					title: team.name,
+					teams: teams,
+					user: req.session.user,
+					success: req.flash('success').toString(),
+					error: req.flash('error').toString()
+				})
+			})
+		})
+	});
+
 	app.get('/reg', checkNotLogin);
 	app.get('/reg', function(req, res) {
 		res.render('reg', {
@@ -149,9 +193,9 @@ module.exports = function(app) {
 	app.post('/achievement', function(req, res) {
 	});
 
-	app.get('/team', checkLogin);
-	app.get('/team', function(req, res) {
-		res.render('team', {
+	app.get('/createTeam', checkLogin);
+	app.get('/createTeam', function(req, res) {
+		res.render('createTeam', {
 			title: '團隊新增',
 			user: req.session.user,
 			success: req.flash('success').toString(),
@@ -159,28 +203,32 @@ module.exports = function(app) {
 		});
 	});
 
-	app.post('/team', checkLogin);
-	app.post('/team', function(req, res) {
+	app.post('/createTeam', checkLogin);
+	app.post('/createTeam', function(req, res) {
 		let newTeam = new Team({
 			name: req.body.name,
+			purpose: req.body.purpose,
 			introduction: req.body.introduction,
 			pro_introduction: req.body.pro_introduction,
 			leader: req.body.leader,
 			website: req.body.website,
 			email: req.body.email
 		})
-		Post.get(NewTeam.name, function(err, team) {
+
+		Team.get(newTeam.name, function(err, team) {
 			if(err) {
 				req.flash('error', err);
 				return res.redirect('/admin');
 			}
 			if(team) {
 				req.flash('error', '隊伍已存在');
+				console.log('隊伍已存在');
 				return res.redirect('/team');
 			}
-			newTeam.save(function(err, team) {
+			newTeam.save(function(err) {
 				if(err) {
 					req.flash('error', err);
+					console.log(err);
 					return res.redirect('/team');
 				}
 				req.flash('success', '隊伍新增成功');
