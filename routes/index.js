@@ -1,5 +1,6 @@
 let crypto = require('crypto');
 let User = require('../models/user.js');
+let Team = require('../models/team.js');
 
 module.exports = function(app) {
 	app.get('/', function(req, res) {
@@ -63,7 +64,7 @@ module.exports = function(app) {
 	app.get('/login', checkNotLogin);
 	app.get('/login', function(req, res) {
 		res.render('login', {
-			title: '登入後台',
+			title: '登入頁面',
 			user: req.session.user,
 			success: req.flash('success').toString(),
 			error: req.flash('error').toString()
@@ -84,17 +85,167 @@ module.exports = function(app) {
 				return res.redirect('/login');
 			}
 			req.session.user = user;
-			req.flash('success', '登錄成功');
-			res.redirect('/');
+			req.flash('success', '登錄成功!!');
+			res.redirect('/admin');
 		});
 	});
 
 	app.get('/logout', checkLogin);
 	app.get('/logout', function(req, res) {
 		req.session.user = null;
-		req.flash('success', '登出成功');
+		req.flash('success', '登出成功!!');
 		res.redirect('/');
 	});
+
+	app.get('/admin', checkLogin);
+	app.get('/admin', function(req, res) {
+		res.render('admin', {
+			title: '後台管理',
+			user: req.session.user,
+			success: req.flash('success').toString(),
+			error: req.flash('error').toString()
+		});
+	});
+
+	app.get('/post', checkLogin);
+	app.get('/post', function(req, res) {
+		res.render('post', {
+			title: '新增公告',
+			user: req.session.user,
+			success: req.flash('success').toString(),
+			error: req.flash('error').toString()
+		});
+	});
+
+	app.post('/post', checkLogin);
+	app.post('/post', function(req, res) {
+	});
+
+	app.get('/activity', checkLogin);
+	app.get('/activity', function(req, res) {
+		res.render('activity', {
+			title: '新增活動',
+			user: req.session.user,
+			success: req.flash('success').toString(),
+			error: req.flash('error').toString()
+		});
+	});
+
+	app.post('/activity', checkLogin);
+	app.post('/activity', function(req, res) {
+	});
+
+	app.get('/achievement', checkLogin);
+	app.get('/achievement', function(req, res) {
+		res.render('achievement', {
+			title: '成果新增',
+			user: req.session.user,
+			success: req.flash('success').toString(),
+			error: req.flash('error').toString()
+		});
+	});
+
+	app.post('/achievement', checkLogin);
+	app.post('/achievement', function(req, res) {
+	});
+
+	app.get('/team', checkLogin);
+	app.get('/team', function(req, res) {
+		res.render('team', {
+			title: '團隊新增',
+			user: req.session.user,
+			success: req.flash('success').toString(),
+			error: req.flash('error').toString()
+		});
+	});
+
+	app.post('/team', checkLogin);
+	app.post('/team', function(req, res) {
+		let newTeam = new Team({
+			name: req.body.name,
+			introduction: req.body.introduction,
+			pro_introduction: req.body.pro_introduction,
+			leader: req.body.leader,
+			website: req.body.website,
+			email: req.body.email
+		})
+		Post.get(NewTeam.name, function(err, team) {
+			if(err) {
+				req.flash('error', err);
+				return res.redirect('/admin');
+			}
+			if(team) {
+				req.flash('error', '隊伍已存在');
+				return res.redirect('/team');
+			}
+			newTeam.save(function(err, team) {
+				if(err) {
+					req.flash('error', err);
+					return res.redirect('/team');
+				}
+				req.flash('success', '隊伍新增成功');
+				res.redirect('/admin');
+			});
+		});
+	});
+
+	app.get('/post_manage', checkLogin);
+	app.get('/post_manage', function(req, res) {
+		res.render('post_manage', {
+			title: '公告管理',
+			user: req.session.user,
+			success: req.flash('success').toString(),
+			error: req.flash('error').toString()
+		});
+	});
+
+	app.post('/post_manage', checkLogin);
+	app.post('/post_manage', function(req, res) {
+	});
+
+	app.get('/activity_manage', checkLogin);
+	app.get('/activity_manage', function(req, res) {
+		res.render('activity_manage', {
+			title: '活動管理',
+			user: req.session.user,
+			success: req.flash('success').toString(),
+			error: req.flash('error').toString()
+		});
+	});
+
+	app.post('/activity_manage', checkLogin);
+	app.post('/activity_manage', function(req, res) {
+	});
+
+	app.get('/achievement_manage', checkLogin);
+	app.get('/achievement_manage', function(req, res) {
+		res.render('achievement_manage', {
+			title: '成果管理',
+			user: req.session.user,
+			success: req.flash('success').toString(),
+			error: req.flash('error').toString()
+		});
+	});
+
+	app.post('/achievement_manage', checkLogin);
+	app.post('/achievement_manage', function(req, res) {
+	});
+
+	app.get('/team_manage', checkLogin);
+	app.get('/team_manage', function(req, res) {
+		res.render('team_manage', {
+			title: '團隊管理',
+			user: req.session.user,
+			success: req.flash('success').toString(),
+			error: req.flash('error').toString()
+		});
+	});
+
+	app.post('/team_manage', checkLogin);
+	app.post('/team_manage', function(req, res) {
+	});
+
+
 
 	function checkLogin(req, res, next) {
 		if(!req.session.user) {
