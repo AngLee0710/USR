@@ -1,0 +1,14 @@
+<%- include header %>
+<% posts.forEach(function(post, index) {%>
+<p>
+	<h2>
+		<a href="/activity/<%= post.title %>/<%= post.time.day %>"><%= post.title %></a>
+	</h2>
+	<h5><%= post.time.day %></h5>
+	<h4>
+		<%= post.summary %>
+	</h4>
+</p>
+<% }) %>
+<%- include paging %>
+<%- include footer %>
