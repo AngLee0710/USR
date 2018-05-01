@@ -1,6 +1,9 @@
+"use strict";
 let crypto = require('crypto');
 let User = require('../models/user.js');
 let Team = require('../models/team.js');
+let Post = require('../models/post.js');
+let actPost =require('../models/activity.js');
 
 module.exports = function(app) {
 	app.get('/', function(req, res) {
@@ -19,7 +22,6 @@ module.exports = function(app) {
 			if(err) {
 				teams = [];
 			}
-			console.log(teams);
 			res.render('teamList', {
 				title: '團隊介紹',
 				teams: teams,
@@ -51,9 +53,47 @@ module.exports = function(app) {
 					user: req.session.user,
 					success: req.flash('success').toString(),
 					error: req.flash('error').toString()
-				})
-			})
-		})
+				});
+			});
+		});
+	});
+
+	app.get('/activity', function(req, res) {
+		let page = req.query.p ? parseInt(req.query.p) : 1;
+
+
+		actPost.getSix(null, page, function(err, posts, total) {
+			if(err) {
+				posts = [];
+			}
+			res.render('activityList', {
+				title: '活動消息',
+				posts: posts,
+				page: page,
+				isFirstPage: (page - 1) == 0,
+				isLastPage: ((page - 1) * 6 + posts.length) == total,
+				user: req.session.user,
+				success: req.flash('success').toString(),
+				error: req.flash('error').toString()
+			});
+		});
+	});
+
+	app.get('/activity/:title/:day', function(req, res) {
+		//query nad return user all post
+		actPost.getOne(req.params.title, req.params.day, function(err, post){
+			if(err) {
+				req.flash('error', err);
+				return res.redirect('/');
+			}
+			res.render('activity', {
+				title: post.title,
+				post: post,
+				user: req.session.user,
+				success: req.flash('success').toString(),
+				error: req.flash('error').toString()
+			});
+		});
 	});
 
 	app.get('/reg', checkNotLogin);
@@ -165,9 +205,9 @@ module.exports = function(app) {
 	app.post('/post', function(req, res) {
 	});
 
-	app.get('/activity', checkLogin);
-	app.get('/activity', function(req, res) {
-		res.render('activity', {
+	app.get('/activityCreate', checkLogin);
+	app.get('/activityCreate', function(req, res) {
+		res.render('createActivity', {
 			title: '新增活動',
 			user: req.session.user,
 			success: req.flash('success').toString(),
@@ -175,8 +215,18 @@ module.exports = function(app) {
 		});
 	});
 
-	app.post('/activity', checkLogin);
-	app.post('/activity', function(req, res) {
+	app.post('/activityCreate', checkLogin);
+	app.post('/activityCreate', function(req, res) {
+		let activityPost = new actPost(
+				req.body.title,
+				req.body.content
+			)
+		activityPost.save(function(err){
+			if(err) {
+				return res.redirect('/');
+			}
+			res.redirect('/admin');
+		});
 	});
 
 	app.get('/achievement', checkLogin);
@@ -222,13 +272,11 @@ module.exports = function(app) {
 			}
 			if(team) {
 				req.flash('error', '隊伍已存在');
-				console.log('隊伍已存在');
 				return res.redirect('/team');
 			}
 			newTeam.save(function(err) {
 				if(err) {
 					req.flash('error', err);
-					console.log(err);
 					return res.redirect('/team');
 				}
 				req.flash('success', '隊伍新增成功');

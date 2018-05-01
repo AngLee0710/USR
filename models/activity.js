@@ -1,14 +1,14 @@
 "use strict";
 const mongodb = require('./db');
 
-function Post(title, content, tag) {
+function actPost(title, content) {
 	this.title = title;
 	this.content = content;
 }
 
-module.exports = Post;
+module.exports = actPost;
 
-Post.prototype.save = function(callback) {
+actPost.prototype.save = function(callback) {
 	let date = new Date();
 	let time = {
 		date: date,
@@ -21,13 +21,19 @@ Post.prototype.save = function(callback) {
 			(date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes())
 	};
 
-	let summary = this.content.substr(0, 40) + '...';
+	let summary = this.content.toString();
+
+	if(summary.length >= 20)
+	{
+		summary = summary.substr(0, 20) + '...';
+	}
 
 	let post = {
 		title: this.title,
-		time, time,
+		time: time,
 		summary: summary,
 		content: this.content,
+		teams: {},
 		pv: 0
 	};
 
@@ -35,7 +41,7 @@ Post.prototype.save = function(callback) {
 		if(err) {
 			return callback(err);
 		}
-		db.collection('posts', function(err, collection) {
+		db.collection('actPosts', function(err, collection) {
 			if(err) {
 				mongodb.close();
 				return callback(err);
@@ -53,23 +59,22 @@ Post.prototype.save = function(callback) {
 	});
 }
 
-Post.getOne = function(name, day, title, callback) {
+actPost.getOne = function(title, day, callback) {
 	//open database
 	mongodb.open(function(err, db) {
 		if (err) {
 			return callback(err);
 		}
 		//read posts collection
-		db.collection('posts', function(err, collection) {
+		db.collection('actPosts', function(err, collection) {
 			if (err) {
 				mongodb.close();
 				return callback(err);
 			}
 			//according to user-name、post-date and post-title to search
 			collection.findOne({
-				"name": name,
-				"time.day": day,
-				"title": title
+				"title": title,
+				"time.day": day
 			}, function(err, doc) {
 				if (err) {
 					mongodb.close();
@@ -83,9 +88,8 @@ Post.getOne = function(name, day, title, callback) {
 				//analysis markdown is html
 				if(doc) {
 					collection.update({
-						"name": name,
+						"title": title,
 						"time.day": day,
-						"title": title
 					}, {
 						$inc: {
 							"pv": 1
@@ -103,12 +107,12 @@ Post.getOne = function(name, day, title, callback) {
 	});
 }
 
-Post.getTen = function(name, page, callback) {
+actPost.getSix = function(name, page, callback) {
 	mongodb.open(function(err, db) {
 		if(err) {
 			return callback(err);
 		}
-		db.collection('posts', function(err, collection) {
+		db.collection('actPosts', function(err, collection) {
 			if(err) {
 				mongodb.close();
 				return callback(err);
@@ -120,8 +124,8 @@ Post.getTen = function(name, page, callback) {
 
 			collection.count(query, function(err, total) {
 				collection.find(query, {
-					skip: (page - 1) * 10,
-					limit: 10
+					skip: (page - 1) * 6,
+					limit: 6
 				}).sort({
 					time: -1
 				}).toArray(function(err, docs) {
