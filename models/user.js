@@ -1,6 +1,6 @@
 "use strict";
 const mongodb = require('./db');
-
+const MongoClient = mongodb.MongoClient;
 
 function User(user) {
 	this.name = user.name;
@@ -11,66 +11,50 @@ module.exports = User;
 
 // save user-info
 User.prototype.save = function(callback) {
+	if(!(this.name && this.password)) {
+		return callback('資料不齊全')
+	}
 	//user-info
 	var user = {
 		name: this.name,
 		password: this.password,
 	}
 
-	//open database
-	mongodb.open(function(err, db) {
+	MongoClient.connect(mongodb.url, function(err, client) {
 		if(err) {
 			return callback(err);
 		}
 
-		//read users collection
-		db.collection('users', function(err, collection) {
+		const db = client.db(mongodb.dbName);
+		const col = db.collection('users');
+		
+		col.insert(user, function(err) {
+			client.close();
 			if(err) {
-				mongodb.close();
-				return callback(err);//error, return err info
+				return callback(err);
 			}
-			
-			// insert user-data to users collection
-			collection.insert(user, {
-				safe: true
-			}, function(err, user) {
-				mongodb.close();
-				if(err) {
-					return callback(err);//error, return err info
-				}
-
-				callback(null, user[0]);//success! err is null, return stored user-file
-			})
-		})
-	})
+			callback(null, user[0]);
+		});
+	});
 }
 
 //read user-data
 User.get = function(name, callback) {
-	//open database
-	mongodb.open(function(err, db) {
+	MongoClient.connect(mongodb.url, function(err, client) {
 		if(err) {
-			return callback(err);//error, return err info
+			return callback(err);
 		}
 
-		//read users collection
-		db.collection('users', function(err, collection) {
+		const db = client.db(mongodb.dbName);
+		const col = db.collection('users');
+		
+		col.find({name:name}).next(function(err, user) {
+			client.close();
 			if(err) {
-				mongodb.close();
-				return callback(err);//error, return err info
+				return callback(err);
 			}
-
-			//query user-data-name file
-			collection.findOne({
-				name: name
-			}, function(err, user) {
-				mongodb.close();
-				if(err) {
-					return callback(err);//error, return err info
-				}
-				callback(null, user);//success!return query user-info
-			})
-		})
-	})
+			callback(null, user);
+		});
+	});
 }
 

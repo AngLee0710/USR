@@ -1,8 +1,8 @@
 "use strict";
-let settings = require('../settings'),
-	Db 		 = require('mongodb').Db,
-	Connection = require('mongodb').Connection,
-	Server	 = require('mongodb').Server;
 
-module.exports = new Db(settings.db, new Server(settings.host, settings.port),
-	{ safe: true });
+module.exports = {
+	MongoClient: require('mongodb').MongoClient,
+	url: 'mongodb://localhost:27017',
+	dbName: 'work',
+	user: 'ang'
+}

@@ -1,5 +1,6 @@
 "use strict";
 const mongodb = require('./db');
+const MongoClient = mongodb.MongoClient;
 
 function Team(team) {
 	this.name = team.name;
@@ -14,6 +15,10 @@ function Team(team) {
 module.exports = Team;
 
 Team.prototype.save = function(callback) {
+	if(!(this.name && this.leader && this.purpose && this.introduction &&
+	 this.pro_introduction && this.website && this.email)) {
+		return callback('資料不齊全');
+	}
 	let team = {
 		name: this.name,
 		leader: this.leader,
@@ -26,125 +31,74 @@ Team.prototype.save = function(callback) {
 		pv: 0
 	};
 
-	mongodb.open(function(err, db) {
+	MongoClient.connect(mongodb.url, function(err, client) {
 		if(err) {
 			return callback(err);
 		}
-		db.collection('teams', function(err, collection) {
-			if(err) {
-				mongodb.close();
-				return callback(err);
-			}
-			collection.insert(team, {
-				safe: true
-			}, function(err, team) {
-				mongodb.close();
-				if(err) {
-					return callback(err);
-				}
-				callback(null, team[0]);
-			});
-		});
-	});
-}
 
-Team.get = function(name, callback) {
-	mongodb.open(function(err, db) {
-		if(err) {
-			return callback(err);
-		}
-		db.collection('teams', function(err, collection) {
+		const db = client.db(mongodb.dbName);
+		const col = db.collection('teams');
+		
+		col.insert(team, function(err) {
+			client.close();
 			if(err) {
-				mongodb.close();
 				return callback(err);
 			}
-			collection.findOne({
-				"name": name
-			}, function(err, team) {
-				mongodb.close();
-				if(err) {
-					return callback(err);
-				}
-				callback(null, team);
-			});
+			callback(null);
 		});
 	});
 }
 
 Team.getSix = function(name, page, callback) {
-	mongodb.open(function(err, db) {
+	MongoClient.connect(mongodb.url, function(err, client) {
 		if(err) {
 			return callback(err);
 		}
-		db.collection('teams', function(err, collection) {
-			if(err) {
-				mongodb.close();
-				return callback(err);
-			}
-			let query = {};
-			if(name) {
-				query.name = name;
-			}
 
-			collection.count(query, function(err, total) {
-				collection.find(query, {
-					skip: (page - 1) * 6,
-					limit: 6
-				}).sort({
-					time: -1
-				}).toArray(function(err, docs) {
-					mongodb.close();
-					if(err) {
-						return callback(err);
-					}
-					callback(null, docs, total);
-				});
+		const db = client.db(mongodb.dbName);
+		const col = db.collection('teams');
+
+		let query = {};
+		if(name) {
+			query.name = name;
+		}
+		
+		col.count({}, function(err, total) {
+			col.find({}).skip((page - 1) * 6).limit(6).sort('time', 1).toArray(function(err, docs) {
+				client.close();
+				if(err) {
+					return callback(err);
+				}
+				return callback(null, docs, total);
 			});
 		});
 	});
 };
 
 Team.getOne = function(name, callback) {
-	//open database
-	mongodb.open(function(err, db) {
-		if (err) {
+	MongoClient.connect(mongodb.url, function(err, client) {
+		if(err) {
 			return callback(err);
 		}
-		db.collection('teams', function(err, collection) {
-			if (err) {
-				mongodb.close();
+
+		const db = client.db(mongodb.dbName);
+		const col = db.collection('teams');
+		
+		col.find({name: name}).next(function(err, team) {
+			if(err) {
+				client.close();
 				return callback(err);
 			}
-			//according to user-name、post-date and post-title to search
-			collection.findOne({
-				"name": name,
-			}, function(err, doc) {
-				if (err) {
-					mongodb.close();
-					return callback(err);
-				}
-				if(doc == null) {
-					mongodb.close();
-					err = 'data is null';
-					return callback(err);
-				}
-				//analysis markdown is html
-				if(doc) {
-					collection.update({
-						"name": name
-					}, {
-						$inc: {
-							"pv": 1
-						}
-					}, function(err) {
-						mongodb.close();
-						if(err) {
-							return callback(err);
-						}
-					});
-				}
-				callback(null, doc); //return query 
-			});
+			if(team) {
+				col.update({name: team.name},{$inc: {pv: 1}}, function(err) {
+					client.close();
+					if(err) {
+						return callback(err);
+					}
+				});
+				return callback(null, team);
+			}
+			return callback(null, null);
 		});
 	});
 }

@@ -31,24 +31,20 @@ Post.prototype.save = function(callback) {
 		pv: 0
 	};
 
-	mongodb.open(function(err, db) {
+	MongoClient.connect(mongodb.url, function(err, client) {
 		if(err) {
 			return callback(err);
 		}
-		db.collection('posts', function(err, collection) {
+
+		const db = client.db(mongodb.dbName);
+		const col = db.collection('teams');
+		
+		col.insert(team, function(err) {
+			client.close();
 			if(err) {
-				mongodb.close();
 				return callback(err);
 			}
-			collection.insert(post, {
-				safe: true
-			}, function(err) {
-				mongodb.close();
-				if(err) {
-					return callback(err);
-				}
-				callback(null);
-			});
+			callback(null);
 		});
 	});
 }
