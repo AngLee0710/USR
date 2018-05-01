@@ -15,6 +15,15 @@ module.exports = function(app) {
 		});
 	});
 
+	app.get('/introduct', function(req, res) {
+		res.render('introduct', {
+			title: '平台介紹',
+			user: req.session.user,
+			success: req.flash('success').toString(),
+			error: req.flash('error').toString()
+		})
+	});
+
 	app.get('/activity', function(req, res) {
 		let page = req.query.p ? parseInt(req.query.p) : 1;
 
@@ -85,7 +94,7 @@ module.exports = function(app) {
 			}
 			res.render('team', {
 				title: team.name,
-				team: team,
+				teams: team,
 				user: req.session.user,
 				success: req.flash('success').toString(),
 				error: req.flash('error').toString()

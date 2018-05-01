@@ -16,7 +16,7 @@
         </li>
 
         <li>
-            <a href="#">活動公告</a>
+            <a href="/activity">活動公告</a>
         </li>
 
         <li>
@@ -27,6 +27,12 @@
             <a href="#">成果分享</a>
             
         </li>
+        <% if(user) { %>
+        <li>
+            <a href="/admin">後臺管理</a>
+        </li>
+        <% } %>
+
 
     </ul>
    </div>

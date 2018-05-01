@@ -1,16 +1,15 @@
 <%- include header %>
 <%- include nav2 %>
+ <div class="btn-group-vertical">
+      <button type="button" class="btn btn-primary">Apple</button>
+      <button type="button" class="btn btn-primary">Samsung</button>
+      <button type="button" class="btn btn-primary">Sony</button>
+    </div>
 <% teams.forEach(function(team, index) {%>
 <br>
 
  <div class="row mb-2">
         <div class="col-md-3">
-          <div class="btn-group-vertical">
-		  <button type="button" class="btn btn-primary">Apple</button>
-		  <button type="button" class="btn btn-primary">Samsung</button>
-		  <button type="button" class="btn btn-primary">Sony</button>
-		</div>
-          
         </div>
 
         <div class="col-md-9">
@@ -18,10 +17,10 @@
             <div class="card-body d-flex flex-column align-items-start">
               <h2><strong class="d-inline-block mb-2 text-success"><a href="/team/<%= team.name %>"><%= team.name %></a></strong></h2>           
               <p class="card-text mb-auto">服務宗旨:<%= team.purpose %></p>
-              <a href="#">Continue reading</a>
             </div>
           </div>
         </div>
   </div>
 <% }) %>
+<%- include paging %>
   <%- include footer %>
