@@ -1,107 +1,87 @@
-"use strict";
-const mongodb = require('./db');
-const MongoClient = mongodb.MongoClient;
+"use strict"
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-function actPost(title, content) {
+const uri = 'mongodb://localhost:27017/work?ssh=true';
+mongoose.connect(uri);
+
+let actPostSchema = new mongoose.Schema({
+	title: String,
+	content: String,
+	place: String
+}, {
+	collection: 'actPosts'
+});
+
+let actPostModel = mongoose.model('actPost', actPostSchema);
+
+
+function actPost(title, content, place) {
 	this.title = title;
 	this.content = content;
+	this.place = place;
 }
 
-module.exports = actPost;
-
 actPost.prototype.save = function(callback) {
-	if(!(this.title && this.content)) {
+	if(!(this.title && this.content && this.place)) {
 		return callback('資料不齊全');
 	}
+
 	let date = new Date();
 	let time = {
 		date: date,
 		year: date.getFullYear(),
 		month: date.getFullYear() + "-" + (date.getMonth() + 1),
-		day: date.getFullYear() + "-" + (date.getMonth() + 1) + "-" +
-			date.getDate(),
-		minute: date.getFullYear() + "-" + (date.getMonth() + 1) + "-" +
-			date.getDate() + " " + date.getHours() + ":" +
-			(date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes())
+		day: date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate(),
+		minute: date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" +
+	   			(date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes())
 	};
 
-
-	let post = {
+	let actPost = {
 		title: this.title,
 		time: time,
 		content: this.content,
+		place: this.place,
 		teams: {},
 		pv: 1
 	};
 
-	MongoClient.connect(mongodb.url, function(err, client) {
+	let newActPost = new actPostModel(actPost);
+
+	newActPost.save(function(err, user) {
 		if(err) {
 			return callback(err);
 		}
-
-		const db = client.db(mongodb.dbName);
-		const col = db.collection('actPosts');
-		
-		col.insert(post, function(err) {
-			client.close();
-			if(err) {
-				return callback(err);
-			}
-			callback(null);
-		});
+		callback(null, user);
 	});
 }
 
-actPost.getOne = function(title, day, callback) {
-	MongoClient.connect(mongodb.url, function(err, client) {
+actPost.get = function(title, day, callback) {
+	actPostModel.findOne({'title': title, 'time.day': day}, function(err, actPost) {
 		if(err) {
 			return callback(err);
 		}
-
-		const db = client.db(mongodb.dbName);
-		const col = db.collection('actPosts');
-		console.log(day);
-		
-		col.find({"title": title, "time.day": day}).next(function(err, post) {
+		actPostModel.update({'title': title, 'time.day': day}, {$inc: {'pv': 1}}, function(err) {
 			if(err) {
-				client.close();
 				return callback(err);
 			}
-			if(post) {
-				col.update({"title": title, "time.day": day},{$inc: {pv: 1}}, function(err) {
-					client.close();
-					if(err) {
-						return callback(err);
-					}
-				});
-				return callback(null, post);
-			}
 		});
+		callback(null, actPost);
 	});
 }
 
-actPost.getSix = function(name, page, callback) {
-	MongoClient.connect(mongodb.url, function(err, client) {
-		if(err) {
+actPost.getLimit = function(title, page, limit, callback) {
+	actPostModel.count({}, function(err, total) {
+		if(err){
 			return callback(err);
 		}
-
-		const db = client.db(mongodb.dbName);
-		const col = db.collection('actPosts');
-
-		let query = {};
-		if(name) {
-			query.name = name;
-		}
-
-		col.count({}, function(err, total) {
-			col.find({}).skip((page - 1) * 6).limit(6).sort('time', 1).toArray(function(err, docs) {
-				client.close();
-				if(err) {
-					return callback(err);
-				}
-				return callback(null, docs, total);
-			});
+		actPostModel.find({}, null, {skip: (page -1) * limit}).sort('time.day').limit(limit).exec(function(err, actPosts) {
+			if(err){
+				return callback(err);
+			}
+			return callback(null, actPosts, total);
 		});
 	});
 };
+
+module.exports = actPost;

@@ -2,7 +2,6 @@
 let crypto = require('crypto');
 let User = require('../models/user.js');
 let Team = require('../models/team.js');
-let Post = require('../models/post.js');
 let actPost =require('../models/activity.js');
 
 module.exports = function(app) {
@@ -27,7 +26,7 @@ module.exports = function(app) {
 	app.get('/activity', function(req, res) {
 		let page = req.query.p ? parseInt(req.query.p) : 1;
 
-		actPost.getSix(null, page, function(err, posts, total) {
+		actPost.getLimit(null, page, 6, function(err, posts, total) {
 			if(err) 
 				posts = [];
 
@@ -46,8 +45,7 @@ module.exports = function(app) {
 	});
 
 	app.get('/activity/:title/:day', function(req, res) {
-		//query nad return user all post
-		actPost.getOne(req.params.title, req.params.day, function(err, post){
+		actPost.get(req.params.title, req.params.day, function(err, post){
 			if(err) {
 				req.flash('error', err);
 				return res.redirect('/');
@@ -62,10 +60,10 @@ module.exports = function(app) {
 		});
 	});
 
-		app.get('/team', function(req, res) {
+	app.get('/team', function(req, res) {
 		let page = req.query.p ? parseInt(req.query.p) : 1;
 
-		Team.getSix(null, page, function(err, teams, total) {
+		Team.getLimit(null, page, 6, function(err, teams, total) {
 			if(err) {
 				teams = [];
 			}
@@ -83,7 +81,7 @@ module.exports = function(app) {
 	});
 
 	app.get('/team/:name', function(req, res) {
-		Team.getOne(req.params.name, function(err, team){
+		Team.get(req.params.name, function(err, team){
 			if(err) {
 				req.flash('error', err);
 				return res.redirect('/');
@@ -275,10 +273,14 @@ module.exports = function(app) {
 			pro_introduction: req.body.pro_introduction,
 			leader: req.body.leader,
 			website: req.body.website,
-			email: req.body.email
+			connection: {
+				name: req.body.conecntName,
+				phone: req.body.phone,
+				email: req.body.email
+			}
 		})
 
-		Team.getOne(newTeam.name, function(err, team) {
+		Team.get(newTeam.name, function(err, team) {
 			if(err) 
 				return res.redirect('/admin');
 			if(team){

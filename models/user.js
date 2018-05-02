@@ -1,60 +1,53 @@
-"use strict";
-const mongodb = require('./db');
-const MongoClient = mongodb.MongoClient;
+"use strict"
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+
+const uri = 'mongodb://localhost:27017/work?ssh=true';
+mongoose.connect(uri);
+
+
+let userSchema = new mongoose.Schema({
+	name: String,
+	password: String
+}, {
+	collection: 'users'
+});
+
+let userModel = mongoose.model('User', userSchema);
 
 function User(user) {
 	this.name = user.name;
 	this.password = user.password;
 }
 
-module.exports = User;
-
-// save user-info
 User.prototype.save = function(callback) {
 	if(!(this.name && this.password)) {
 		return callback('資料不齊全')
 	}
-	//user-info
-	var user = {
+
+	let user = {
 		name: this.name,
 		password: this.password,
 	}
 
-	MongoClient.connect(mongodb.url, function(err, client) {
+	let newUser = new userModel(user);
+
+	newUser.save(function(err, user) {
 		if(err) {
 			return callback(err);
 		}
-
-		const db = client.db(mongodb.dbName);
-		const col = db.collection('users');
-		
-		col.insert(user, function(err) {
-			client.close();
-			if(err) {
-				return callback(err);
-			}
-			callback(null, user[0]);
-		});
+		return callback(null, user);
 	});
 }
 
-//read user-data
+
 User.get = function(name, callback) {
-	MongoClient.connect(mongodb.url, function(err, client) {
+	userModel.findOne({name: name}, function(err, user) {
 		if(err) {
 			return callback(err);
 		}
-
-		const db = client.db(mongodb.dbName);
-		const col = db.collection('users');
-		
-		col.find({name:name}).next(function(err, user) {
-			client.close();
-			if(err) {
-				return callback(err);
-			}
-			callback(null, user);
-		});
+		callback(null, user);
 	});
 }
 
+module.exports = User;

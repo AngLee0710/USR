@@ -1,6 +1,29 @@
-"use strict";
-const mongodb = require('./db');
-const MongoClient = mongodb.MongoClient;
+"use strict"
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+
+const uri = 'mongodb://localhost:27017/work?ssh=true';
+mongoose.connect(uri);
+
+let teamSchema = new Schema({
+	name: String,
+	leader: String,
+	purpose: String,
+	introduction: String,
+	pro_introduction: String,
+	website: String,
+	connection: {
+		name: String,
+		email: String,
+		phone: Number
+	},
+	achievement: [{title: String, date: String}],
+	pv: Number
+}, {
+	collection: 'teams'
+});
+
+let teamModel = mongoose.model('Team', teamSchema);
 
 function Team(team) {
 	this.name = team.name;
@@ -9,14 +32,18 @@ function Team(team) {
 	this.introduction = team.introduction;
 	this.pro_introduction = team.pro_introduction;
 	this.website = team.website;
-	this.email = team.email;
+	this.connection = {
+		name: team.connection.name,
+		email: team.connection.email,
+		phone: team.connection.phone
+	}
 }
 
-module.exports = Team;
-
 Team.prototype.save = function(callback) {
+
 	if(!(this.name && this.leader && this.purpose && this.introduction &&
-	 this.pro_introduction && this.website && this.email)) {
+	 this.pro_introduction && this.website && this.connection.name &&
+	 this.connection.email && this.connection.phone)) {
 		return callback('資料不齊全');
 	}
 	let team = {
@@ -26,79 +53,51 @@ Team.prototype.save = function(callback) {
 		introduction: this.introduction,
 		pro_introduction: this.pro_introduction,
 		website: this.website,
-		email: this.email,
+		connection: {
+			name: this.connection.name,
+			email: this.connection.email,
+			phone: this.connection.phone
+		},
 		achievement: [],
 		pv: 0
 	};
 
-	MongoClient.connect(mongodb.url, function(err, client) {
+	let newTeam = new teamModel(team);
+
+	newTeam.save(function(err, user) {
 		if(err) {
 			return callback(err);
 		}
+		callback(null, user);
+	});
+}
 
-		const db = client.db(mongodb.dbName);
-		const col = db.collection('teams');
-		
-		col.insert(team, function(err) {
-			client.close();
+Team.get = function(name, callback) {
+	teamModel.findOne({name: name}, function(err, team) {
+		if(err) {
+			return callback(err);
+		}
+		teamModel.update({name:name}, {$inc: {pv: 1}}, function(err) {
 			if(err) {
 				return callback(err);
 			}
-			callback(null);
+		});
+		callback(null, team);
+	});
+}
+
+Team.getLimit = function(name, page, limit, callback) {
+	teamModel.count({}, function(err, total) {
+		if(err){
+			return callback(err);
+		}
+		teamModel.find({}, null, {skip: (page -1) * limit}).sort('time.day').limit(limit).exec(function(err, teams) {
+			if(err){
+				return callback(err);
+			}
+			return callback(null, teams, total);
 		});
 	});
 }
 
-Team.getSix = function(name, page, callback) {
-	MongoClient.connect(mongodb.url, function(err, client) {
-		if(err) {
-			return callback(err);
-		}
-
-		const db = client.db(mongodb.dbName);
-		const col = db.collection('teams');
-
-		let query = {};
-		if(name) {
-			query.name = name;
-		}
-		
-		col.count({}, function(err, total) {
-			col.find({}).skip((page - 1) * 6).limit(6).sort('time', 1).toArray(function(err, docs) {
-				client.close();
-				if(err) {
-					return callback(err);
-				}
-				return callback(null, docs, total);
-			});
-		});
-	});
-};
-
-Team.getOne = function(name, callback) {
-	MongoClient.connect(mongodb.url, function(err, client) {
-		if(err) {
-			return callback(err);
-		}
-
-		const db = client.db(mongodb.dbName);
-		const col = db.collection('teams');
-		
-		col.find({name: name}).next(function(err, team) {
-			if(err) {
-				client.close();
-				return callback(err);
-			}
-			if(team) {
-				col.update({name: team.name},{$inc: {pv: 1}}, function(err) {
-					client.close();
-					if(err) {
-						return callback(err);
-					}
-				});
-				return callback(null, team);
-			}
-			return callback(null, null);
-		});
-	});
-}
+module.exports = Team;
