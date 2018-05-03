@@ -1,19 +1,21 @@
 "use strict"
 const mongoose = require('mongoose');
+const dbAuth = require('./db');
 const Schema = mongoose.Schema;
-
-const uri = 'mongodb://localhost:27017/work?ssh=true';
-mongoose.connect(uri);
 
 let actPostSchema = new mongoose.Schema({
 	title: String,
+	time: {},
 	content: String,
-	place: String
+	place: String,
+	teams: [{name: String, leader: String}],
+	pv: Number
 }, {
 	collection: 'actPosts'
 });
 
-let actPostModel = mongoose.model('actPost', actPostSchema);
+let actPostOwnerModel = dbAuth.owner.model('actPost', actPostSchema);
+let actPostUserModel = dbAuth.user.model('actPost', actPostSchema);
 
 
 function actPost(title, content, place) {
@@ -46,22 +48,22 @@ actPost.prototype.save = function(callback) {
 		pv: 1
 	};
 
-	let newActPost = new actPostModel(actPost);
+	let newActPost = new actPostOwnerModel(actPost);
 
-	newActPost.save(function(err, user) {
+	newActPost.save(function(err) {
 		if(err) {
 			return callback(err);
 		}
-		callback(null, user);
+		callback(null);
 	});
 }
 
 actPost.get = function(title, day, callback) {
-	actPostModel.findOne({'title': title, 'time.day': day}, function(err, actPost) {
+	actPostUserModel.findOne({'title': title, 'time.day': day}, function(err, actPost) {
 		if(err) {
 			return callback(err);
 		}
-		actPostModel.update({'title': title, 'time.day': day}, {$inc: {'pv': 1}}, function(err) {
+		actPostUserModel.update({'title': title, 'time.day': day}, {$inc: {'pv': 1}}, function(err) {
 			if(err) {
 				return callback(err);
 			}
@@ -71,11 +73,11 @@ actPost.get = function(title, day, callback) {
 }
 
 actPost.getLimit = function(title, page, limit, callback) {
-	actPostModel.count({}, function(err, total) {
+	actPostUserModel.count({}, function(err, total) {
 		if(err){
 			return callback(err);
 		}
-		actPostModel.find({}, null, {skip: (page -1) * limit}).sort('time.day').limit(limit).exec(function(err, actPosts) {
+		actPostUserModel.find({}, null, {skip: (page -1) * limit}).sort('time.day').limit(limit).exec(function(err, actPosts) {
 			if(err){
 				return callback(err);
 			}

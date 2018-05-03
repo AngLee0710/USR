@@ -228,14 +228,15 @@ module.exports = function(app) {
 	app.post('/activityCreate', function(req, res, next) {
 		let activityPost = new actPost(
 			req.body.title,
-			req.body.content
+			req.body.content,
+			req.body.place
 		);
 		activityPost.save(function(err){
 			if(err) {
 				req.flash('error', err);
-				return res.redirect('/activity');
+				return res.redirect('/activityCreate');
 			} else {
-				return res.redirect('/admin');
+				return res.redirect('/activity');
 			}
 		});
 	});
@@ -282,7 +283,7 @@ module.exports = function(app) {
 
 		Team.get(newTeam.name, function(err, team) {
 			if(err) 
-				return res.redirect('/admin');
+				return res.redirect('/createTeam');
 			if(team){
 				req.flash('error','隊伍已存在');
 				return res.redirect('/team');
@@ -291,9 +292,10 @@ module.exports = function(app) {
 				if(err) {
 					req.flash('error', err);
 					return res.redirect('/createTeam');
+				} else {
+					req.flash('success', '隊伍新增成功');
+					res.redirect('/team');
 				}
-				req.flash('success', '隊伍新增成功');
-				res.redirect('/admin');
 			});
 		});
 	});

@@ -1,10 +1,7 @@
 "use strict"
 const mongoose = require('mongoose');
+const dbAuth = require('./db');
 const Schema = mongoose.Schema;
-
-const uri = 'mongodb://localhost:27017/work?ssh=true';
-mongoose.connect(uri);
-
 
 let userSchema = new mongoose.Schema({
 	name: String,
@@ -13,7 +10,8 @@ let userSchema = new mongoose.Schema({
 	collection: 'users'
 });
 
-let userModel = mongoose.model('User', userSchema);
+let userOwnerModel = dbAuth.owner.model('User', userSchema);
+let userUserModel = dbAuth.user.model('User', userSchema);
 
 function User(user) {
 	this.name = user.name;
@@ -30,7 +28,7 @@ User.prototype.save = function(callback) {
 		password: this.password,
 	}
 
-	let newUser = new userModel(user);
+	let newUser = new userOwnerModel(user);
 
 	newUser.save(function(err, user) {
 		if(err) {
@@ -42,7 +40,7 @@ User.prototype.save = function(callback) {
 
 
 User.get = function(name, callback) {
-	userModel.findOne({name: name}, function(err, user) {
+	userUserModel.findOne({name: name}, function(err, user) {
 		if(err) {
 			return callback(err);
 		}

@@ -1,9 +1,7 @@
 "use strict"
 const mongoose = require('mongoose');
+const dbAuth = require('./db');
 const Schema = mongoose.Schema;
-
-const uri = 'mongodb://localhost:27017/work?ssh=true';
-mongoose.connect(uri);
 
 let teamSchema = new Schema({
 	name: String,
@@ -23,7 +21,8 @@ let teamSchema = new Schema({
 	collection: 'teams'
 });
 
-let teamModel = mongoose.model('Team', teamSchema);
+let teamOwnerModel = dbAuth.owner.model('Team', teamSchema);
+let teamUserModel = dbAuth.user.model('Team', teamSchema);
 
 function Team(team) {
 	this.name = team.name;
@@ -62,7 +61,7 @@ Team.prototype.save = function(callback) {
 		pv: 0
 	};
 
-	let newTeam = new teamModel(team);
+	let newTeam = new teamOwnerModel(team);
 
 	newTeam.save(function(err, user) {
 		if(err) {
@@ -73,11 +72,11 @@ Team.prototype.save = function(callback) {
 }
 
 Team.get = function(name, callback) {
-	teamModel.findOne({name: name}, function(err, team) {
+	teamUserModel.findOne({name: name}, function(err, team) {
 		if(err) {
 			return callback(err);
 		}
-		teamModel.update({name:name}, {$inc: {pv: 1}}, function(err) {
+		teamUserModel.update({name:name}, {$inc: {pv: 1}}, function(err) {
 			if(err) {
 				return callback(err);
 			}
@@ -87,11 +86,11 @@ Team.get = function(name, callback) {
 }
 
 Team.getLimit = function(name, page, limit, callback) {
-	teamModel.count({}, function(err, total) {
+	teamUserModel.count({}, function(err, total) {
 		if(err){
 			return callback(err);
 		}
-		teamModel.find({}, null, {skip: (page -1) * limit}).sort('time.day').limit(limit).exec(function(err, teams) {
+		teamUserModel.find({}, null, {skip: (page -1) * limit}).sort('time.day').limit(limit).exec(function(err, teams) {
 			if(err){
 				return callback(err);
 			}
