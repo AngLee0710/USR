@@ -1,17 +1,43 @@
 <%- include header %>
 <%- include nav2 %>
- <div class="btn-group-vertical">
-      <button type="button" class="btn btn-primary">Apple</button>
-      <button type="button" class="btn btn-primary">Samsung</button>
-      <button type="button" class="btn btn-primary">Sony</button>
-    </div>
-<% teams.forEach(function(team, index) {%>
+ 
+
 <br>
 
  <div class="row mb-2">
-        <div class="col-md-3">
-        </div>
 
+        <div class="col-md-3">
+
+        	<div id="menu">
+
+        		<div class="main">團隊一
+              <div class="sub">
+                <ul>
+                  <li><a href="#">服務區域1</a></li>
+                  <li><a href="#">服務區域2</a></li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="main">團隊二
+              <div class="sub">
+                <ul>
+                  <li>服務區域1</li>
+                  <li>服務區域2</li>
+                </ul>
+              </div>
+            </div>
+
+
+        			
+        		
+        	</div>
+   		</div>
+
+
+        	
+
+<% teams.forEach(function(team, index) {%>
         <div class="col-md-9">
           <div class="card flex-md-row mb-4 box-shadow h-md-250">
             <div class="card-body d-flex flex-column align-items-start">
@@ -24,3 +50,6 @@
 <% }) %>
 <%- include paging %>
   <%- include footer %>
+
+
+

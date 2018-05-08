@@ -7,7 +7,7 @@
 	</h2>
 	<h5><%= post.time.day %></h5>
 	<h4>
-		<%= post.content.substr(0,20) %><a href="/activity/<%= post.title %>/<%= post.time.day %>">...閱讀更多</a>
+		<%= post.summary %>
 	</h4>
 </p>
 <% }) %>

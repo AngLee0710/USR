@@ -225,3 +225,59 @@ h1, h2, h3, h4, h5, h6 {
     ul.drop-down-menu ul li:hover > ul { /* 第二層之後的選單展開位置*/
         left: 90%;
     }
+
+    ul { /* 取消ul預設的內縮及樣式 */
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+
+    div.main{
+      
+      background-color:#e33535;
+      color: white;
+      font-family: 微軟正黑體;
+      font-weight: bold;
+      font-size: 20px;
+      cursor: pointer;
+      text-align: center;
+      height: 35px;
+      oevrflow:auto;
+    }
+    
+
+
+    div.main:hover{
+      background-color: #aaaaaa;
+      height: auto;
+    }
+    div.sub {
+      background-color: #4d4949;
+      color: white;
+      font-family: 微軟正黑體;
+      text-align: center;
+      font-weight: bold;
+      oevrflow:auto;
+    }
+
+    div.sub  { /*隱藏次選單*/
+        left: 99999px;
+        opacity: 0;
+        -webkit-transition: opacity 0.3s;
+        transition: opacity 0.3s;
+        oevrflow:auto;
+    }
+
+
+
+    div.main:hover > div.sub { /* 滑鼠滑入展開次選單*/
+        opacity: 1;
+        -webkit-transition: opacity 1s;
+        transition: opacity 1s;
+        left: -1px;
+        border-right: 5px;
+        border-bottom: 100px;
+        
+    }
+   
