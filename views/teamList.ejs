@@ -10,32 +10,108 @@
 
         	<div id="menu">
 
-        		<div class="main">團隊一
+        	<!--	<div class="main">江季翰 教授
               <div class="sub">
                 <ul>
-                  <li><a href="#">服務區域1</a></li>
-                  <li><a href="#">服務區域2</a></li>
-                </ul>
-              </div>
-            </div>
-            
-            <div class="main">團隊二
-              <div class="sub">
-                <ul>
-                  <li>服務區域1</li>
-                  <li>服務區域2</li>
+                  <li><a href="#">虎科志工</a></li>
+                  <li><a href="http://maselab318.nfu.edu.tw/lab/">M.A.S.E LAB</a></li>
+                  <li><a href="#">雲端租屋網</a></li>
                 </ul>
               </div>
             </div>
 
+            <div class="main">李安 教授
+              <div class="sub">
+                <ul>
+                  <li><a href="http://140.130.1.19">圾清潔隊</a></li>
+                  <li><a href="#">稅四結</a></li>
+                </ul>
+              </div>
+            </div>
 
-        			
-        		
+            <div class="main">江季翰 教授
+              <div class="sub">
+                <ul>
+                  <li><a href="#">虎科志工</a></li>
+                  <li><a href="http://maselab318.nfu.edu.tw/lab/">M.A.S.E LAB</a></li>
+                  <li><a href="#">雲端租屋網</a></li>
+                </ul>
+              </div>
+            </div>-->
+
+          <dl class="dropdown"> 
+            <dt>
+              <a href="#">
+                <span class="hida">江季翰 教授</span>    
+                <p class="multiSel"></p>  
+              </a>
+            </dt>
+          
+            <dd>
+                <div class="mutliSelect">
+                    <ul>
+                        <li>
+                            <a href="http://maselab318.nfu.edu.tw/lab/">M.A.S.E LAB</a>
+                        <li>
+                            <a href="http://house.nfu.edu.tw/">雲端租屋網</a></li>
+                        
+                    </ul>
+                </div>
+              </dd>
+          </dl>
+
+          <dl class="dropdown1"> 
+            <dt>
+              <a href="#">
+                <span class="hida">李安 教授</span>    
+                <p class="multiSel"></p>  
+              </a>
+            </dt>
+          
+            <dd>
+                <div class="mutliSelect">
+                    <ul>
+                        <li>
+                            <a href="http://maselab318.nfu.edu.tw/lab/">M.A.S.E LAB</a>
+                        </li>
+                        <li>
+                            <a href="http://house.nfu.edu.tw/">雲端租屋網</a></li>
+                        </li>
+                        
+                    </ul>
+                </div>
+              </dd>
+          </dl>
+
+          
+      
         	</div>
    		</div>
 
 
-        	
+
+<script>
+
+$(document).bind('click', function(e) {
+  var $clicked = $(e.target);
+  if (!$clicked.parents().hasClass("dropdown")) $(".dropdown dd ul").hide();
+});
+
+$(".dropdown dt a").on('click', function() {
+  $(".dropdown dd ul").slideToggle('fast');
+});
+
+$(document).bind('click', function(e) {
+  var $clicked = $(e.target);
+  if (!$clicked.parents().hasClass("dropdown1")) $(".dropdown1 dd ul").hide();
+});
+
+$(".dropdown1 dt a").on('click', function() {
+  $(".dropdown1 dd ul").slideToggle('fast');
+});
+
+</script>
+
 
 <% teams.forEach(function(team, index) {%>
         <div class="col-md-9">
@@ -48,8 +124,10 @@
         </div>
   </div>
 <% }) %>
+
 <%- include paging %>
   <%- include footer %>
+
 
 
 
