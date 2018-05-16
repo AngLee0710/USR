@@ -135,9 +135,7 @@ ul.drop-down-menu li {
   white-space: nowrap;
   border-right: #ccc 1px solid
 }
-ul.drop-down-menu>li:last-child {
-  border-right: none
-}
+
 ul.drop-down-menu>li {
   float: left
 }
@@ -153,10 +151,6 @@ ul.drop-down-menu a:hover {
   background-color: #ef5c28;
   color: #fff
 }
-ul.drop-down-menu li:hover>a {
-  background-color: #ef5c28;
-  color: #fff
-}
 ul.drop-down-menu ul {
   border: #ccc 1px solid;
   position: absolute;
@@ -165,17 +159,7 @@ ul.drop-down-menu ul {
   top: 100%;
   min-width: 180px
 }
-ul.drop-down-menu ul li {
-  border-bottom: #ccc 1px solid
-}
-ul.drop-down-menu ul li:last-child {
-  border-bottom: none
-}
-ul.drop-down-menu ul ul {
-  z-index: 999;
-  top: 10px;
-  left: 90%
-}
+
 ul.drop-down-menu ul {
   left: 99999px;
   opacity: 0;
@@ -189,12 +173,8 @@ ul.drop-down-menu li:hover>ul {
   left: -1px;
   border-right: 5px
 }
-ul.drop-down-menu li:hover>ul ul {
-  left: 99999px
-}
-ul.drop-down-menu ul li:hover>ul {
-  left: 90%
-}
+
+
 ul {
   margin: 0;
   padding: 0;
@@ -310,4 +290,58 @@ dl .mutliSelect {
 }
 .dropdown1 dd ul {
   display: none;
+}
+
+#menu_div {
+  display: none;
+}
+
+
+
+@media screen and (max-width: 990px) {
+  
+  
+  ul.drop-down-menu>li {
+  list-style: none;
+
+  }
+  
+  ul.drop-down-menu li {
+    position:inherit;
+    white-space: none;
+    opacity: 1;
+    border-right: none;
+    
+  }
+  ul.drop-down-menu>li {
+  float: inherit;
+  }
+  
+  ul.drop-down-menu ul {
+    position: inherit;
+    border: none;
+
+  }
+
+  ul.drop-down-menu ul {
+  left: 99999px;
+  opacity: 1;
+}
+ul.drop-down-menu li:hover>ul {
+  opacity: 1;
+  left: -1px;
+  border-right: 5px
+}
+  
+  #menu_div {
+    display: block;
+    text-align: left;
+    width: 100%;
+    background-color: #0F455C;
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
+  #menu {
+    padding-left: 15px;
+  }
 }

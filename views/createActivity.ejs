@@ -1,10 +1,20 @@
 <%- include header %>
-<form method="post">
-	標題: <input type="text" name="title"><br />
-	內容: <br />
-	<textarea id="editor_id" name="content" style="width:700px;height:300px;">
-		&lt;strong&gt;HTML内容&lt;/strong&gt;
-	</textarea><br />
-<input type="submit" name="發表" />
-</form>
+<%- include nav2 %>
+<br>
+<div class="row mb-2">
+		<div class="col-md-3">
+			<%- include admin_c_dropdown %>			
+		</div>
+
+		<div class="col-md-9">
+			<form method="post">
+				標題: <input type="text" name="title"><br />
+				內容: <br />
+				<textarea id="editor_id" name="content" style="width:700px;height:300px;">
+					&lt;strong&gt;HTML内容&lt;/strong&gt;
+				</textarea><br />
+			<input type="submit" name="發表" />
+			</form>
+		</div>
+	</div>
 <%- include footer %>
