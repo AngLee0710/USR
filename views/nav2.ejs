@@ -1,7 +1,7 @@
 <br>
 
 <div class="row flex-nowrap justify-content-between align-items-center">
-<ul class="drop-down-menu">
+<ul class="drop-down-menu" id = "nav">
         <li><a href="#">關於我們</a>
             <ul>
                 <li><a href="/introduct">計畫支援團隊</a>
@@ -36,9 +36,31 @@
             <a href="/admin">後臺管理</a>
         </li>
         <% } %>
-
-
     </ul>
-   </div>
+</div>
+
+
+
+<div id="menu_div">
+    <a id="menu" href="#"><i class="fa fa-bars"></i> MENU</a>
+</div>
+
+
+<script>
+    $(function() {
+      var nav = $('#nav');
+      var win = $(window);
+      $('#menu').on('click', function(e) {
+        e.preventDefault();
+        nav.slideToggle();
+      });
+
+      win.resize(function() {
+        if (win.width() > 480 && nav.is(':hidden')) {
+          nav.removeAttr('style');
+        }
+      });
+    });
+</script>
 
 

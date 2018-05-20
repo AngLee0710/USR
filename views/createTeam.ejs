@@ -5,12 +5,14 @@
 			<%- include admin_c_dropdown %>			
 		</div>
 		<div class="col-md-9">
+          <div class="card flex-md-row mb-4 box-shadow h-md-350">
+            <div class="card-body d-flex flex-column align-items-start">
 				<form method="post">
 					團隊名稱: <input type="text" name="name" /><br />
 					團隊負責人:	<input type="text" name="leader" /><br />
 					團隊服務宗旨: <input type="text" name="purpose" /><br />
 					團隊介紹: <br /> 
-					<textarea name="introduction" rows="20" cols="100"></textarea><br />
+					<textarea name="introduction" ></textarea><br />
 					團隊專業:<br />
 					<textarea name="pro_introduction" rows="20" cols="100"></textarea><br />
 					團隊網站:<br />
@@ -19,6 +21,8 @@
 					<input type="email" name="email" /><br />
 					<input type="submit" name="新增" />
 				</form>
+				</div>
+				</div>
 			</div>
 		</div>
 
