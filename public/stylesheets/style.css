@@ -292,17 +292,17 @@ dl .mutliSelect {
   display: none;
 }
 
-.menu_div {
+#menu_div {
   display: none;
 }
 
-ul.drop-down-menu{
-  display: none;
-}
+
 
 @media screen and (max-width: 990px) {
   
-  
+  ul.drop-down-menu{
+  display: none;
+  }
   ul.drop-down-menu>li {
   list-style: none;
 
