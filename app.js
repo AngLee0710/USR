@@ -39,7 +39,7 @@ app.use(session({
 		db: settings.db,
 		host: settings.host,
 		port: settings.port,
-		url: 'mongodb://workOwner:2842l3u03@localhost:27017/work'
+		url: 'mongodb://workOwner:2842l3u03@45.63.0.92:27017/work'
 	})
 }));
 
