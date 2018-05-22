@@ -3,11 +3,11 @@
 <% posts.forEach(function(post, index) {%>
 <p>
 	<h2>
-		<a href="/activity/<%= post.title %>/<%= post.time.day %>"><%= post.title %></a>
+		<a href="/activity/<%= post.title %>/<%= post.time %>"><%= post.title %></a>
 	</h2>
-	<h5><%= post.time.day %></h5>
+	<h5><%= post.time %></h5>
 	<h4>
-		<%= post.summary %>
+		<%- post.content.substr(0,30) %>
 	</h4>
 </p>
 <% }) %>

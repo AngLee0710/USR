@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 
 let actPostSchema = new mongoose.Schema({
 	title: String,
-	time: {},
+	time: Number,
 	content: String,
 	place: String,
 	teams: [{name: String, leader: String}],
@@ -30,14 +30,7 @@ actPost.prototype.save = function(callback) {
 	}
 
 	let date = new Date();
-	let time = {
-		date: date,
-		year: date.getFullYear(),
-		month: date.getFullYear() + "-" + (date.getMonth() + 1),
-		day: date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate(),
-		minute: date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" +
-	   			(date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes())
-	};
+	let time = date.getTime();
 
 	let actPost = {
 		title: this.title,
@@ -59,11 +52,11 @@ actPost.prototype.save = function(callback) {
 }
 
 actPost.get = function(title, day, callback) {
-	actPostUserModel.findOne({'title': title, 'time.day': day}, function(err, actPost) {
+	actPostUserModel.findOne({'title': title, 'time': day}, function(err, actPost) {
 		if(err) {
 			return callback(err);
 		}
-		actPostUserModel.update({'title': title, 'time.day': day}, {$inc: {'pv': 1}}, function(err) {
+		actPostOwnerModel.update({'title': title, 'time': day}, {$inc: {'pv': 1}}, function(err) {
 			if(err) {
 				return callback(err);
 			}
@@ -77,7 +70,7 @@ actPost.getLimit = function(title, page, limit, callback) {
 		if(err){
 			return callback(err);
 		}
-		actPostUserModel.find({}, null, {skip: (page -1) * limit}).sort('time.day').limit(limit).exec(function(err, actPosts) {
+		actPostUserModel.find({}, null, {skip: (page -1) * limit}).sort('-time.day').limit(limit).exec(function(err, actPosts) {
 			if(err){
 				return callback(err);
 			}

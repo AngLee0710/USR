@@ -6,17 +6,41 @@ let actPost =require('../models/activity.js');
 
 module.exports = function(app) {
 	app.get('/', function(req, res) {
-		res.render('index', {
-			title: '大學生社會責任平台',
-			user: req.session.user,
-			success: req.flash('success').toString(),
-			error: req.flash('error').toString()
+		actPost.getLimit(null, 1, 3, function(err, posts, total) {
+			if(err) 
+				posts = [];
+			
+			res.render('index', {
+				title: '大學生社會責任平台',
+				user: req.session.user,
+				posts: posts,
+				success: req.flash('success').toString(),
+				error: req.flash('error').toString()
+			});
 		});
 	});
 
 	app.get('/introduct', function(req, res) {
 		res.render('introduct', {
 			title: '平台介紹',
+			user: req.session.user,
+			success: req.flash('success').toString(),
+			error: req.flash('error').toString()
+		})
+	});
+
+	app.get('/aboutUs', function(req, res) {
+		res.render('aboutUs', {
+			title: '關於我們',
+			user: req.session.user,
+			success: req.flash('success').toString(),
+			error: req.flash('error').toString()
+		})
+	});
+
+	app.get('/connectUs', function(req, res) {
+		res.render('connectUs', {
+			title: '聯絡我們',
 			user: req.session.user,
 			success: req.flash('success').toString(),
 			error: req.flash('error').toString()
