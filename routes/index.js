@@ -1,8 +1,9 @@
 "use strict";
-let crypto = require('crypto');
-let User = require('../models/user.js');
-let Team = require('../models/team.js');
-let actPost =require('../models/activity.js');
+const crypto = require('crypto');
+const fs = require('fs');
+const User = require('../models/user.js');
+const Team = require('../models/team.js');
+const actPost =require('../models/activity.js');
 
 module.exports = function(app) {
 	app.get('/', function(req, res) {

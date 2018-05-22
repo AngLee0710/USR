@@ -70,7 +70,7 @@ actPost.getLimit = function(title, page, limit, callback) {
 		if(err){
 			return callback(err);
 		}
-		actPostUserModel.find({}, null, {skip: (page -1) * limit}).sort('-time.day').limit(limit).exec(function(err, actPosts) {
+		actPostUserModel.find({}, null, {skip: (page -1) * limit}).sort('-time').limit(limit).exec(function(err, actPosts) {
 			if(err){
 				return callback(err);
 			}
