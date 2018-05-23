@@ -11,12 +11,9 @@ const MongoStore = require('connect-mongo')(session);
 const flash = require('connect-flash');
 const mongoose = require('mongoose');
 
-
 const routes = require('./routes/index');
 const settings = require('./settings');
 const app = express();
-
-
 
 
 app.set('port', process.env.PORT || 3000);

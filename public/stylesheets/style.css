@@ -347,3 +347,7 @@ ul.drop-down-menu li:hover>ul {
     padding-left: 15px;
   }
 }
+
+h4 > img {
+  width: 100%;
+}

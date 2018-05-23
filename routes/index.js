@@ -1,9 +1,23 @@
 "use strict";
 const crypto = require('crypto');
+const multer  = require('multer');
 const fs = require('fs');
+
 const User = require('../models/user.js');
 const Team = require('../models/team.js');
 const actPost =require('../models/activity.js');
+
+var storage = multer.diskStorage({
+	destination: function (req, file, cb) {
+		cb(null, './public/upload')
+	},
+	filename: function (req, file, cb) {
+		cb(null, file.fieldname + '.' + file.mimetype.split('/')[1]);
+	}
+});
+
+var upload = multer({ storage: storage });
+
 
 module.exports = function(app) {
 	app.get('/', function(req, res) {
@@ -379,6 +393,56 @@ module.exports = function(app) {
 
 	app.post('/team_manage', checkLogin);
 	app.post('/team_manage', function(req, res) {
+	});
+
+	app.post('/uploadImg', checkLogin);
+	app.post('/uploadImg', upload.single('imgFile'), function(req, res) {
+		let fname = req.file.fieldname;
+		console.log();
+		let info = { 
+	        "error": 0, 
+	        "url": 'upload/' + fname + '.' + req.file.mimetype.split('/')[1]
+	    }; 
+	    res.send(info); 
+	});
+
+	app.get('/lookImg', checkLogin);
+	app.get('/lookImg', function(req, res) {
+		const path = 'public/upload/';
+
+		fs.readdir(path, function (err, files) {
+			if (err) {
+				console.log(err);
+				return;
+			}
+			let count = files.length;
+			let filelist = {};
+			let results = {};
+			results['moveup_dir_path'] = 'public';
+			results['current_dir_path'] = path;
+			results['current_url'] = path;
+			results['total_count'] = count;
+			files.forEach(function (filename) {
+				fs.readFile(path + '/' + filename, function (err, data) {
+					if (err) {
+						console.log(err);
+						return;
+					}
+
+					filelist[filename] = data;
+					count--;
+
+					if (count <= 0) {
+						console.log('finish');
+						results['file_list'] = filelist;
+						let json = JSON.stringify(results);
+
+						res.send(JSON.parse(json));
+					}
+				});
+			});
+		});
+
 	});
 
 

@@ -22,8 +22,9 @@
         var editor;
         KindEditor.ready(function(K) {
             editor = K.create('textarea', {
-                allowImageUpload: false,
-                uploadJson: '/uploadImg'
+                uploadJson: '/uploadImg',
+                fileManagerJson: '/lookImg',
+                allowFileManager : true,
                 width : '100%',
                 items: [
                     'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'blod', 'italic',
