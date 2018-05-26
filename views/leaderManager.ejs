@@ -1,0 +1,93 @@
+<%- include header %>
+<%- include nav2 %>
+
+<div class="row">
+	<div class="col-4"></div>
+	<div class="col-6">
+		選擇隊長:
+		<select id="slt_1">
+			<% leaders.forEach((leader, index) => { %>
+				<option value="<%= leader.nick %>"><%= leader.name %>(<%= leader.nick %>) <%= leader.title %></option>
+			<% }) %>
+		</select>
+		<button id="search">確定</button>&nbsp;<button id="createBtn">新增團隊</button>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-2"></div>
+	<div class="col-8">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>團隊名稱</th>
+					<th style="text-align: right;">也許之後會有更新刪除之類的功能</th>
+				</tr>
+			</thead>
+			<tbody id="fortable">
+			</tbody>
+		</table>
+	</div>
+	<div class="col-2"></div>
+</div>
+
+
+
+
+<div class="bg"></div>
+<div class="content row">
+	<div class="col-2"></div>
+	<div id="leaderCreate col-8">
+		<form method="post">
+			隊長名稱:<input id="leader" type="text" readonly="readonly"><br/>
+			<input id="leaderNick" type="hidden" name="leader">
+			團隊名稱: <input type="text" name="name" /><br />
+			團隊服務宗旨: <input type="text" name="purpose" /><br />
+			團隊介紹: <br /> 
+			<textarea name="introduction" ></textarea><br />
+			團隊專業:<br />
+			<textarea style="width: 100%" name="pro_introduction" rows="20" cols="100"></textarea><br />
+			團隊網站:<br />
+			<input type="text" name="website" /><br />
+			聯絡方式:<br />
+			聯絡人姓名:<input type="text" name="conecntName" /><br />
+			聯絡人電話:<input type="number" name="phone"><br />
+			團隊信箱:<input type="email" name="email" /><br />
+			<input class="closebg" type="submit" name="新增" />
+			<button class="closebg" type="button">關閉</button>
+		</form>
+	</div>
+</div>
+<script>
+	var a = [];
+	$('#search').click(() => {
+		$.post('/leaderSearch', { nick: $('#slt_1').val() }, (result) => {
+			result.teams.forEach((team, index) => {
+				$('#fortable').append(`<tr><th>${team.name}</th></tr>`);
+			});
+		});
+		let slt_1 = $('#slt_1').text().trim();
+		let slt_1Val = $('#slt_1').val();
+		$('#leader').val(slt_1);
+		$('#leaderName').val(slt_1Val);
+		$('#leaderNick').val(slt_1Val);
+	});
+
+	$(document).on('click', '#createBtn', () => {
+		$('.bg').css({'display':'block'});
+		$('.bg').css({'background': 'white'});
+        $('.content').css({'display':'block'});
+	});
+
+	$('.bg').click(function(){
+        $('.bg').css({'display':'none'});
+        $('.content').css({'display':'none'});
+    });
+
+    $('.closebg').click(() => {
+    	$('.bg').css({'display':'none'});
+        $('.content').css({'display':'none'});
+    })
+</script>
+
+<%- include footer %>

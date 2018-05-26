@@ -1,0 +1,13 @@
+<%- include header %>
+<%- include nav2 %>
+<div class="col-4">
+	<% if(leader.teams.length == 0) {%>
+		<div>尚未擁有團隊</div>
+		<div><a href="/teamCreate">新增團隊</a></div>
+	<% }else {%>
+		<% leader.teams.forEach((team, index) => {%>
+			<a href="/team/<%= team,name %>"><%= team.name %></a>
+		<% }) %>
+	<% } %>
+</div>
+<%- include footer %>

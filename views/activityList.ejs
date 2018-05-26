@@ -1,15 +1,17 @@
 <%- include header %>
 <%- include nav2 %>
 <% posts.forEach(function(post, index) {%>
-<p>
-	<h2>
-		<a href="/activity/<%= post.title %>/<%= post.time %>"><%- post.title %></a>
-	</h2>
-	<h5><%= new Date(post.time).toLocaleDateString() %></h5>
-	<h4>
-		<%- post.content.substr(0,30) %>
-	</h4>
-</p>
+<div class="h-30">
+	<p>
+		<h2>
+			<a href="/activity/<%= post.title %>/<%= post.time %>"><%- post.title %></a>
+		</h2>
+		<h5><%= new Date(post.time).toLocaleDateString() %></h5>
+		<h4>
+			<%- post.content %>
+		</h4>
+	</p>
+</div>
 <% }) %>
 <%- include paging %>
 <%- include footer %>

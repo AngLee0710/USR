@@ -1,63 +1,60 @@
 <div id="menu">
-				<dl class="dropdown">
-					<dt>
-						<a href="#"><span class="hida">網站管理</span>
+    <dl class="dropdown">
+        <dt>
+            <a href="#"><span class="hida">網站管理</span>
 						<p class="multiSel"></p></a>
-					</dt>
-					<dd>
-						<div class="mutliSelect">
-							<ul>
-								<li>
-									<a href="#">目前沒有</a>
-								</li>
-								<li>
-									<a href="#">目前沒有</a>
-								</li>
-								<li>
-									<a href="#">目前沒有</a>
-								</li>
-							</ul>
-						</div>
-					</dd>
-				</dl>
-				<dl class="dropdown1">
-					<dt>
-						<a href="#"><span class="hida">模組設定</span>
+        </dt>
+        <dd>
+            <div class="mutliSelect">
+                <ul>
+                    <li>
+                        <a href="/leaderManager">管理隊長</a>
+                    </li>
+                    <li>
+                        <a href="#">目前沒有</a>
+                    </li>
+                    <li>
+                        <a href="#">目前沒有</a>
+                    </li>
+                </ul>
+            </div>
+        </dd>
+    </dl>
+    <dl class="dropdown1">
+        <dt>
+            <a href="#"><span class="hida">模組設定</span>
 						<p class="multiSel"></p></a>
-					</dt>
-					<dd>
-						<div class="mutliSelect">
-							<ul>
-								<li>
-									<a href="createTeam">創建隊伍</a>
-								</li>
-								<li>
-									<a href="activityCreate">活動發布</a>
-								</li>
-							</ul>
-						</div>
-					</dd>
-				</dl>
-			</div>
-
+        </dt>
+        <dd>
+            <div class="mutliSelect">
+                <ul>
+                    <li>
+                        <a href="/leaderCreate">新增隊長</a>
+                    </li>
+                    <li>
+                        <a href="activityCreate">活動發布</a>
+                    </li>
+                </ul>
+            </div>
+        </dd>
+    </dl>
+</div>
 <script>
+$(document).bind('click', function(e) {
+    var $clicked = $(e.target);
+    if (!$clicked.parents().hasClass("dropdown")) $(".dropdown dd ul").hide();
+});
 
-		$(document).bind('click', function(e) {
-		var $clicked = $(e.target);
-		if (!$clicked.parents().hasClass("dropdown")) $(".dropdown dd ul").hide();
-		});
+$(".dropdown dt a").on('click', function() {
+    $(".dropdown dd ul").slideToggle('fast');
+});
 
-		$(".dropdown dt a").on('click', function() {
-		$(".dropdown dd ul").slideToggle('fast');
-		});
+$(document).bind('click', function(e) {
+    var $clicked = $(e.target);
+    if (!$clicked.parents().hasClass("dropdown1")) $(".dropdown1 dd ul").hide();
+});
 
-		$(document).bind('click', function(e) {
-		var $clicked = $(e.target);
-		if (!$clicked.parents().hasClass("dropdown1")) $(".dropdown1 dd ul").hide();
-		});
-
-		$(".dropdown1 dt a").on('click', function() {
-		$(".dropdown1 dd ul").slideToggle('fast');
-		});
-
-</script> 
+$(".dropdown1 dt a").on('click', function() {
+    $(".dropdown1 dd ul").slideToggle('fast');
+});
+</script>

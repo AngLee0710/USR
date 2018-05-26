@@ -25,7 +25,7 @@ function Leader(leader) {
 
 Leader.prototype.save = function(callback) {
 
-	if(!(this.name && this.title)) {
+	if(!(this.name && this.title && this.nick)) {
 		return callback('資料不齊全');
 	}
 	let leader = {
@@ -51,6 +51,37 @@ Leader.check = function(nick, callback) {
 			return callback(err);
 		}
 		callback(null, nick);
+	});
+}
+
+Leader.getAll = function(callback) {
+	leaderUserModel.find({}, function(err, leaders) {
+		if(err) {
+			return callback(err);
+		}
+		callback(null, leaders);
+	});
+}
+
+Leader.get = function(nick, callback) {
+	leaderUserModel.findOne({nick: nick}, function(err, leader) {
+		if(err) {
+			return callback(err);
+		}
+		callback(null, leader);
+	});
+}
+
+Leader.pushTeam = function(nick, team, callback) {
+	let teams = {
+		name: team
+	}
+
+	leaderOwnerModel.update({nick: nick}, {$push: {teams: teams}}, (err)  => {
+		if(err) {
+			console.log(err)
+			return callback(err);
+		}
 	});
 }
 

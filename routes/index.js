@@ -36,18 +36,16 @@ module.exports = function(app) {
 		});
 	});
 
-	app.get('/introduct', function(req, res) {
-		res.render('introduct', {
-			title: '平台介紹',
-			user: req.session.user,
-			success: req.flash('success').toString(),
-			error: req.flash('error').toString()
-		})
-	});
-
-	app.get('/teamIntegration', function(req, res) {
-		Team.integration(function(err, result) {
-			res.send(result);
+	app.get('/leader/:nick', function(req, res) {
+		Leader.get(req.params.nick, function(err, leader) {
+			console.log(leader.teams.length);
+			res.render('leader', {
+				title: '隊長介紹',
+				user: req.session.user,
+				leader: leader,
+				success: req.flash('success').toString(),
+				error: req.flash('error').toString()
+			});
 		});
 	});
 
@@ -113,15 +111,19 @@ module.exports = function(app) {
 			if(err) {
 				teams = [];
 			}
-			res.render('teamList', {
-				title: '團隊介紹',
-				teams: teams,
-				page: page,
-				isFirstPage: (page - 1) == 0,
-				isLastPage: ((page - 1) * 6 + teams.length) == total,
-				user: req.session.user,
-				success: req.flash('success').toString(),
-				error: req.flash('error').toString()
+
+			Leader.getAll((err, leaders) => {
+				res.render('teamList', {
+					title: '團隊介紹',
+					teams: teams,
+					page: page,
+					isFirstPage: (page - 1) == 0,
+					isLastPage: ((page - 1) * 6 + teams.length) == total,
+					leaders: leaders,
+					user: req.session.user,
+					success: req.flash('success').toString(),
+					error: req.flash('error').toString()
+				});
 			});
 		});
 	});
@@ -136,69 +138,73 @@ module.exports = function(app) {
 				req.flash('error', '隊伍不存在');
 				return res.redirect('/');
 			}
-			res.render('team', {
-				title: team.name,
-				teams: team,
-				user: req.session.user,
-				success: req.flash('success').toString(),
-				error: req.flash('error').toString()
+
+			Leader.get(team.leader, (err, leader) => {
+				res.render('team', {
+					title: team.name,
+					teams: team,
+					leader: leader.name,
+					user: req.session.user,
+					success: req.flash('success').toString(),
+					error: req.flash('error').toString()
+				});
 			});
 		});
 	});
 
-	app.get('/reg', checkNotLogin);
-	app.get('/reg', function(req, res) {
-		res.render('reg', {
-			title: '註冊',
-			user: req.session.user,
-			success: req.flash('success').toString(),
-			error: req.flash('error').toString()
-		});
-	});
+	// app.get('/reg', checkNotLogin);
+	// app.get('/reg', function(req, res) {
+	// 	res.render('reg', {
+	// 		title: '註冊',
+	// 		user: req.session.user,
+	// 		success: req.flash('success').toString(),
+	// 		error: req.flash('error').toString()
+	// 	});
+	// });
 
-	app.post('/reg', checkNotLogin);
-	app.post('/reg', function(req, res) {
-		let name = req.body.name;
-		let password = req.body.password;
-		let password_r = req.body['password-repeat'];
+	// app.post('/reg', checkNotLogin);
+	// app.post('/reg', function(req, res) {
+	// 	let name = req.body.name;
+	// 	let password = req.body.password;
+	// 	let password_r = req.body['password-repeat'];
 
-		if(!name) {
-			req.flash('error', '未輸入帳號');
-			return res.redirect('/reg');
-		}
+	// 	if(!name) {
+	// 		req.flash('error', '未輸入帳號');
+	// 		return res.redirect('/reg');
+	// 	}
 
-		if(password_r != password) {
-			req.flash('error', '兩次輸入密碼不一致');
-			return res.redirect('/reg');
-		}
-		let md5 = crypto.createHash('md5');
-		password = md5.update(req.body.password).digest('hex');
-		let newUser = new User({
-			name: req.body.name,
-			password: password
-		});
+	// 	if(password_r != password) {
+	// 		req.flash('error', '兩次輸入密碼不一致');
+	// 		return res.redirect('/reg');
+	// 	}
+	// 	let md5 = crypto.createHash('md5');
+	// 	password = md5.update(req.body.password).digest('hex');
+	// 	let newUser = new User({
+	// 		name: req.body.name,
+	// 		password: password
+	// 	});
 
-		User.get(newUser.name, function(err, user) {
-			if(err) {
-				req.flash('error', err);
-				return res.redirect('/');
-			}
+	// 	User.get(newUser.name, function(err, user) {
+	// 		if(err) {
+	// 			req.flash('error', err);
+	// 			return res.redirect('/');
+	// 		}
 
-			if(user) {
-				req.flash('error', '用戶已存在');
-				return res.redirect('/reg');
-			}
-			newUser.save(function(err, user) {
-				if(err) {
-					req.flash('error', err);
-					return res.redirect('/reg');
-				}
-				req.session.user = user;
-				req.flash('success', '註冊成功!');
-				res.redirect('/');
-			});
-		});
-	});
+	// 		if(user) {
+	// 			req.flash('error', '用戶已存在');
+	// 			return res.redirect('/reg');
+	// 		}
+	// 		newUser.save(function(err, user) {
+	// 			if(err) {
+	// 				req.flash('error', err);
+	// 				return res.redirect('/reg');
+	// 			}
+	// 			req.session.user = user;
+	// 			req.flash('success', '註冊成功!');
+	// 			res.redirect('/');
+	// 		});
+	// 	});
+	// });
 
 	app.get('/login', checkNotLogin);
 	app.get('/login', function(req, res) {
@@ -246,23 +252,9 @@ module.exports = function(app) {
 		});
 	});
 
-	app.get('/post', checkLogin);
-	app.get('/post', function(req, res) {
-		res.render('post', {
-			title: '新增公告',
-			user: req.session.user,
-			success: req.flash('success').toString(),
-			error: req.flash('error').toString()
-		});
-	});
-
-	app.post('/post', checkLogin);
-	app.post('/post', function(req, res) {
-	});
-
 	app.get('/activityCreate', checkLogin);
 	app.get('/activityCreate', function(req, res) {
-		res.render('createActivity', {
+		res.render('activityCreate', {
 			title: '新增活動',
 			user: req.session.user,
 			success: req.flash('success').toString(),
@@ -287,23 +279,49 @@ module.exports = function(app) {
 		});
 	});
 
-	app.get('/achievement', checkLogin);
-	app.get('/achievement', function(req, res) {
-		res.render('achievement', {
-			title: '成果新增',
+	app.get('/leaderCreate', checkLogin);
+	app.get('/leaderCreate', function(req, res) {
+		res.render('leaderCreate', {
+			title: '新增隊長',
 			user: req.session.user,
 			success: req.flash('success').toString(),
 			error: req.flash('error').toString()
 		});
 	});
 
-	app.post('/achievement', checkLogin);
-	app.post('/achievement', function(req, res) {
+	app.post('/leaderCreate', checkLogin);
+	app.post('/leaderCreate', function(req, res, next) {
+		let newLeader = new Leader({
+			name: req.body.name,
+			title: req.body.title,
+			nick: req.body.nick
+		})
+
+		Leader.check(newLeader.nick, function(err, nick) {
+
+			if(err) {
+				console.log(err)
+				return res.redirect('/leaderCreate');
+			} else if(nick) {
+				console.log('自然名已存在');
+				return res.redirect('/leaderCreate');
+			}
+
+			newLeader.save((err) => {
+				if(err){
+					console.log(err);
+					return res.redirect('/leaderCreate');
+				} else {
+					return res.redirect('/leader');
+				}
+			});
+		});
 	});
 
-	app.get('/createTeam', checkLogin);
-	app.get('/createTeam', function(req, res) {
-		res.render('createTeam', {
+
+	app.get('/teamCreate', checkLogin);
+	app.get('/teamCreate', function(req, res) {
+		res.render('teamCreate', {
 			title: '團隊新增',
 			user: req.session.user,
 			success: req.flash('success').toString(),
@@ -311,8 +329,8 @@ module.exports = function(app) {
 		});
 	});
 
-	app.post('/createTeam', checkLogin);
-	app.post('/createTeam', function(req, res, next) {
+	app.post('/teamCreate', checkLogin);
+	app.post('/teamCreate', function(req, res, next) {
 		let newTeam = new Team({
 			name: req.body.name,
 			purpose: req.body.purpose,
@@ -332,7 +350,7 @@ module.exports = function(app) {
 		Team.check(newTeam.name, function(err, team) {
 			if(err) {
 				console.log('1');
-				return res.redirect('/createTeam');
+				return res.redirect('/teamCreate');
 			}else if(team){
 				console.log('隊伍已存在');
 				console.log('2');
@@ -343,7 +361,7 @@ module.exports = function(app) {
 				if(err) {
 					console.log(err);
 					console.log('3');
-					return res.redirect('/createTeam');
+					return res.redirect('/teamCreate');
 					
 				} else {
 					console.log('success');
@@ -355,18 +373,65 @@ module.exports = function(app) {
 		});
 	});
 
-	app.get('/post_manage', checkLogin);
-	app.get('/post_manage', function(req, res) {
-		res.render('post_manage', {
-			title: '公告管理',
-			user: req.session.user,
-			success: req.flash('success').toString(),
-			error: req.flash('error').toString()
-		});
+	app.get('/leaderManager', checkLogin);
+	app.get('/leaderManager', function(req, res) {
+		Leader.getAll((err, leaders) => {
+			if(err) {
+				console.log(err);
+				res.redirect('/leaderManager');
+			}
+			res.render('leaderManager', {
+				title: '隊長管理',
+				user: req.session.user,
+				leaders: leaders,
+				tableOfLeader: [],
+				flag: false
+			});
+		});		
 	});
 
-	app.post('/post_manage', checkLogin);
-	app.post('/post_manage', function(req, res) {
+	app.post('/leaderManager', checkLogin);
+	app.post('/leaderManager', function(req, res) {
+		let newTeam = new Team({
+			name: req.body.name,
+			purpose: req.body.purpose,
+			introduction: req.body.introduction,
+			pro_introduction: req.body.pro_introduction,
+			leader: req.body.leader,
+			leader_title: req.body.leader_title,
+			leader_nick: req.body.leader_nick,
+			website: req.body.website,
+			connection: {
+				name: req.body.conecntName,
+				phone: req.body.phone,
+				email: req.body.email
+			}
+		})
+
+		Team.check(newTeam.name, function(err, team) {
+			if(err) {
+				console.log('1');
+				return res.redirect('/teamCreate');
+			}else if(team){
+				console.log('隊伍已存在');
+				console.log('2');
+				return res.redirect('/team');
+			}
+
+			newTeam.save(function(err) {
+				if(err) {
+					console.log(err);
+					console.log('3');
+					return res.redirect('/teamCreate');
+					
+				} else {
+					console.log('success');
+					console.log('4');
+					return res.redirect('/team');
+					next();
+				}
+			});
+		});
 	});
 
 	app.get('/activity_manage', checkLogin);
@@ -379,10 +444,6 @@ module.exports = function(app) {
 		});
 	});
 
-	app.post('/activity_manage', checkLogin);
-	app.post('/activity_manage', function(req, res) {
-	});
-
 	app.get('/achievement_manage', checkLogin);
 	app.get('/achievement_manage', function(req, res) {
 		res.render('achievement_manage', {
@@ -391,10 +452,6 @@ module.exports = function(app) {
 			success: req.flash('success').toString(),
 			error: req.flash('error').toString()
 		});
-	});
-
-	app.post('/achievement_manage', checkLogin);
-	app.post('/achievement_manage', function(req, res) {
 	});
 
 	app.get('/team_manage', checkLogin);
@@ -407,10 +464,6 @@ module.exports = function(app) {
 		});
 	});
 
-	app.post('/team_manage', checkLogin);
-	app.post('/team_manage', function(req, res) {
-	});
-
 	app.post('/uploadImg', checkLogin);
 	app.post('/uploadImg', upload.single('imgFile'), function(req, res) {
 		let info = { 
@@ -420,7 +473,12 @@ module.exports = function(app) {
 	    res.send(info); 
 	});
 
-
+	app.post('/leaderSearch', checkLogin);
+	app.post('/leaderSearch', (req, res) => {
+		Leader.get(req.body.nick, (err, leader) => {
+			res.send(leader);
+		});
+	});
 
 	function checkLogin(req, res, next) {
 		if(!req.session.user) {
