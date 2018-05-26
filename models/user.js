@@ -1,7 +1,8 @@
 "use strict"
 const mongoose = require('mongoose');
 const dbAuth = require('./db');
-const Schema = mongoose.Schema;
+const Schema = mongoose.Schema; 
+
 
 let userSchema = new mongoose.Schema({
 	name: String,

@@ -5,7 +5,8 @@ const fs = require('fs');
 
 const User = require('../models/user.js');
 const Team = require('../models/team.js');
-const actPost =require('../models/activity.js');
+const actPost = require('../models/activity.js');
+const Leader = require('../models/leader.js');
 
 var storage = multer.diskStorage({
 	destination: function (req, file, cb) {
@@ -42,6 +43,12 @@ module.exports = function(app) {
 			success: req.flash('success').toString(),
 			error: req.flash('error').toString()
 		})
+	});
+
+	app.get('/teamIntegration', function(req, res) {
+		Team.integration(function(err, result) {
+			res.send(result);
+		});
 	});
 
 	app.get('/aboutUs', function(req, res) {
@@ -305,13 +312,15 @@ module.exports = function(app) {
 	});
 
 	app.post('/createTeam', checkLogin);
-	app.post('/createTeam', function(req, res) {
+	app.post('/createTeam', function(req, res, next) {
 		let newTeam = new Team({
 			name: req.body.name,
 			purpose: req.body.purpose,
 			introduction: req.body.introduction,
 			pro_introduction: req.body.pro_introduction,
 			leader: req.body.leader,
+			leader_title: req.body.leader_title,
+			leader_nick: req.body.leader_nick,
 			website: req.body.website,
 			connection: {
 				name: req.body.conecntName,
@@ -320,20 +329,27 @@ module.exports = function(app) {
 			}
 		})
 
-		Team.get(newTeam.name, function(err, team) {
-			if(err) 
+		Team.check(newTeam.name, function(err, team) {
+			if(err) {
+				console.log('1');
 				return res.redirect('/createTeam');
-			if(team){
-				req.flash('error','隊伍已存在');
+			}else if(team){
+				console.log('隊伍已存在');
+				console.log('2');
 				return res.redirect('/team');
 			}
+
 			newTeam.save(function(err) {
 				if(err) {
-					req.flash('error', err);
+					console.log(err);
+					console.log('3');
 					return res.redirect('/createTeam');
+					
 				} else {
-					req.flash('success', '隊伍新增成功');
-					res.redirect('/team');
+					console.log('success');
+					console.log('4');
+					return res.redirect('/team');
+					next();
 				}
 			});
 		});
@@ -397,52 +413,11 @@ module.exports = function(app) {
 
 	app.post('/uploadImg', checkLogin);
 	app.post('/uploadImg', upload.single('imgFile'), function(req, res) {
-		let fname = req.file.fieldname;
-		console.log();
 		let info = { 
 	        "error": 0, 
-	        "url": 'upload/' + fname + '.' + req.file.mimetype.split('/')[1]
+	        "url": 'upload/' + req.file.fieldname + '.' + req.file.mimetype.split('/')[1]
 	    }; 
 	    res.send(info); 
-	});
-
-	app.get('/lookImg', checkLogin);
-	app.get('/lookImg', function(req, res) {
-		const path = 'public/upload/';
-
-		fs.readdir(path, function (err, files) {
-			if (err) {
-				console.log(err);
-				return;
-			}
-			let count = files.length;
-			let filelist = {};
-			let results = {};
-			results['moveup_dir_path'] = 'public';
-			results['current_dir_path'] = path;
-			results['current_url'] = path;
-			results['total_count'] = count;
-			files.forEach(function (filename) {
-				fs.readFile(path + '/' + filename, function (err, data) {
-					if (err) {
-						console.log(err);
-						return;
-					}
-
-					filelist[filename] = data;
-					count--;
-
-					if (count <= 0) {
-						console.log('finish');
-						results['file_list'] = filelist;
-						let json = JSON.stringify(results);
-
-						res.send(JSON.parse(json));
-					}
-				});
-			});
-		});
-
 	});
 
 

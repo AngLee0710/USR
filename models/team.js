@@ -2,6 +2,7 @@
 const mongoose = require('mongoose');
 const dbAuth = require('./db');
 const Schema = mongoose.Schema;
+const Leader = require('./leader.js')
 
 let teamSchema = new Schema({
 	name: String,
@@ -27,6 +28,8 @@ let teamUserModel = dbAuth.user.model('Team', teamSchema);
 function Team(team) {
 	this.name = team.name;
 	this.leader = team.leader;
+	this.leader_title = team.leader_title;
+	this.leader_nick = team.leader_nick;
 	this.purpose = team.purpose;
 	this.introduction = team.introduction;
 	this.pro_introduction = team.pro_introduction;
@@ -42,12 +45,15 @@ Team.prototype.save = function(callback) {
 
 	if(!(this.name && this.leader && this.purpose && this.introduction &&
 	 this.pro_introduction && this.website && this.connection.name &&
-	 this.connection.email && this.connection.phone)) {
+	 this.connection.email && this.connection.phone && this.leader_title &&
+	 this.leader_nick)) {
 		return callback('資料不齊全');
 	}
 	let team = {
 		name: this.name,
 		leader: this.leader,
+		leader_title: this.leader_title,
+		leader_nick: this.leader_nick,
 		purpose: this.purpose,
 		introduction: this.introduction,
 		pro_introduction: this.pro_introduction,
@@ -61,13 +67,50 @@ Team.prototype.save = function(callback) {
 		pv: 0
 	};
 
+
 	let newTeam = new teamOwnerModel(team);
 
-	newTeam.save(function(err, user) {
+	Leader.check(this.leader_nick, function(err, nick) {
+		console.log(nick);
+		if(nick == null) {
+			let newLeader = new Leader({
+				name: team.leader,
+				title: team.leader_title,
+				nick: team.leader_nick,
+				teams:[{name: team.name}]
+			})
+			console.log(newLeader)
+
+			newLeader.save((err) => {
+				if(err){
+					console.log(err);
+					return callback(err);
+				}
+			});
+
+			newTeam.save(function(err, team) {
+				if(err) {
+					return callback(err);
+				}
+				return callback(null, team);
+			});
+		}else{
+			newTeam.save(function(err, team) {
+				if(err) {
+					return callback(err);
+				}
+				return callback(null, team);
+			});
+		}
+	});
+}
+
+Team.check = function(name,callback) {
+	teamUserModel.findOne({name: name}, function(err, team) {
 		if(err) {
 			return callback(err);
 		}
-		callback(null, user);
+		callback(null, team);
 	});
 }
 
@@ -76,7 +119,7 @@ Team.get = function(name, callback) {
 		if(err) {
 			return callback(err);
 		}
-		teamUserModel.update({name:name}, {$inc: {pv: 1}}, function(err) {
+		teamOwner.Model.update({name:name}, {$inc: {pv: 1}}, function(err) {
 			if(err) {
 				return callback(err);
 			}
@@ -86,7 +129,7 @@ Team.get = function(name, callback) {
 }
 
 Team.getLimit = function(name, page, limit, callback) {
-	teamUserModel.count({}, function(err, total) {
+		teamUserModel.count({}, function(err, total) {
 		if(err){
 			return callback(err);
 		}
@@ -98,5 +141,33 @@ Team.getLimit = function(name, page, limit, callback) {
 		});
 	});
 }
+
+// Team.integration = function(callback) {
+// 	teamUserModel.distinct('leader_nick', function(err, result) {
+// 		if(err)
+// 			return callback(err);
+
+// 		let leader = result;
+// 		let leaderTeam = {};
+// 		leader.forEach(function(leader, Leaderindex, LeaderArr) {
+// 			leaderTeam[leader] = new Array();
+// 			teamUserModel.find({leader: leader}, {_id:0 ,name: 1}, function(err, teamsArr) {
+// 				if(err)
+// 					return callback(err);
+
+// 				let teams = teamsArr;
+// 				teams.forEach((team, index, arr) => {
+// 					leaderTeam[leader].push(team.name);
+// 					if(index == (arr.length - 1) && Leaderindex == (LeaderArr.length - 1)){
+// 						setTimeout(() => {
+// 							return callback(null, leaderTeam);
+// 						}, 100);
+// 					}
+// 				});
+// 			});
+// 		});
+// 	});
+// }
+
 
 module.exports = Team;
