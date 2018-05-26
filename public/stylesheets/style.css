@@ -351,3 +351,12 @@ ul.drop-down-menu li:hover>ul {
 h4 > img {
   width: 100%;
 }
+.padding5{
+    padding-top: 5px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+    padding-left: 5px;
+}
+.middle{
+  vertical-align:middle;
+}
