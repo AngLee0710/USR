@@ -71,6 +71,11 @@
             <%} else {%>
             <a class="btn btn-sm btn-outline-secondary" href="/logout">登出</a>
             <%} %>
+            <% if(error) { %>
+                <%= error %>
+            <%} else { %>
+                <%= success %>
+            <% } %> 
           </div>
         </div>
       </header>

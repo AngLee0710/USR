@@ -65,6 +65,43 @@ actPost.get = function(title, day, callback) {
 	});
 }
 
+actPost.getAll = function(callback) {
+	actPostUserModel.find({}).sort('-time').exec(function(err, actPosts) {
+		if(err) {
+			return callback(err);
+		}
+		return callback(null, actPosts);
+	});
+}
+
+actPost.edit = function(actPost, callback) {
+	let query = {
+		title: actPost.otitle,
+		time: actPost.time
+	}
+
+	let update = {
+		title: actPost.title,
+		place: actPost.place,
+		content: actPost.content
+	}
+	actPostOwnerModel.update(query, { $set: update }, (err, doc) => {
+		if(err) {
+			return callback(err);
+		}
+		callback(null, doc);
+	});
+}
+
+actPost.remove = function(post, callback) {
+	actPostOwnerModel.remove(post, (err) => {
+		if(err) {
+			return callback(err);
+		}
+		callback(null);
+	})
+}
+
 actPost.getLimit = function(title, page, limit, callback) {
 	actPostUserModel.count({}, function(err, total) {
 		if(err){

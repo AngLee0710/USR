@@ -1,0 +1,36 @@
+<%- include header %>
+<%- include nav2 %>
+<br />
+<div class="row">
+	<div class="col-3">
+		<%- include admin_c_dropdown %>
+	</div>
+	<div class="col-8">
+		<table class="table" style="font-size: 24px; font-family:Microsoft JhengHei;">
+			<thead>
+				<tr>
+					<th>活動名稱</th>
+					<th style="text-align: center;">功能按鈕</th>
+				</tr>
+			</thead>
+			<tbody>
+				<% actPosts.forEach((actPost, index) => {%>
+					<tr>
+						<th><%= actPost.title %></th>
+						<th style="text-align: center;">
+							<input class="btn btn-danger btn-lg" type="button" value="查看" 
+							onclick="location.href='/activity/<%= actPost.title %>/<%= actPost.time %>'">
+
+							<input class="btn btn-warning btn-lg" type="button" value="修改" 
+							onclick="location.href='/activity/edit/<%= actPost.title %>/<%= actPost.time %>'">
+
+							<input class="btn btn-primary btn-lg" type="button" value="刪除" 
+							onclick="location.href='/activity/delete/<%= actPost.title %>/<%= actPost.time %>'">
+						</th>
+					</tr>
+				<% }) %>
+			</tbody>
+		</table>
+		<%- include paging %>
+	</div>
+</div>

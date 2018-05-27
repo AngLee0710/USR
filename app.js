@@ -12,6 +12,7 @@ const flash = require('connect-flash');
 const mongoose = require('mongoose');
 
 const routes = require('./routes/index');
+const needAuth = require('./routes/needAuth')
 const settings = require('./settings');
 const app = express();
 
@@ -41,6 +42,7 @@ app.use(session({
 }));
 
 routes(app);
+needAuth(app);
 
 app.listen(app.get('port'), function() {
 	console.log('Express server listening on port ' + app.get('port'));

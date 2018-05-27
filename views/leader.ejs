@@ -1,13 +1,71 @@
 <%- include header %>
 <%- include nav2 %>
-<div class="col-4">
-	<% if(leader.teams.length == 0) {%>
-		<div>尚未擁有團隊</div>
-		<div><a href="/teamCreate">新增團隊</a></div>
-	<% }else {%>
-		<% leader.teams.forEach((team, index) => {%>
-			<a href="/team/<%= team,name %>"><%= team.name %></a>
-		<% }) %>
-	<% } %>
+<br>
+
+<div class="row">
+	<div class="col-3">
+		<% if(user) {%>
+			<%- include admin_c_dropdown %>
+		<% } %>
+	</div>
+	<div class="col-8">
+		<div class="row">
+			<div class="col-4">
+				<div class="card flex-md-row mb-4 box-shadow">			
+					<div class="card-body flex-column align-items-start padding5">
+						<img src="<%= leader.headImg %>" height="100%" width="100%">
+					</div>	
+				</div>		
+			</div>
+			<div class="col-8">
+				<div class="card flex-md-row mb-4 box-shadow middle">			
+					<div class="intro padding5 middle">
+						<h4>
+							姓名: <%= leader.name %><br><br>
+							自然名: <%= leader.nick %><br><br>
+							職稱: <%= leader.title %><br><br>
+							電話: <%= leader.phone %><br><br>
+							信箱: <%= leader.email %><br><br>
+						</h4>
+					</div>	
+				</div>
+				<div style="background-color: #FFEE99;" class="card flex-md-row mb-4 box-shadow middle">			
+					<div class="intro padding5 middle">
+						<h4>
+							沒有被教授當的學生，只有不用功的學生。
+						</h4>
+					</div>	
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<table class="table" style="font-size: 24px; font-family:Microsoft JhengHei;">
+				<thead>
+					<tr>
+						<th>團隊名稱</th>
+						<th style="text-align: center;">功能</th>
+					</tr>
+				</thead>
+				<tbody>
+					<% leader.teams.forEach((team, index) => { %>
+						<tr>
+							<th><%= team.name %></th>
+							<% if(user) { %>
+							<th style="text-align: center;">
+								<input class="btn btn-danger btn-lg" type="button" value="查看" onclick="location.href='/team/<%= team.name %>'">
+								<input class="btn btn-warning btn-lg" type="button" value="修改" onclick="location.href='/team/edit/<%= team.name %>'">
+							</th>
+							<% }else {%>
+							<th style="text-align: center;">
+								<input class="btn btn-danger btn-lg" type="button" value="查看" onclick="location.href='/team/<%= team.name %>'">
+							</th>
+							<% } %>
+						</tr>
+					<% }) %>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="col-2"></div>
 </div>
 <%- include footer %>

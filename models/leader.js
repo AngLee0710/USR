@@ -8,6 +8,9 @@ let leaderSchema = new Schema({
 	name: String,
 	nick: String,
 	title: String,
+	headImg: String,
+	email: String,
+	phone: String,
 	teams: [{name: String}],
 }, {
 	collection: 'leaders'
@@ -20,7 +23,6 @@ function Leader(leader) {
 	this.name = leader.name;
 	this.nick = leader.nick;
 	this.title = leader.title;
-	this.team = leader.teams
 }
 
 Leader.prototype.save = function(callback) {
@@ -32,7 +34,6 @@ Leader.prototype.save = function(callback) {
 		name: this.name,
 		nick: this.nick,
 		title: this.title,
-		teams: this.team
 	};
 
 	let newLeader = new leaderOwnerModel(leader);
@@ -72,6 +73,27 @@ Leader.get = function(nick, callback) {
 	});
 }
 
+Leader.edit = function(leader, callback) {
+	let query = {
+		nick: leader.nick
+	}
+
+	let update = {
+		name: leader.name,
+		title: leader.title,
+		headImg: leader.headImg,
+		phone: leader.phone,
+		email: leader.email
+	}
+
+	leaderOwnerModel.update(query, { $set: update } , (err, doc) => {
+		if(err) {
+			return callback(err);
+		}
+		callback(null, doc);
+	})
+}
+
 Leader.pushTeam = function(nick, team, callback) {
 	let teams = {
 		name: team
@@ -79,7 +101,6 @@ Leader.pushTeam = function(nick, team, callback) {
 
 	leaderOwnerModel.update({nick: nick}, {$push: {teams: teams}}, (err)  => {
 		if(err) {
-			console.log(err)
 			return callback(err);
 		}
 	});
