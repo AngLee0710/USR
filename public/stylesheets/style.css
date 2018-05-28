@@ -186,6 +186,7 @@ dd {
   padding: 0;
   list-style: none
 }
+/*
 div.main {
   background-color: #e33535;
   color: #fff;
@@ -222,7 +223,7 @@ div.sub {
   -webkit-transition: opacity 1.5s;
   transition: opacity 1.5s;
   oevrflow: auto
-}
+}*/
 
 dl
 {
@@ -264,6 +265,12 @@ dl.dropdown1 a{
 
 
 dl.dropdown:hover{
+  background-color: #aaa;
+  height: auto;
+  -webkit-transition: opacity 0.5s;
+  transition: opacity 0.5s
+}
+dl.dropdown1:hover{
   background-color: #aaa;
   height: auto;
   -webkit-transition: opacity 0.5s;
@@ -384,3 +391,43 @@ h4 > img {
     left: 50%;
     margin-left: -250px;
 }
+
+#menu{
+  margin: 0;
+  padding:0;
+  margin-botton:0;
+  list-style: none
+  }
+        .main{
+            background-color:#e33535;
+            color:white;
+            font-family:微軟正黑體;
+            font-weight:bold;
+            font-size:20px;
+            cursor:pointer;
+            text-align:center;
+            height:auto;
+            width: auto;
+        }
+        .main:hover{
+            background-color:#4d4949;
+        }
+        .sub{
+            cursor:pointer;
+            background-color:#4d4949;
+            color:white;
+            font-family:微軟正黑體;
+            text-align:center;
+            font-weight:bold;
+            height: auto;
+        }
+        .sub li{
+            list-style-type:none;
+            line-height:25px;
+        }
+        .sub ul li a{
+          color:white;
+          text-align:center;
+          font-size:20px;
+        }
+        

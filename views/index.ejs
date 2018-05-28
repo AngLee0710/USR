@@ -1,7 +1,7 @@
 <%- include header %>
     <%- include nav2 %>
         <br>
-        <div class="col-12"">
+        <div class="col-12">
             <div id="myCarousel" class="carousel slide" data-ride="carousel">
                 <!-- Indicators -->
                 <ol class="carousel-indicators">
@@ -18,7 +18,7 @@
                     <% }else{ %>
                     <div class="item">
                     <% } %>     
-                        <img src="<%= post.imgArr[0].url %>" alt="image" style="width:100%;">
+                        <img src="<%= post.imgArr[0].url %>" alt="image" style="width:100%;height:700px; object-fit: cover;">
                         <div class="carousel-caption">
                             <h3><% post.title %></h3>
 <!--                             <p>LA is always so much fun!</p> -->

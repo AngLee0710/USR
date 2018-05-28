@@ -3,10 +3,10 @@
 <% posts.forEach(function(post, index) {%>
 <div class="h-30">
 	<p>
-		<h2>
+		<h3>
 			<a href="/activity/<%= post.title %>/<%= post.time %>"><%- post.title %></a>
-		</h2>
-		<h5><%= new Date(post.time).toLocaleDateString() %></h5>
+		</h3>
+		<h1><%= new Date(post.time).toLocaleDateString() %></h1>
 		<h4>
 			<%- post.content %>
 		</h4>
