@@ -9,6 +9,7 @@ let actPostSchema = new mongoose.Schema({
 	content: String,
 	place: String,
 	teams: [{name: String, leader: String}],
+	imgArr: [{url: String}],
 	pv: Number
 }, {
 	collection: 'actPosts'
@@ -18,10 +19,11 @@ let actPostOwnerModel = dbAuth.owner.model('actPost', actPostSchema);
 let actPostUserModel = dbAuth.user.model('actPost', actPostSchema);
 
 
-function actPost(title, content, place) {
+function actPost(title, content, place, imgArr) {
 	this.title = title;
 	this.content = content;
 	this.place = place;
+	this.imgArr = imgArr; 
 }
 
 actPost.prototype.save = function(callback) {
@@ -38,6 +40,7 @@ actPost.prototype.save = function(callback) {
 		content: this.content,
 		place: this.place,
 		teams: {},
+		imgArr: this.imgArr,
 		pv: 1
 	};
 

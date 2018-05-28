@@ -2,6 +2,7 @@
 const crypto = require('crypto');
 const multer  = require('multer');
 const fs = require('fs');
+const cheerio = require('cheerio');
 
 const User = require('../models/user.js');
 const Team = require('../models/team.js');
@@ -13,7 +14,7 @@ const storage = multer.diskStorage({
 		cb(null, './public/upload')
 	},
 	filename: (req, file, cb) => {
-		cb(null, file.fieldname + '.' + file.mimetype.split('/')[1]);
+		cb(null, file.fieldname + '-' + new Date().getTime() + '.' + file.mimetype.split('/')[1]);
 	}
 });
 
@@ -78,14 +79,27 @@ module.exports =  (app) => {
 
 	app.post('/activityCreate', checkLogin);
 	app.post('/activityCreate', (req, res, next) => {
+		let $ = cheerio.load(req.body.content);
+		let imgArray = [];
+
+		for(let i = 0 ; i < $('img').length ; i++) {
+			imgArray[i] = {
+				url: $('img')[i].attribs.src
+			}
+		}
+
+		console.log(imgArray);
+
 		let activityPost = new actPost(
 			req.body.title,
 			req.body.content,
-			req.body.place
+			req.body.place,
+			imgArray
 		);
+
 		activityPost.save((err) => {
 			if(err) {
-				req.flash('error', err);
+				console.log(err);
 				return res.redirect('/activityCreate');
 			} else {
 				return res.redirect('/activity');
@@ -344,7 +358,7 @@ module.exports =  (app) => {
 	app.post('/uploadImg', upload.single('imgFile'),  (req, res) => {
 		let info = { 
 	        "error": 0, 
-	        "url": 'upload/' + req.file.fieldname + '.' + req.file.mimetype.split('/')[1]
+	        "url": 'upload/' + req.file.filename
 	    }; 
 	    res.send(info); 
 	});
