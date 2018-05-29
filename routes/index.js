@@ -45,6 +45,7 @@ module.exports =  (app) => {
 	app.get('/activity', (req, res) => {
 		let page = req.query.p ? parseInt(req.query.p) : 1;
 
+
 		actPost.getLimit(null, page, 6, (err, posts, total) => {
 			if(err) 
 				posts = [];

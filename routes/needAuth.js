@@ -180,6 +180,7 @@ module.exports =  (app) => {
 		actPost.remove(post, (err) => {
 			if(err){
 				req.flash('error', err);
+				console.log(err);
 				return res.redirect('/activityManage');
 			} else {
 				req.flash('success', '刪除成功');

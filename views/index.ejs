@@ -5,15 +5,23 @@
             <div id="myCarousel" class="carousel slide" data-ride="carousel">
                 <!-- Indicators -->
                 <ol class="carousel-indicators">
-                    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                    <li data-target="#myCarousel" data-slide-to="1"></li>
-                    <li data-target="#myCarousel" data-slide-to="2"></li>
+                    <% var j = 0 %>
+                    <% posts.forEach((post, index) => { %>
+                    <% if(post.imgArr.length > 0) { %>
+                    <% if(j == 0) {%>
+                    <li data-target="#myCarousel" data-slide-to="<% j %>" class="active"></li>
+                    <% j++ %>
+                    <% }else{ %>
+                    <li data-target="#myCarousel" data-slide-to="<% j %>"></li>
+                    <% }}}) %>
                 </ol>
                 <!-- Wrapper for slides -->
                 <div class="carousel-inner">
+                    <% var i = 0 %>
                     <% posts.forEach((post, index) => { %>
                     <% if(post.imgArr.length > 0) { %>
-                    <% if(index == 0) {%>
+                    <% if(i == 0) {%>
+                    <% i++ %>
                     <div class="item active">
                     <% }else{ %>
                     <div class="item">
@@ -57,7 +65,7 @@
                                 </h4>
                                 <br>
                                 <div style="text-align: right;">
-                                    <a href="/activity/<%= post.title %>/<%= post.time %>">Continue reading</a>
+                                    <a href="/activity/<%= encodeURIComponent(post.title) %>/<%= post.time %>">Continue reading</a>
                                 </div>
                                 
                             </div>
