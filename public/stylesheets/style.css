@@ -439,7 +439,7 @@ display: -webkit-box;
 line-height: auto; 
 height: 400px; 
 }
-.img_width p {
+.img_width p img{
   height: 200px;
   width: 200px;
   object-fit: cover;
