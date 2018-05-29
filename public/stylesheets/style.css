@@ -430,4 +430,17 @@ h4 > img {
           text-align:center;
           font-size:20px;
         }
-        
+.multi_ellipsis {
+display: block; 
+overflow: hidden;
+display: -webkit-box;
+-webkit-box-orient: vertical;
+-webkit-line-clamp: 3; 
+line-height: auto; 
+height: 400px; 
+}
+.img_width p {
+  height: 200px;
+  width: 200px;
+  object-fit: cover;
+}

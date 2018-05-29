@@ -52,15 +52,16 @@
                 <div class="card flex-md-row mb-4 box-shadow">
                     <div class="card-body d-flex flex-column align-items-start">
                         <% posts.forEach(function(post, index) {%>
-                            <div style="width: 100%">
+                            <div class="multi_ellipsis" style="width: 100%">
+
                                 <strong class="d-inline-block mb-2 text-primary">最新消息</strong>
                                 <h2 class="mb-0">
-                                  <a class="text-dark" href="#"><%= post.title %></a>
+                                  <a class="text-dark" href="/activity/<%= post.title %>/<%= post.time %>"><%= post.title %></a>
                                 </h2>
                                 <div class="mb-1 text-muted">
                                     <%= new Date(post.time).toLocaleDateString()  %>
                                 </div>
-                                <h4 class="card-text mb-auto">
+                                <h4 class="card-text mb-auto img_width" >
                                     <%- post.content %>
                                 </h4>
                                 <br>
