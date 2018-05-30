@@ -441,6 +441,6 @@ height: 400px;
 }
 .img_width p img{
   height: 200px;
-  width: 200px;
+  width: 100%;
   object-fit: cover;
 }
