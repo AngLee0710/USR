@@ -1,17 +1,24 @@
 <%- include header %>
 <%- include nav2 %>
-<% posts.forEach(function(post, index) {%>
-<div class="h-30">
-	<p>
-		<h3>
-			<a href="/activity/<%= post.title %>/<%= post.time %>"><%- post.title %></a>
-		</h3>
-		<h1><%= new Date(post.time).toLocaleDateString() %></h1>
-		<h4>
-			<%- post.content %>
-		</h4>
-	</p>
+<br>
+<div class="row mb-2">
+	<div class="col-md-12">
+		<% posts.forEach(function(post, index) {%>
+		<div class="h-30">
+			<p>
+				<div class="col-md-12 card-body d-flex flex-column align-items-start card flex-md-row mb-4 box-shadow">
+					<div class="col-md-9">
+						<a href="/activity/<%= post.title %>/<%= post.time %>"><%- post.title %></a>
+						<%= new Date(post.time).toLocaleDateString() %>
+					</div>
+					<div class="col-md-3">
+						<div class="Transition_bar">詳細資訊</div>
+					</div>
+				</div>			
+			</p>
+		</div>
+		<% }) %>
+	</div>
 </div>
-<% }) %>
 <%- include paging %>
 <%- include footer %>

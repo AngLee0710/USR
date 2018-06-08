@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>農威虎震_
+    <title>農威虎震
         <%= title %>
     </title>
     <!-- Bootstrap core CSS -->
@@ -17,6 +17,10 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script charset="utf-8" src="/kindeditor/kindeditor-all-min.js"></script>
     <script charset="utf-8" src="/kindeditor/lang/zh-TW.js"></script>
+    
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <script>
     (function() {
         var editor;
@@ -49,33 +53,17 @@
     <link href="/stylesheets/style.css" rel="stylesheet">
 </head>
 
-<body>
+<body style="background-color: #DCDCDC">
+
+  <img src="/images/TEST.png"alt="title" style="width: 100%;height: 100%; background-size: cover;display:block; margin:auto;">
     <div class="container">
         <header class="blog-header py-3">
             <div class="row flex-nowrap justify-content-between align-items-center">
-                <div class="col-6 pt-1">
-                    <a href="/">
-            <img src="/images/title.png" alt="title">
-            </a>
-                    <h5>National Formosa University Social Responsibility</h5>
-          </div>
-          <div class="col-2 text-center">
-            <a class="blog-header-logo text-dark" href="#"></a>
-          </div>
+                
+          
           <div class="col-4 d-flex justify-content-end align-items-center">
-            <a class="text-muted" href="#">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-3"><circle cx="10.5" cy="10.5" r="7.5"></circle><line x1="21" y1="21" x2="15.8" y2="15.8"></line></svg>
-            </a>
-            <% if(!user) {%>
-            <a class="btn btn-sm btn-outline-secondary" href="/login">登入</a>
-            <%} else {%>
-            <a class="btn btn-sm btn-outline-secondary" href="/logout">登出</a>
-            <%} %>
-            <% if(error) { %>
-                <%= error %>
-            <%} else { %>
-                <%= success %>
-            <% } %> 
+            
+            
           </div>
         </div>
       </header>

@@ -3854,10 +3854,10 @@ select[multiple].input-group-sm>.form-control, select[multiple].input-group-sm>.
 	border-color: #e7e7e7
 }
 .navbar-default .navbar-brand {
-	color: #777
+	color: black;
 }
 .navbar-default .navbar-brand:focus, .navbar-default .navbar-brand:hover {
-	color: #5e5e5e;
+	color: black;
 	background-color: transparent
 }
 .navbar-default .navbar-text {
