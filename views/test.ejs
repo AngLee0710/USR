@@ -1,0 +1,49 @@
+<% include header %>
+<div class="row" id="app">
+    <div class="col-12" id="managePage">
+    <table class="table" style="font-size: 24px; font-family:Microsoft JhengHei;">
+        <thead>
+            <tr>
+                <th>選取</th>
+                <th>活動名稱</th>
+                <th>貼文日期</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% var i = 0 %>
+            <% actPosts.forEach((actPost, index) => {%>
+                <tr>
+                    <th><input id="select<%= i %>" class="form-check-input" type="checkbox" value="<%= actPost._id %>"></th>
+                    <th>
+                        <a href="activity/<%= actPost._id %>">
+                            <%= actPost.title %>
+                        </a>
+                    </th>
+                    <th><%= new Date(actPost.time).toLocaleDateString() %></th>
+                </tr>
+                <% i++ %>
+            <% }) %>
+        </tbody>
+    </table>
+    <%- include paging %>
+</div>
+</div>
+
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            message: 'Hello Vue!'
+        },
+        components: {
+            'menu-section': {
+                template: '<ul><li v-for="item in menuItems">{{ item.title }}</li></ul>',
+                data: ()=> {
+                    return {
+                        menuItems: <%- actPost %>
+                    }
+                }
+            }
+        }
+    });
+</script>

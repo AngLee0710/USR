@@ -1,9 +1,29 @@
 <br />
-<div>
-<% if (!isFirstPage) {%>
-<span class="prepage"><a title="上一頁" href="?p=<%= page-1 %>">上一頁</a></span>
-<% } %>
-<% if (!isLastPage) { %>
-<span class="nextpage"><a title="下一頁" href="?p=<%= page+1 %>">下一頁</a></span>
+<div class="row">
+<% if((!isFirstPage) && (!isLastPage)) {%>
+    <div class="col-6" style="text-align: left;">
+        <a title="上一頁" href="?p=<%= page-1 %>">
+            <button class="btn btn-dark">上一頁</button>
+        </a>
+    </div>
+    <div class="col-6" style="text-align: right;">
+        <a title="下一頁" href="?p=<%= page+1 %>">
+            <button class="btn btn-dark">下一頁</button>
+        </a>
+    </div>
+<% }else if(!isLastPage)  {%>
+    <div class="col-6"></div>
+    <div class="col-6" style="text-align: right;">
+        <a title="下一頁" href="?p=<%= page+1 %>">
+            <button class="btn btn-dark">下一頁</button>
+        </a>
+    </div>
+<% } else if(!isFirstPage) {%>
+    <div class="col-6" style="text-align: left;">
+        <a title="上一頁" href="?p=<%= page-1 %>">
+            <button class="btn btn-dark">上一頁</button>
+        </a> 
+    </div>
+    <div class="col-6"></div>
 <% } %>
 </div>

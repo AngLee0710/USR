@@ -5,10 +5,17 @@ const Schema = mongoose.Schema;
 
 let actPostSchema = new mongoose.Schema({
 	title: String,
+	target: String,
+	sex: String,
+	date: String,
+	fee: Number,
 	time: Number,
+	limit: Number,
+	url: String,
+	apply: String,
 	content: String,
 	place: String,
-	teams: [{name: String, leader: String}],
+	teams: String,
 	imgArr: [{url: String}],
 	pv: Number
 }, {
@@ -19,10 +26,18 @@ let actPostOwnerModel = dbAuth.owner.model('actPost', actPostSchema);
 let actPostUserModel = dbAuth.user.model('actPost', actPostSchema);
 
 
-function actPost(title, content, place, imgArr) {
+function actPost(title, content, place, target, sex, date, limit, url, apply, team, fee, imgArr) {
 	this.title = title;
 	this.content = content;
+	this.fee = fee;
 	this.place = place;
+	this.target = target;
+	this.sex = sex;
+	this.date = date;
+	this.limit = limit;
+	this.url = url;
+	this.apply = apply;
+	this.team = team;
 	this.imgArr = imgArr; 
 }
 
@@ -39,7 +54,14 @@ actPost.prototype.save = function(callback) {
 		time: time,
 		content: this.content,
 		place: this.place,
-		teams: {},
+		fee: this.fee,
+		date: this.date,
+		teams: this.team,
+		target: this.target,
+		sex: this.sex,
+		limit: this.limit,
+		url: this.url,
+		apply: this.apply,
 		imgArr: this.imgArr,
 		pv: 1
 	};
@@ -68,6 +90,15 @@ actPost.get = function(title, day, callback) {
 	});
 }
 
+actPost.getById = function(id, callback) {
+	actPostUserModel.findOne({'_id': id}, function(err, actPost) {
+		if(err) {
+			return callback(err);
+		}
+		callback(null, actPost);
+	});
+}
+
 actPost.getAll = function(callback) {
 	actPostUserModel.find({}).sort('-time').exec(function(err, actPosts) {
 		if(err) {
@@ -77,18 +108,9 @@ actPost.getAll = function(callback) {
 	});
 }
 
-actPost.edit = function(actPost, callback) {
-	let query = {
-		title: actPost.otitle,
-		time: actPost.time
-	}
-
-	let update = {
-		title: actPost.title,
-		place: actPost.place,
-		content: actPost.content
-	}
-	actPostOwnerModel.update(query, { $set: update }, (err, doc) => {
+actPost.edit = function(id, actPost, callback) {
+	console.log(actPost);
+	actPostOwnerModel.update(id, { $set: actPost }, (err, doc) => {
 		if(err) {
 			return callback(err);
 		}
@@ -96,27 +118,42 @@ actPost.edit = function(actPost, callback) {
 	});
 }
 
-actPost.remove = function(post, callback) {
-	actPostOwnerModel.remove(post, (err) => {
-		if(err) {
-			return callback(err);
-		}
-		callback(null);
-	})
-}
-
-actPost.getLimit = function(title, page, limit, callback) {
-	actPostUserModel.count({}, function(err, total) {
+actPost.remove = function(id, callback) {
+	actPostOwnerModel.deleteOne({_id: id}, (err, doc) => {
 		if(err){
 			return callback(err);
 		}
-		actPostUserModel.find({}, null, {skip: (page -1) * limit}).sort('-time').limit(limit).exec(function(err, actPosts) {
+		return callback(null);
+	});
+}
+
+actPost.getLimit = function(title, page, limit, callback) {
+	if(limit == 'max'){
+		actPostUserModel.count({}, function(err, total) {
 			if(err){
 				return callback(err);
 			}
-			return callback(null, actPosts, total);
+			actPostUserModel.find({}, null, {skip: (page -1) * limit}).sort('-time').exec(function(err, actPosts) {
+				if(err){
+					return callback(err);
+				}
+				return callback(null, actPosts, total);
+			});
 		});
-	});
+	}else{
+		actPostUserModel.count({}, function(err, total) {
+			if(err){
+				return callback(err);
+			}
+			actPostUserModel.find({}, null, {skip: (page -1) * limit}).sort('-time').limit(limit).exec(function(err, actPosts) {
+				if(err){
+					return callback(err);
+				}
+				return callback(null, actPosts, total);
+			});
+		});
+	}
+	
 };
 
 module.exports = actPost;
