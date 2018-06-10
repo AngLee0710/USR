@@ -6,8 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
+<<<<<<< HEAD
     <title>農威虎震
         <%= title %>
+=======
+    <title>大學社會責任平台
+>>>>>>> f3a5f99d62ff0655bf9bd71680c1aa195cfdb3c9
     </title>
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -17,17 +21,25 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script charset="utf-8" src="/kindeditor/kindeditor-all-min.js"></script>
     <script charset="utf-8" src="/kindeditor/lang/zh-TW.js"></script>
+<<<<<<< HEAD
     
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+=======
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+>>>>>>> f3a5f99d62ff0655bf9bd71680c1aa195cfdb3c9
     <script>
+        var Keditor;
     (function() {
         var editor;
         KindEditor.ready(function(K) {
             editor = K.create('textarea', {
                 uploadJson: '/uploadImg',
                 width : '100%',
+                afterBlur:function(){  
+                    this.sync();  
+                },
                 items: [
                     'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'blod', 'italic',
                     'underline', 'removeformat', 'justifyleft', 'justifycenter',
@@ -35,6 +47,7 @@
                     'insertorderedlist', 'insertunorderedlist', '|', 'emoticons', 'image', 'link'
                 ]
             });
+        Keditor = editor;
         });
     })();
     </script>
@@ -57,13 +70,35 @@
 
   <img src="/images/TEST.png"alt="title" style="width: 100%;height: 100%; background-size: cover;display:block; margin:auto;">
     <div class="container">
-        <header class="blog-header py-3">
+        <header class="blog-header">
             <div class="row flex-nowrap justify-content-between align-items-center">
+<<<<<<< HEAD
                 
           
           <div class="col-4 d-flex justify-content-end align-items-center">
             
             
+=======
+                <div class="col-6 pt-1">
+                    <a href="/">
+            <img height="60" src="/images/title1.png" alt="title">
+            </a>
+                    <h5>National Formosa University Social Responsibility</h5>
+          </div>
+          <div class="col-2 text-center">
+            <a class="blog-header-logo text-dark" href="#"></a>
+          </div>
+          <div class="col-4 d-flex justify-content-end align-items-center">
+            <% if(user) {%>
+            <a class="btn btn-sm btn-outline-secondary" href="/logout">登出</a>
+            <% } %>
+            <% if(error) { %>
+                <%= error %>
+            <%} else { %>
+                <%= success %>
+            <% } %> 
+>>>>>>> f3a5f99d62ff0655bf9bd71680c1aa195cfdb3c9
           </div>
         </div>
+        <%- include nav2 %>
       </header>

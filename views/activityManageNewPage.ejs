@@ -1,0 +1,53 @@
+<div class="col-12" id="newPage" style="display: none;">
+    <form class="col-12" method="post" action="/activityCreate">
+        <div id="formDIV" class="row">
+            <div class="col-12">
+                標題:<input class="form-control myInput" type="text" name="title">
+            </div>
+            <div class="col-6">
+                活動地點:<input class="form-control myInput" type="text" name="place">
+            </div>
+            <div class="col-6">
+                活動對象:<input class="form-control myInput" type="text" name="target">
+            </div>
+            <div class="col-6">
+                活動性別限制:
+                <select class="form-control form-control-lg" name="sex">
+                    <option value="Male">男性</option>
+                    <option value="Female">女性</option>
+                    <option value="All">不限</option>
+                </select>
+            </div>
+            <div class="col-6">
+                活動時間:<input class="form-control myInput form-control-lg" type="date" name="date">
+            </div>
+            <div class="col-6">
+                報名人數上限:<input class="form-control myInput" type="number" name="limit">
+            </div>
+            <div class="col-6">
+                相關連結:<input class="form-control myInput" type="text" name="url">
+            </div>
+            <div class="col-6">
+                報名費用:<input class="form-control myInput" type="number" name="fee" value="0">
+                報名頁面:<input class="form-control myInput" type="text" name="apply">
+            </div>
+            <div class="col-6">
+                主辨隊伍: 
+                <select multiple class="form-control" name="team">
+                    <% teams.forEach((team, index) => { %>
+                        <option value="<%= team.name %>"><%= team.name %></option>
+                    <% }) %>
+                </select>
+            </div>
+            <div class="col-12">
+                活動內容:
+                <textarea class="form-control myText" id="editor_id" name="content" width="100%">
+                </textarea>
+            </div>
+            <div class="col-8"></div>
+            <div class="col-4">
+                <input class="btn btn-dark btn-block" type="submit" name="發佈" />
+            </div>
+        </div>
+    </form>
+</div>

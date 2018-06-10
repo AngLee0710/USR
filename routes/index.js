@@ -24,6 +24,21 @@ module.exports =  (app) => {
 		});
 	});
 
+	//test-start
+	app.get('/test', (req, res) => {
+		actPost.getLimit(null, 1, 6, (err, actPost, total) => {
+			res.render('test', {
+				title: 'tttt',
+				user: req.session.user,
+				actPost: JSON.stringify(actPost),
+				success: req.flash('success').toString(),
+				error: req.flash('error').toString()
+			})
+		});
+	});
+
+	//test-end
+
 	app.get('/aboutUs', (req, res) => {
 		res.render('aboutUs', {
 			title: '關於我們',

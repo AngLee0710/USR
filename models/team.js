@@ -103,17 +103,31 @@ Team.get = function(name, callback) {
 }
 
 Team.getLimit = function(name, page, limit, callback) {
+	if(limit == 'max'){
 		teamUserModel.count({}, function(err, total) {
-		if(err){
-			return callback(err);
-		}
-		teamUserModel.find({}, null, {skip: (page -1) * limit}).sort('time.day').limit(limit).exec(function(err, teams) {
 			if(err){
 				return callback(err);
 			}
-			return callback(null, teams, total);
+			teamUserModel.find({}, null).sort('-time').exec(function(err, actPosts) {
+				if(err){
+					return callback(err);
+				}
+				return callback(null, actPosts, total);
+			});
 		});
-	});
+	}else{
+		teamUserModel.count({}, function(err, total) {
+			if(err){
+				return callback(err);
+			}
+			teamUserModel.find({}, null, {skip: (page -1) * limit}).sort('-time').limit(limit).exec(function(err, actPosts) {
+				if(err){
+					return callback(err);
+				}
+				return callback(null, actPosts, total);
+			});
+		});
+	}
 }
 
 
