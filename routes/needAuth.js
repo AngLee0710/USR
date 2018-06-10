@@ -67,6 +67,16 @@ module.exports =  (app) => {
 		});
 	});
 
+	app.get('/activityCreate', checkLogin);
+	app.get('/activityCreate', (req, res) => {
+		res.render('activityCreate', {
+			title: '新增活動',
+			user: req.session.user,
+			success: req.flash('success').toString(),
+			error: req.flash('error').toString()
+		});
+	});
+
 	app.post('/activityCreate', checkLogin);
 	app.post('/activityCreate', (req, res, next) => {
 		let $ = cheerio.load(req.body.content);
@@ -78,27 +88,21 @@ module.exports =  (app) => {
 			}
 		}
 
+		console.log(imgArray);
+
 		let activityPost = new actPost(
 			req.body.title,
 			req.body.content,
 			req.body.place,
-			req.body.target,
-			req.body.sex,
-			req.body.date,
-			req.body.limit,
-			req.body.url,
-			req.body.apply,
-			req.body.team,
-			req.body.fee,
 			imgArray
 		);
 
 		activityPost.save((err) => {
 			if(err) {
 				console.log(err);
-				return res.redirect('/activityManage');
+				return res.redirect('/activityCreate');
 			} else {
-				return res.redirect('/activityManage');
+				return res.redirect('/activity');
 			}
 		});
 	});
@@ -106,86 +110,56 @@ module.exports =  (app) => {
 	app.get('/activityManage', checkLogin);
 	app.get('/activityManage', (req, res) => {
 		let page = req.query.p ? parseInt(req.query.p) : 1;
-		actPost.getLimit(null, page, 6, (err, actPosts, actTotal) => {
+
+
+		actPost.getLimit(null, page, 6, (err, actPosts, total) => {
 			if(err) {
 				req.flash('error', err);
-				return res.redirect('/activityManage');
+				return res.redirect('admin');
 			}else {
-				Team.getLimit(null, page, 'max', (err, teams, total) => {
 					res.render('activityManage', {
-						title: '活動管理',
-						user: req.session.user,
-						actPosts: actPosts,
-						teams: teams,
-						page: page,
-						isFirstPage: ((page - 1) == 0),
-						isLastPage: (Number((page - 1) * 6 + actPosts.length) == Number(actTotal)),
-						success: req.flash('success').toString(),
-						error: req.flash('error').toString()
-					});		
-				})	
+					title: '活動管理',
+					user: req.session.user,
+					actPosts: actPosts,
+					page: page,
+					isFirstPage: ((page - 1) == 0),
+					isLastPage: (((page - 1) * 6 + actPosts.length) == total),
+					success: req.flash('success').toString(),
+					error: req.flash('error').toString()
+				});		
 			}			
 		});
 	});
 
-	app.post('/activity/get', checkLogin);
-	app.post('/activity/get', (req, res) => {
-		actPost.getById(req.body.data, (err, post) => {
-			if(err) {
+	app.get('/activity/edit/:title/:time', checkLogin);
+	app.get('/activity/edit/:title/:time', (req, res) => {
+		actPost.get(req.params.title, req.params.time, (err, actPost) => {
+			if(err){
 				req.flash('error', err);
 				return res.redirect('/activityManage');
-			}
-			res.send(post);
-		});
-	});
-
-	app.get('/activity/:id', checkLogin);
-	app.get('/activity/:id', (req, res) => {
-		actPost.getById(req.params.id, (err, post) => {
-			if(err) {
-				req.flash('error', err);
-				return res.redirect('/activityManage');
-			}
-			Team.get(post.teams, (err, team) => {
-				res.render('activity', {
-					post: post,
-					team: team,
+			} else {
+				res.render('activityEdit', {
+					title: '編輯活動',
 					user: req.session.user,
+					actPost: actPost,
 					success: req.flash('success').toString(),
 					error: req.flash('error').toString()
 				});
-			});
+			}
 		});
 	});
 
-	app.post('/activity/edit', checkLogin);
-	app.post('/activity/edit', (req, res) => {
-
-		let $ = cheerio.load(req.body.content);
-		let imgArray = [];
-
-		for(let i = 0 ; i < $('img').length ; i++) {
-			imgArray[i] = {
-				url: $('img')[i].attribs.src
-			}
-		}
-		
+	app.post('/activity/edit/:title/:time', checkLogin);
+	app.post('/activity/edit/:title/:time', (req, res) => {
 		let post = {
+			otitle: req.body.otitle,
 			title: req.body.title,
+			time: req.body.time,
 			place: req.body.place,
-			target: req.body.target,
-			sex: req.body.sex,
-			date: req.body.date,
-			limit: req.body.limit,
-			url: req.body.url,
-			apply: req.body.apply,
-			teams: req.body.team,
-			fee: req.body.fee,
-			content: req.body.content,
-			imgArray: imgArray
+			content: req.body.content
 		}
 
-		actPost.edit(req.body.id ,post, (err, actPost) => {
+		actPost.edit(post, (err, actPost) => {
 			if(err){
 				req.flash('error', err);
 				return res.redirect('/activityManage');
@@ -196,26 +170,21 @@ module.exports =  (app) => {
 		});
 	});
 
-	app.post('/activity/delete', checkLogin);
-	app.post('/activity/delete', (req, res) => {
+	app.get('/activity/delete/:title/:time', checkLogin);
+	app.get('/activity/delete/:title/:time', (req, res) => {
+		let post = {
+			title: req.params.title,
+			time: req.params.time,
+		}
 
-		actPost.remove(req.body.data, (err) => {
+		actPost.remove(post, (err) => {
 			if(err){
-				return res.send('error');
+				req.flash('error', err);
+				console.log(err);
+				return res.redirect('/activityManage');
 			} else {
-				res.send('success');
-			}
-		});
-	});
-
-	app.post('/activity/checkID', checkLogin);
-	app.post('/activity/checkID', (req, res) => {
-
-		actPost.getById(req.body.data, (err, post) => {
-			if(err){
-				return res.send('error');
-			} else {
-				res.send(post);
+				req.flash('success', '刪除成功');
+				res.redirect('/activityManage');
 			}
 		});
 	});
@@ -264,8 +233,7 @@ module.exports =  (app) => {
 
 	app.get('/leaderManage', checkLogin);
 	app.get('/leaderManage',  (req, res) => {
-		let page = req.query.p ? parseInt(req.query.p) : 1;
-		Leader.getLimit(null, page, 6, (err, leaders, total) => {
+		Leader.getAll((err, leaders) => {
 			if(err) {
 				req.flash('error', err);
 				return res.redirect('/leaderManage');
@@ -275,9 +243,6 @@ module.exports =  (app) => {
 				title: '隊長管理',
 				user: req.session.user,
 				leaders: leaders,
-				page: page,
-				isFirstPage: ((page - 1) == 0),
-				isLastPage: (((page - 1) * 6 + leaders.length) == total),
 				success: req.flash('success').toString(),
 				error: req.flash('error').toString()
 			});

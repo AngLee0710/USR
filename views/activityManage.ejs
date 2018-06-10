@@ -1,112 +1,36 @@
 <%- include header %>
+<%- include nav2 %>
 <br />
 <div class="row">
 	<div class="col-3">
 		<%- include admin_c_dropdown %>
 	</div>
-	<div class="col-9 row">
-		<%- include features %>
-		<%- include back %>
-		<br />
-		<%- include activityManagePage %>
-		<%- include activityManageNewPage %>
-		<%- include activityManageEditPage %>
+	<div class="col-8">
+		<table class="table" style="font-size: 24px; font-family:Microsoft JhengHei;">
+			<thead>
+				<tr>
+					<th>活動名稱</th>
+					<th style="text-align: center;">功能按鈕</th>
+				</tr>
+			</thead>
+			<tbody>
+				<% actPosts.forEach((actPost, index) => {%>
+					<tr>
+						<th><%= actPost.title %></th>
+						<th style="text-align: center;">
+							<input class="btn btn-danger btn-lg" type="button" value="查看" 
+							onclick="location.href='/activity/<%= actPost.title %>/<%= actPost.time %>'">
+
+							<input class="btn btn-warning btn-lg" type="button" value="修改" 
+							onclick="location.href='/activity/edit/<%= actPost.title %>/<%= actPost.time %>'">
+
+							<input class="btn btn-primary btn-lg" type="button" value="刪除" 
+							onclick="location.href='/activity/delete/<%= actPost.title %>/<%= actPost.time %>'">
+						</th>
+					</tr>
+				<% }) %>
+			</tbody>
+		</table>
+		<%- include paging %>
 	</div>
 </div>
-<script>
-	var nowID = null;
-	for(let i = 0 ; i < <%= actPosts.length %> ; i++)
-		$('#select' + i).click(() => {
-			if(nowID == null) {
-				nowID = $('#select' + i)[0].id;
-				$('#' + nowID).prop("checked", true);
-			}
-			else {
-				if(nowID == $('#select' + i)[0].id){
-					$('#' + nowID).prop("checked", false);
-					nowID = null;
-				}else {
-					$('#' + nowID).prop("checked", false);
-					nowID = $('#select' + i)[0].id;
-					$('#' + nowID).prop("checked", true);
-				}
-				
-			}
-		})
-
-	$('#delete').click(() => {
-		if(nowID == null){
-			alert('尚未選取貼文');
-			return;
-		}
-			
-		let data =  $('#' + nowID).val();
-		$('#' + nowID).parent('th').parent('tr').remove();
-		$.post('/activity/delete', { data: data } , (result) => {
-			if(result == 'success'){
-				console.log('success')
-				location.reload()
-			}
-			else{
-				console.log('error');
-				alert('資料庫模組錯誤');
-			}
-		})
-	})
-
-	$('#update').click(() => {
-		if(nowID == null){
-			alert('尚未選取貼文');
-			return;
-		}
-		let data =  $('#' + nowID).val();
-		$('#managePage').hide();
-		$('#features').hide();
-		$('#newPage').hide();
-		$('#backDIV').show();
-		$('#editPage').show();
-		$.post('/activity/get', { data: data }, (result) => {
-			console.log(result);
-			$('#editID').val(result._id);
-			$('#editTitle').val(result.title);
-			$('#editApply').val(result.apply);
-			$('#editFee').val(result.fee);
-			$('#editDate').val(result.date);
-			$('#editLimit').val(result.limit);
-			$('#editPlace').val(result.place);
-			$('#editTarget').val(result.target);
-			$('#editTeam').val(result.teams);
-			$('#editUrl').val(result.url);
-			$(document.getElementsByTagName('iframe')[1].contentWindow.document.body).html(result.content)
-		});
-	})
-
-	$('#new').click(() => {
-		$('#managePage').hide();
-		$('#features').hide();
-		$('#newPage').show();
-		$('#backDIV').show();
-
-	})
-
-	$('#backBtn').click(() => {
-		$('#backDIV').hide();
-		$('#features').show();
-		$('#newPage').hide();
-		$('#editPage').hide();
-		$('#managePage').show();
-		$('.myInput').val('');
-		$(document.getElementsByTagName('iframe')[0].contentWindow.document.body).html('')
-	});
-</script>
-
-<style>
-	input#selectAll {
-		padding-right: 10px;
-		margin-top: 12px;
-	}
-
-	div.newForm {
-		width: 100%;
-	}
-</style>

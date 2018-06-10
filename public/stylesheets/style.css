@@ -1,9 +1,6 @@
-header {
-  padding-top: 10px;
-}
-
 .blog-header {
   line-height: 1;
+  border-bottom: 1px solid #e5e5e5
 }
 .blog-header-logo {
   font-family: "Playfair Display", Georgia, "Times New Roman", serif;
@@ -128,13 +125,10 @@ h1, h2, h3, h4, h5, h6 {
 .blog-footer p:last-child {
   margin-bottom: 0
 }
-
-ul.drop-down-menu {
+ul {
   margin: 0;
   padding: 0;
-  width: 100%;
   list-style: none
-<<<<<<< HEAD
 }
 ul.drop-down-menu {
   font-weight:900;
@@ -149,68 +143,16 @@ ul.drop-down-menu>li {
 }
 ul.drop-down-menu a {
   color: #333;
-=======
-  border: #ccc 0 solid;
-  display: inline-block;
-  font-family: 'Open Sans', Arial, sans-serif;
-  font-size: 18px;
-  overflow: hidden;
-  text-align: justify;
-  height: 40px;
-}
-
-ul.drop-down-menu:after { 
-  content: ''; 
-  display: inline-block; 
-  width: 100%; 
-} 
-
-ul.drop-down-menu li {
-  position: relative;
-  white-space: nowrap;
-  overflow: hidden;
-  display: inline-block; 
-  line-height: 40px;
-  height: 40px;
-}
-
-ul.drop-down-menu a {
-  background-color: #faf5eb;
-  color: #AAAAAA;
-  font-family: "Lucida Sans Unicode", "Lucida Grande",微軟正黑體, Geneva, Verdana, sans-serif;
->>>>>>> f3a5f99d62ff0655bf9bd71680c1aa195cfdb3c9
   display: block;
-/*  padding-left: auto;
-  padding-right: auto;*/
+  padding: 0 30px;
   text-decoration: none;
-  line-height: 40px;
-  overflow: hidden;
-  font-weight: bold;
-  text-align: right;
+  line-height: 40px
 }
-
 ul.drop-down-menu a:hover {
-<<<<<<< HEAD
   border-bottom: 3px solid #9ACD32;
   border-radius:15px;
   background-color: #DCDCDC;
-=======
-  font-weight: bold;
-  font-family: "Lucida Sans Unicode", "Lucida Grande",微軟正黑體, Geneva, Verdana, sans-serif;
-  color: #000;
-  padding-top: 40px;
- /* transition: all 200ms ease;*/
->>>>>>> f3a5f99d62ff0655bf9bd71680c1aa195cfdb3c9
 }
-
-ul.drop-down-menu span {
-  margin-top: -40px;
-  display: block;
-  border-top: 2px solid;
-  border-bottom: 1px solid;
-}
-
-
 ul.drop-down-menu ul {
   border: #ccc 1px solid;
   position: absolute;
@@ -220,18 +162,12 @@ ul.drop-down-menu ul {
   min-width: 180px
 }
 
-ul.drop-down-menu img {
-  margin-top: -6px;
-}
-
 ul.drop-down-menu ul {
   left: 99999px;
   opacity: 0;
   -webkit-transition: opacity .3s;
-  transition: opacity .3s;
-  overflow: hidden;
+  transition: opacity .3s
 }
-
 ul.drop-down-menu li:hover>ul {
   opacity: 1;
   -webkit-transition: opacity .3s;
@@ -505,10 +441,8 @@ display: -webkit-box;
 line-height: auto; 
 height: 400px; 
 }
-
 .img_width p img{
   height: 200px;
-<<<<<<< HEAD
   width: auto;
   object-fit: cover;
 }
@@ -618,12 +552,4 @@ div.thover img:hover{
   transform:scale(1.1,1.1);
     -webkit-transform:scale(1.1,1.1); 
     -webkit-transition: -webkit-transform 1s;
-=======
-  width: 100%;
-  object-fit: cover;
-}
-
-body {
-  background-color: #faf5eb;
->>>>>>> f3a5f99d62ff0655bf9bd71680c1aa195cfdb3c9
 }

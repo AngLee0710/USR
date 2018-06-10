@@ -106,18 +106,4 @@ Leader.pushTeam = function(nick, team, callback) {
 	});
 }
 
-Leader.getLimit = function(title, page, limit, callback) {
-	leaderUserModel.count({}, function(err, total) {
-		if(err){
-			return callback(err);
-		}
-		leaderUserModel.find({}, null, {skip: (page -1) * limit}).limit(limit).exec(function(err, leaders) {
-			if(err){
-				return callback(err);
-			}
-			return callback(null, leaders, total);
-		});
-	});
-};
-
 module.exports = Leader;

@@ -1,5 +1,4 @@
 <br>
-<<<<<<< HEAD
 <div class="nav navbar-default navbar-fixed-top nav_h nav_BGC">
     <div class="container-fluid ">
         <div >
@@ -25,44 +24,27 @@
                  <li><a href="/activity">最新消息</a>
                 </li> 
                 <li><a href="#">活動消息</a>
-=======
-<div class="row">
-    <div class="col-1"></div>
-    <div class="col-10" style="border-bottom: 1px solid #d2cdbe;">
-        <div class="row flex-nowrap justify-content-between align-items-center">
-            <ul class="drop-down-menu justify-content-between" id="nav">
-                <li><a class="background_faf5eb" href="/aboutUs"><span><img height="20" width="20" src="/images/students2.png">關於我們</span>關於我們</a>
-                </li>
-                <li><a class="background_faf5eb" href="/team"><span><img height="20" width="20" src="/images/students2.png">研究團隊</span>研究團隊</a>
-                </li>
-                <li>
-                    <a class="background_faf5eb" href="#"><span><img height="20" width="20" src="/images/students2.png">活動公告</span>活動公告</a>
-                    <ul>
-                        <li><a class="background_faf5eb" href="/activity">最新消息</a>
-                        </li>
-                        <li><a class="background_faf5eb" href="#">活動消息</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a class="background_faf5eb" href="#"><span><img height="20" width="20" src="/images/students2.png">在地關懷</span>在地關懷</a>
-                </li>
-                <li>
-                    <a class="background_faf5eb" href="#"><span><img height="20" width="20" src="/images/students2.png">成果分享</span>成果分享</a>
-                </li>
-                <li>
-                    <a class="background_faf5eb" href="#"><span><img height="20" width="20" src="/images/students2.png">居地城鄉</span>居地城鄉</a>
-                </li>
-                <li>
-                    <a class="background_faf5eb" href="/admin"><span><img height="20" width="20" src="/images/students2.png">後臺管理</span>後臺管理</a>
->>>>>>> f3a5f99d62ff0655bf9bd71680c1aa195cfdb3c9
                 </li>
             </ul>
-        </div>
-        <div id="menu_div">
-            <a id="menu" href="#"><i class="fa fa-bars"></i> MENU</a>
-        </div>
-    </div>
+        </li>
+        <li>
+            <a href="#">在地關懷</a>
+        </li>
+        <li>
+            <a href="#">成果分享</a>
+        </li>
+        <li>
+            <a href="#">居地城鄉</a>
+        </li>
+        <% if(user) { %>
+            <li>
+                <a href="/admin">後臺管理</a>
+            </li>
+            <% } %>
+    </ul>
+</div>
+<div id="menu_div">
+    <a id="menu" href="#"><i class="fa fa-bars"></i> MENU</a>
 </div>
 <script>
 $(function() {

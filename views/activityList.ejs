@@ -1,5 +1,4 @@
 <%- include header %>
-<<<<<<< HEAD
 <%- include nav2 %>
 <br>
 <div class="row mb-2">
@@ -20,19 +19,6 @@
 		</div>
 		<% }) %>
 	</div>
-=======
-<% posts.forEach(function(post, index) {%>
-<div class="h-30">
-	<p>
-		<h3>
-			<a href="/activity/<%= post.title %>/<%= post.time %>"><%- post.title %></a>
-		</h3>
-		<h1><%= new Date(post.time).toLocaleDateString() %></h1>
-		<h4>
-			<%- post.content %>
-		</h4>
-	</p>
->>>>>>> f3a5f99d62ff0655bf9bd71680c1aa195cfdb3c9
 </div>
 <%- include paging %>
 <%- include footer %>
