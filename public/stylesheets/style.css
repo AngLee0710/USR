@@ -447,19 +447,6 @@ height: 400px;
   object-fit: cover;
 }
 
-.Transition_bar{
-  height: auto;
-  width: auto;
-  background-color: #92B901;
-  text-align: center;
-  font-size:20px;
-  color: #ffffff;
-  font-weight: bold;
-  opacity: 0.75;
-  border-radius:10px;
-  -webkit-transition:  height 2s; 
-    transition:  height 2s;
-}
 
 .Transition_bar:hover{
   font-size:30px;
@@ -513,22 +500,10 @@ height: 400px;
  
 }
 div.thover:hover{
-  border-bottom: 3px solid #9ACD32;
-  border-radius:15px;
-  background-color: #DCDCDC;
+  
   color:  #228B22;
   -webkit-transition: -webkit-transform 2s,opacity 2s,background 2s,width 2s,height 2s,font-size 1s;
 }
-
-.section {
-  width: 100vw;
-  height: 100vh;
-  float: left;
-}
-
-
-
-
 
 #MyBlog{
     position: fixed;  /*固定在網頁上不隨卷軸移動，若要隨卷軸移動用absolute*/
@@ -552,4 +527,82 @@ div.thover img:hover{
   transform:scale(1.1,1.1);
     -webkit-transform:scale(1.1,1.1); 
     -webkit-transition: -webkit-transform 1s;
+}
+
+div.style_clean a{
+  color: black;
+}
+
+div.style_clean a:hover{
+  text-decoration:none;
+  border-bottom: 3px solid #9ACD32;
+  border-radius:15px;
+  background-color: #DCDCDC;
+  color:  #228B22;
+  -webkit-transition: -webkit-transform 2s,opacity 2s,background 2s,width 2s,height 2s,font-size 1s;
+}
+
+.T_D_link{
+    background-color:#86a279; /* Green */
+    border: none;
+    color: white;
+    line-height:100px;
+    text-align: center;
+    display: inline-block;
+    font-size: 40px;
+    border-radius: 30px;
+    cursor: pointer;
+    width: auto;
+    font-family: "Showcard Gothic";
+    
+}
+
+.T_D_link:hover{
+   font-size: 50px;
+   background-color:#9ed188;
+   -webkit-transition: -webkit-transform 2s,opacity 2s,background 2s,width 2s,height 2s,font-size 1s;
+}
+div.h-md-250 a{
+  text-decoration:none;
+}
+
+div.activity_txt{
+  font-family: "Showcard Gothic";
+  font-size: 40px;
+  font-weight:bold;
+}
+
+div.teamList_txt strong {
+  text-align: center;
+  font-size: 50px;
+  font-family: "微軟正黑體";
+  font-weight:bold;
+}
+Txt{
+  font-size: 30px;
+  font-family: "微軟正黑體";
+  font-weight:bold;
+}
+div.teamList{
+  text-align: center;
+  font-size: 450%;
+  font-family: "微軟正黑體";
+  font-weight:bold;
+}
+div.txt_family{
+  font-family: "微軟正黑體";
+}
+div.leader_txt{
+  font-size: 300%;
+}
+div.title_txt{
+  font-size: 170%;
+}
+div.team_txt{
+  font-size: 150%;
+}
+div.activity_txt a{
+  font-family: "微軟正黑體";
+  font-size: 40px;
+  font-weight:bold;
 }

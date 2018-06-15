@@ -5420,11 +5420,7 @@ a.bg-dark:focus, a.bg-dark:hover, button.bg-dark:focus, button.bg-dark:hover {
 	-ms-flex-pack: distribute!important;
 	justify-content: space-around!important
 }
-.align-items-start {
-	-webkit-box-align: start!important;
-	-ms-flex-align: start!important;
-	align-items: flex-start!important
-}
+
 .align-items-end {
 	-webkit-box-align: end!important;
 	-ms-flex-align: end!important;

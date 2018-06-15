@@ -2,24 +2,24 @@
       <div class="nav-scroller py-1 mb-2">
         <nav class="nav d-flex justify-content-between">
           <a class="p-2 text-muted" href="#">
-          	Ãö©ó
+          	ÃƒÃ¶Â©Ã³
           </a>
 
           <a class="p-2 text-muted" href="#">
-            ¬ã¨s¹Î¶¤
+            Â¬Ã£Â¨sÂ¹ÃÂ¶Â¤
           </a>
 
          <a class="p-2 text-muted" href="#">
-	      	 ¬ã¨s¸ê·½
+	      	 Â¬Ã£Â¨sÂ¸ÃªÂ·Â½
 	      </a>
           <a class="p-2 text-muted" href="#">
-	      	µoªí¥­¥x
+	      	ÂµoÂªÃ­Â¥Â­Â¥x
 	      </a>
           <a class="p-2 text-muted" href="#">
-	      	¸ó»â°ì¹êÅç«Ç
+	      	Â¸Ã³Â»Ã¢Â°Ã¬Â¹ÃªÃ…Ã§Â«Ã‡
 	      </a>
           <a class="p-2 text-muted" href="#">
-	      	¹q¤l³ø
+	      	Â¹qÂ¤lÂ³Ã¸
 	      </a>
         </nav>
       </div>
@@ -28,7 +28,7 @@
       <!--
       <div class="jumbotron p-3 p-md-5 text-white rounded bg-dark">
         <div class="col-md-6 px-0">
-          <h1 class="display-4 font-italic">³o¸Ì®³¨Ó©ñ·Ó¤ù</h1>
+          <h1 class="display-4 font-italic">Â³oÂ¸ÃŒÂ®Â³Â¨Ã“Â©Ã±Â·Ã“Â¤Ã¹</h1>
           <p class="lead my-3">Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents.</p>
           <p class="lead mb-0"><a href="#" class="text-white font-weight-bold">Continue reading...</a></p>
         </div>
@@ -38,7 +38,7 @@
         <div class="col-md-6">
           <div class="card flex-md-row mb-4 box-shadow h-md-250">
             <div class="card-body d-flex flex-column align-items-start">
-              <strong class="d-inline-block mb-2 text-primary">³Ì·s®ø®§</strong>
+              <strong class="d-inline-block mb-2 text-primary">Â³ÃŒÂ·sÂ®Ã¸Â®Â§</strong>
               <h3 class="mb-0">
                 <a class="text-dark" href="#">Featured post</a>
               </h3>
@@ -52,7 +52,7 @@
         <div class="col-md-6">
           <div class="card flex-md-row mb-4 box-shadow h-md-250">
             <div class="card-body d-flex flex-column align-items-start">
-              <strong class="d-inline-block mb-2 text-success">³Ì·sÄ@´º</strong>
+              <strong class="d-inline-block mb-2 text-success">Â³ÃŒÂ·sÃ„@Â´Âº</strong>
               <h3 class="mb-0">
                 <a class="text-dark" href="#">Post title</a>
               </h3>
@@ -177,3 +177,65 @@
       </div><!-- /.row -->
 
     </main><!-- /.container -->
+
+
+
+
+    <!--<br>
+  <div class="row mb-2">
+    <div class="col-md-3">
+      <div id="menu">
+        <%leaders.forEach((leader, index) => { %>
+        <div class="item">
+          <div class="main">
+            <%= leader.name %> <%= leader.title %>
+          </div>
+          <div class="sub">
+            <ul>
+              <%if(leader.teams.length == 0) {%>
+              <li>
+                <a href="#">å°šæœªæ“æœ‰éšŠä¼</a>
+              </li><%}else{ %><%leader.teams.forEach((team, index) => { %>
+              <li>
+                <a href="/team/<%= team.name %>"> <%= team.name %></a>
+              </li><%}) %><%} %>
+            </ul>
+          </div>
+        </div><%}) %>
+      </div>
+      <script src="jquery-1.11.2.min.js">
+      </script> 
+      <script>
+      $(document).ready(function(){
+                  
+               for(i=0;i<$(".main").length;i++){
+                 $(".sub").slideUp(0)
+                   $(".main:eq("+i+")").click({id:i},function(e){
+                       n=e.data.id                   
+                       $(".sub:eq("+n+")").slideToggle()
+                       $(".sub:not(:eq("+n+"))").slideUp()
+                   })
+               }
+               $("#menu").css("width",$(".main").length*100)
+           })
+      </script>
+    </div>
+    <script>
+              $(document).bind('click', function(e) {
+                  var $clicked = $(e.target);
+                  if (!$clicked.parents().hasClass("dropdown")) $(".dropdown dd ul").hide();
+              });
+
+              $(".dropdown dt a").on('click', function() {
+                  $(".dropdown dd ul").slideToggle('fast');
+              });
+    </script> <%teams.forEach(function(team, index) {%>
+    <div class="col-md-9">
+      <div class="card flex-md-row mb-4 box-shadow h-md-250">
+        <div class="card-body d-flex flex-column align-items-start">
+          <h2><strong class="d-inline-block mb-2 text-success"><a href="/team/<%= team.name %>"><%= team.name %></a></strong></h2>
+          <p class="card-text mb-auto">æœå‹™å®—æ—¨: <%= team.purpose %></p>
+        </div>
+      </div>
+    </div>
+  </div><%}) %>-->

@@ -1,14 +1,40 @@
 <%- include header %>
 <%- include nav2 %>
-<h1><%= teams.name %></h1>
-<h3>領隊人: <%= leader %></h3>
-<p>團隊服務宗旨: <%= teams.purpose %></p>
-<span>團隊介紹: <%- teams.introduction %></span><br />
-<span>團隊專業介紹: <%- teams.pro_introduction %></span><br />
-<span>團隊網站: <%= teams.website %></span><br />
-<span>團隊聯絡方式: </span><br />
-<span>聯絡人: <%= teams.connection.name %></span><br />
-<span>聯絡人電話: 0<%= teams.connection.phone %></span><br />
-<span>聯絡人信箱: <%= teams.connection.email %></span><br />
-<span>點擊數: <%= teams.pv %></span>
+<%- include to_Top %>
+<div class="row mb-2">
+		<div class="col-md-12">
+			<div class="card flex-md-row mb-4 box-shadow">
+				<div class="card-body d-flex flex-column align-items-start">
+					<div class="col-12">	
+						<div class="col-md-12">
+							<div class="col-12">
+								<div class="teamList"><%= teams.name %></div><br>
+								<div class="txt_family">
+								<div class="leader_txt">領隊人: <%= leader %></div><br>
+								<div class="team_txt">
+								<p><div class="title_txt">團隊服務宗旨: </div><br><%- include two_blank %><%= teams.purpose %></p>
+								<br>
+								<span><div class="title_txt">團隊介紹:</div><br><%- include two_blank %><%- teams.introduction %></span><br />
+								<br>
+								<span><div class="title_txt">團隊專業介紹:</div><br><%- include two_blank %> <%- teams.pro_introduction %></span><br />
+								<span>團隊網站:<a href="http://<%= teams.website %>">點我</a></span><br />
+								<span>團隊聯絡方式: </span><br />
+								<span>聯絡人: <%= teams.connection.name %></span><br />
+								<span>聯絡人電話: 0<%= teams.connection.phone %></span><br />
+								<span>聯絡人信箱: <%= teams.connection.email %></span><br />
+								<span>點擊數: <%= teams.pv %></span>
+								</div>
+								</div>
+								<div class="card flex-md-row mb-4 box-shadow">
+									<div class="card-body flex-column align-items-start padding5">
+										<a href="http://maselab318.nfu.edu.tw"><img height="100%" src="/images/TEAM.png" width="100%"></a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 <%- include footer %>
