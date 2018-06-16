@@ -491,7 +491,7 @@ height: 400px;
 }
 .thover{
   margin:0px auto;
-  font-family: "標楷體";
+  font-family: "微軟正黑體";
   font-size: 30px;
 }
 
@@ -547,6 +547,7 @@ div.style_clean a:hover{
     border: none;
     color: white;
     line-height:100px;
+    height: 250px;
     text-align: center;
     display: inline-block;
     font-size: 40px;
