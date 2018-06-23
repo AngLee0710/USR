@@ -46,40 +46,38 @@ module.exports =  (app) => {
 			}
 			req.session.user = user;
 			req.flash('success', '登錄成功!!');
-			res.redirect('/admin');
+			res.redirect('/activityManage');
 		});
 	});
 
-	app.get('/logout', checkLogin);
-	app.get('/logout', (req, res) => {
-		req.session.user = null;
-		req.flash('success', '登出成功!!');
-		res.redirect('/');
-	});
-
-	app.get('/admin', checkLogin);
-	app.get('/admin', (req, res) => {
-		res.render('admin', {
-			title: '後台管理',
-			user: req.session.user,
-			success: req.flash('success').toString(),
-			error: req.flash('error').toString()
-		});
-	});
-
-	app.get('/activityCreate', checkLogin);
-	app.get('/activityCreate', (req, res) => {
-		res.render('activityCreate', {
-			title: '新增活動',
-			user: req.session.user,
-			success: req.flash('success').toString(),
-			error: req.flash('error').toString()
+	app.get('/activityManage', checkLogin);
+	app.get('/activityManage', (req, res) => {
+		let page = req.query.p ? parseInt(req.query.p) : 1;
+		actPost.getLimit(null, page, 6, (err, actPosts, actTotal) => {
+			if(err) {
+				req.flash('error', err);
+				return res.redirect('/activityManage');
+			}else {
+				Team.getLimit(null, page, 'max', (err, teams, total) => {
+					res.render('activityManage', {
+						title: '活動管理',
+						user: req.session.user,
+						actPosts: actPosts,
+						teams: teams,
+						page: page,
+						isFirstPage: ((page - 1) == 0),
+						isLastPage: (Number((page - 1) * 6 + actPosts.length) == Number(actTotal)),
+						success: req.flash('success').toString(),
+						error: req.flash('error').toString()
+					});		
+				})	
+			}			
 		});
 	});
 
 	app.post('/activityCreate', checkLogin);
 	app.post('/activityCreate', (req, res, next) => {
-		let $ = cheerio.load(req.body.content);
+		let $ = cheerio.load(req.body.ACT_LIST);
 		let imgArray = [];
 
 		for(let i = 0 ; i < $('img').length ; i++) {
@@ -88,107 +86,136 @@ module.exports =  (app) => {
 			}
 		}
 
-		console.log(imgArray);
+		Team.check(req.body.ACT_DEPTNAME, (err, team) => {
+			let ACT_BEG_DATE = req.body.ACT_BEG_DATE_D + ' ' + req.body.ACT_BEG_DATE_T,
+			ACT_END_DATE = req.body.ACT_END_DATE_D + ' '	+ req.body.ACT_END_DATE_T,
+			ACT_COMM_USER = team.connection.name,
+			ACT_COMM_TEL = team.connection.phone,
+			ACT_COMM_EMAIL = team.connection.email,
+			ACT_B_BEG = req.body.ACT_B_BEG_D + ' ' + req.body.ACT_B_BEG_T,
+			ACT_B_END = req.body.ACT_B_END_D + ' ' + req.body.ACT_B_END_T;
 
-		let activityPost = new actPost(
-			req.body.title,
-			req.body.content,
-			req.body.place,
-			imgArray
-		);
+			let activityPost = new actPost(
+				req.body.ACT_SUBJ_NAME,
+				ACT_BEG_DATE,
+				ACT_END_DATE,
+				req.body.ACT_DEPTNAME,
+				req.body.ACT_LOCATION,
+				req.body.ACT_LIMIT_SEX,
+				req.body.ACT_LIMIT,
+				req.body.ACT_URL,
+				ACT_COMM_USER,
+				ACT_COMM_TEL,
+				ACT_COMM_EMAIL,			
+				ACT_B_BEG,
+				ACT_B_END,
+				req.body.ACT_K_TEL,
+				req.body.ACT_K_DEPT,
+				req.body.ACT_K_OCCUP,
+				req.body.ACT_K_IDNO,
+				req.body.ACT_K_SEX,
+				req.body.ACT_K_BIRTH,
+				req.body.ACT_K_FOOD,
+				req.body.ACT_K_ADDR,
+				req.body.ACT_LIST,
+				imgArray
+			);
 
-		activityPost.save((err) => {
-			if(err) {
-				console.log(err);
-				return res.redirect('/activityCreate');
-			} else {
-				return res.redirect('/activity');
-			}
+			activityPost.save((err) => {
+				if(err) {
+					console.log(err);
+					return res.redirect('/activityCreate');
+				} else {
+					return res.redirect('activityManage');
+				}
+			});
 		});
 	});
 
-	app.get('/activityManage', checkLogin);
-	app.get('/activityManage', (req, res) => {
-		let page = req.query.p ? parseInt(req.query.p) : 1;
-
-
-		actPost.getLimit(null, page, 6, (err, actPosts, total) => {
-			if(err) {
-				req.flash('error', err);
-				return res.redirect('admin');
-			}else {
-					res.render('activityManage', {
-					title: '活動管理',
-					user: req.session.user,
-					actPosts: actPosts,
-					page: page,
-					isFirstPage: ((page - 1) == 0),
-					isLastPage: (((page - 1) * 6 + actPosts.length) == total),
-					success: req.flash('success').toString(),
-					error: req.flash('error').toString()
-				});		
-			}			
-		});
-	});
-
-	app.get('/activity/edit/:title/:time', checkLogin);
-	app.get('/activity/edit/:title/:time', (req, res) => {
-		actPost.get(req.params.title, req.params.time, (err, actPost) => {
+	app.post('/activity/get', checkLogin);
+	app.post('/activity/get', (req, res) => {
+		actPost.tack(req.body.data, (err, actPost) => {
 			if(err){
 				req.flash('error', err);
 				return res.redirect('/activityManage');
 			} else {
-				res.render('activityEdit', {
-					title: '編輯活動',
-					user: req.session.user,
-					actPost: actPost,
-					success: req.flash('success').toString(),
-					error: req.flash('error').toString()
-				});
+				res.send(actPost);
 			}
 		});
 	});
 
-	app.post('/activity/edit/:title/:time', checkLogin);
-	app.post('/activity/edit/:title/:time', (req, res) => {
-		let post = {
-			otitle: req.body.otitle,
-			title: req.body.title,
-			time: req.body.time,
-			place: req.body.place,
-			content: req.body.content
+	app.post('/activity/edit', checkLogin);
+	app.post('/activity/edit', (req, res) => {
+		let $ = cheerio.load(req.body.ACT_LIST);
+		let imgArray = [];
+
+		for(let i = 0 ; i < $('img').length ; i++) {
+			imgArray[i] = {
+				url: $('img')[i].attribs.src
+			}
 		}
 
-		actPost.edit(post, (err, actPost) => {
-			if(err){
-				req.flash('error', err);
-				return res.redirect('/activityManage');
-			} else {
-				req.flash('success', '更改成功');
-				res.redirect('/activityManage');
-			}
-		});
-	});
-
-	app.get('/activity/delete/:title/:time', checkLogin);
-	app.get('/activity/delete/:title/:time', (req, res) => {
-		let post = {
-			title: req.params.title,
-			time: req.params.time,
-		}
-
-		actPost.remove(post, (err) => {
-			if(err){
-				req.flash('error', err);
+		Team.check(req.body.ACT_DEPTNAME, (err, team) => {
+			if(err) {
 				console.log(err);
 				return res.redirect('/activityManage');
-			} else {
-				req.flash('success', '刪除成功');
-				res.redirect('/activityManage');
 			}
+			let ACT_BEG_DATE = req.body.ACT_BEG_DATE_D + ' ' + req.body.ACT_BEG_DATE_T,
+			ACT_END_DATE = req.body.ACT_END_DATE_D + ' '	+ req.body.ACT_END_DATE_T,
+			ACT_COMM_USER = team.connection.name,
+			ACT_COMM_TEL = team.connection.phone,
+			ACT_COMM_EMAIL = team.connection.email,
+			ACT_B_BEG = req.body.ACT_B_BEG_D + ' ' + req.body.ACT_B_BEG_T,
+			ACT_B_END = req.body.ACT_B_END_D + ' ' + req.body.ACT_B_END_T;
+
+			let activityPost = {
+				ACT_SUBJ_NAME: req.body.ACT_SUBJ_NAME,
+				ACT_BEG_DATE: ACT_BEG_DATE,
+				ACT_END_DATE: ACT_END_DATE,
+				ACT_DEPTNAME: req.body.ACT_DEPTNAME,
+				ACT_LOCATION: req.body.ACT_LOCATION,
+				ACT_LIMIT_SEX: req.body.ACT_LIMIT_SEX,
+				ACT_LIMIT: req.body.ACT_LIMIT,
+				ACT_URL: req.body.ACT_URL,
+				ACT_COMM_USER: ACT_COMM_USER,
+				ACT_COMM_TEL: ACT_COMM_TEL,
+				ACT_COMM_EMAIL: ACT_COMM_EMAIL,			
+				ACT_B_BEG: ACT_B_BEG,
+				ACT_B_END: ACT_B_END,
+				ACT_K_TEL: req.body.ACT_K_TEL,
+				ACT_K_DEPT: req.body.ACT_K_DEPT,
+				ACT_K_OCCUP: req.body.ACT_K_OCCUP,
+				ACT_K_IDNO: req.body.ACT_K_IDNO,
+				ACT_K_SEX: req.body.ACT_K_SEX,
+				ACT_K_BIRTH: req.body.ACT_K_BIRTH,
+				ACT_K_FOOD: req.body.ACT_K_FOOD,
+				ACT_K_ADDR: req.body.ACT_K_ADDR,
+				ACT_LIST: req.body.ACT_LIST,
+				imgArray: imgArray
+			}
+
+			console.log(req.body.editID);
+
+			actPost.edit(req.body.editID, activityPost, (err, errr) => {
+				if(errr == 'success')
+					return res.redirect('/activityManage')
+				else {
+					console.log(err);
+					return res.redirect('/activityManage')
+				}
+			});
 		});
 	});
 
+	app.post('/activity/delete', checkLogin);
+	app.post('/activity/delete', (req, res) => {
+		actPost.remove(req.body.data, (err) => {
+			if(err == 'error')
+				res.send('error')
+			 else 
+				res.send('success');
+		});
+	});
 
 	app.get('/leaderCreate', checkLogin);
 	app.get('/leaderCreate', (req, res) => {
@@ -352,6 +379,17 @@ module.exports =  (app) => {
 				}
 			});
 		});
+	});
+
+	app.get('/admin', checkLogin);
+	app.get('/admin', (req, res) => {
+		res.redirect('/activityManage');
+	});
+
+	app.get('/logout', checkLogin);
+	app.get('/logout', (req, res) => {
+		req.session.user = null;
+		res.redirect('/');
 	});
 
 

@@ -1,6 +1,4 @@
-<%- include header %>
-<%- include nav2 %>
-<%- include to_Top %>
+<% include header %>
 <div class="row mb-2">
 		<div class="col-md-12">
 			<div class="card flex-md-row mb-4 box-shadow">
@@ -11,10 +9,10 @@
 								<div class="txt_family">
 								
 								<div class="team_txt">
-								<p><div class="title_txt">標題：<%= post.title %></div></p>
+								<p><div class="title_txt">標題：<%= post.ACT_SUBJ_NAME %></div></p>
 								<br>
 								
-								<span><div class="title_txt">內容：</div><br><%- post.content %><br /></span>
+								<span><div class="title_txt">內容：</div><br><%- post.ACT_LIST %><br /></span>
 								<br />
 								<span>日期：<%= new Date(post.time).toLocaleDateString() %></span><br />
 								<br>

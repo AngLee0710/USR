@@ -11,10 +11,10 @@
             <% var i = 0 %>
             <% actPosts.forEach((actPost, index) => {%>
                 <tr>
-                    <th><input id="select<%= i %>" class="form-check-input" type="checkbox" value="<%= actPost._id %>"></th>
+                    <th><input id="select<%= i %>" class="form-check-input C_Checkbox" type="checkbox" value="<%= actPost._id %>"></th>
                     <th>
                         <a href="activity/<%= actPost._id %>">
-                            <%= actPost.title %>
+                            <%= actPost.ACT_SUBJ_NAME %>
                         </a>
                     </th>
                     <th><%= new Date(actPost.time).toLocaleDateString() %></th>

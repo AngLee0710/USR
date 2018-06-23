@@ -64,8 +64,8 @@ module.exports =  (app) => {
 		});
 	});
 
-	app.get('/activity/:title/:day', (req, res) => {
-		actPost.get(req.params.title, req.params.day, (err, post) => {
+	app.get('/activity/:id', (req, res) => {
+		actPost.get(req.params.id, (err, post) => {
 			if(err) {
 				req.flash('error', err);
 				return res.redirect('/');
