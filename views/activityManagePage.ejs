@@ -1,9 +1,10 @@
 <div class="col-12" id="managePage">
-    <table class="table" style="font-size: 24px; font-family:Microsoft JhengHei;">
+    <table id="dataTable" class="table table-bordered" style="font-size: 24px; font-family:Microsoft JhengHei;">
         <thead>
             <tr>
                 <th>選取</th>
                 <th>活動名稱</th>
+                <th>執行團隊</th>
                 <th>貼文日期</th>
             </tr>
         </thead>
@@ -13,10 +14,11 @@
                 <tr>
                     <th><input id="select<%= i %>" class="form-check-input C_Checkbox" type="checkbox" value="<%= actPost._id %>"></th>
                     <th>
-                        <a href="activity/<%= actPost._id %>">
+                        <a href="/activity/<%= actPost._id %>">
                             <%= actPost.ACT_SUBJ_NAME %>
                         </a>
                     </th>
+                    <th><%= actPost.ACT_DEPTNAME %></th>
                     <th><%= new Date(actPost.time).toLocaleDateString() %></th>
                 </tr>
                 <% i++ %>

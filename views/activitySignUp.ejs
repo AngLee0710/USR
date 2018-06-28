@@ -1,0 +1,23 @@
+<%- include header %>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h2 style="text-align: center;">活動名稱：<%= post.ACT_SUBJ_NAME %></h2>
+        </div>
+        <div class="col-3"></div>
+        <div class="col-6">
+            <form method="post">
+                <input type="hidden" value="<%= post._id %>">
+                姓名：<input type="text" class="form-control" name="LIST_CNAME" /><br />
+                性別<input type="text" class="form-control" name="LIST_SEX" /><br />
+                身分：<input type="text" class="form-control" name="LIST_OCCUP" /><br />
+                學號：<input type="text" class="form-control" name="LIST_PER"/><br />
+                身分證：<input type="text" class="form-control" name="LIST_IDNO" /><br />
+                生日：<input type="text" class="form-control" name="LIST_BIRTH" /><br />
+                電話：<input type="text" class="form-control" name="LIST_TEL" /><br />
+                地址：<input type="text" class="form-control" name="LIST_ADDR" /><br />
+            </form>
+        </div>
+    </div>
+</div>
+

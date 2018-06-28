@@ -64,18 +64,36 @@ module.exports =  (app) => {
 		});
 	});
 
+	app.get('/activity/SignUp/:id', (req, res) => {
+		actPost.get(req.params.id, (err, post) => {
+			if(err) {
+				req.flash('error', err);
+				return res.redirect('/');
+			}
+			res.render('activitySignUp', {
+				post: post,
+				user: req.session.user,
+				success: req.flash('success').toString(),
+				error: req.flash('error').toString()
+			});
+		});
+	});
+
 	app.get('/activity/:id', (req, res) => {
 		actPost.get(req.params.id, (err, post) => {
 			if(err) {
 				req.flash('error', err);
 				return res.redirect('/');
 			}
-			res.render('activity', {
-				title: post.title,
-				post: post,
-				user: req.session.user,
-				success: req.flash('success').toString(),
-				error: req.flash('error').toString()
+			Team.get(post.ACT_DEPTNAME, (err, team) => {
+				res.render('activity', {
+					title: post.title,
+					team: team,
+					post: post,
+					user: req.session.user,
+					success: req.flash('success').toString(),
+					error: req.flash('error').toString()
+				});
 			});
 		});
 	});
@@ -128,8 +146,11 @@ module.exports =  (app) => {
 		});
 	});
 
-	app.get('/leader/:nick', (req, res) => {
-		Leader.get(req.params.nick, (err, leader) => {
+	app.get('/leader/:id', (req, res) => {
+		Leader.get(req.params.id, (err, leader) => {
+			if(err) {
+				return res.redirect('/');
+			}
 			res.render('leader', {
 				title: '隊長介紹',
 				user: req.session.user,

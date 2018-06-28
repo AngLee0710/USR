@@ -12,6 +12,7 @@ let leaderSchema = new Schema({
 	email: String,
 	phone: String,
 	teams: [{name: String}],
+	time: Number
 }, {
 	collection: 'leaders'
 });
@@ -27,6 +28,9 @@ function Leader(leader) {
 
 Leader.prototype.save = function(callback) {
 
+	let date = new Date();
+	let time = date.getTime();
+
 	if(!(this.name && this.title && this.nick)) {
 		return callback('資料不齊全');
 	}
@@ -34,6 +38,7 @@ Leader.prototype.save = function(callback) {
 		name: this.name,
 		nick: this.nick,
 		title: this.title,
+		time: time
 	};
 
 	let newLeader = new leaderOwnerModel(leader);
@@ -64,8 +69,8 @@ Leader.getAll = function(callback) {
 	});
 }
 
-Leader.get = function(nick, callback) {
-	leaderUserModel.findOne({nick: nick}, function(err, leader) {
+Leader.get = function(id, callback) {
+	leaderUserModel.findOne({_id: id}, function(err, leader) {
 		if(err) {
 			return callback(err);
 		}
@@ -94,16 +99,18 @@ Leader.edit = function(leader, callback) {
 	})
 }
 
-Leader.pushTeam = function(nick, team, callback) {
-	let teams = {
-		name: team
-	}
-
-	leaderOwnerModel.update({nick: nick}, {$push: {teams: teams}}, (err)  => {
-		if(err) {
+Leader.getLimit = function(name, page, limit, callback) {
+	leaderUserModel.count({}, function(err, total) {
+		if(err){
 			return callback(err);
 		}
+		leaderUserModel.find({}, null, {skip: (page -1) * limit}).sort('-time').limit(limit).exec(function(err, actPosts) {
+			if(err){
+				return callback(err);
+			}
+			return callback(null, actPosts, total);
+		});
 	});
-}
+};
 
 module.exports = Leader;

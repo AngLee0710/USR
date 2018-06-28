@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const dbAuth = require('./db');
 const Schema = mongoose.Schema;
 
-let actPostSchema = new mongoose.Schema({
+let actPostSchema = new Schema({
 	ACT_ID: {type: Number, default: null},
 	ACT_KIND: {type: String, default:'D'},
 	ACT_SUBJ_NAME: String,

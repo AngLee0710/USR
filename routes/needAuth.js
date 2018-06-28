@@ -8,6 +8,7 @@ const User = require('../models/user.js');
 const Team = require('../models/team.js');
 const actPost = require('../models/activity.js');
 const Leader = require('../models/leader.js');
+const actSignUp = require('../models/actSingUp.js');
 
 const storage = multer.diskStorage({
 	destination: (req, file, cb) => {
@@ -211,56 +212,16 @@ module.exports =  (app) => {
 	app.post('/activity/delete', (req, res) => {
 		actPost.remove(req.body.data, (err) => {
 			if(err == 'error')
-				res.send('error')
+				res.send('error');
 			 else 
 				res.send('success');
 		});
 	});
 
-	app.get('/leaderCreate', checkLogin);
-	app.get('/leaderCreate', (req, res) => {
-		res.render('leaderCreate', {
-			title: '新增隊長',
-			user: req.session.user,
-			success: req.flash('success').toString(),
-			error: req.flash('error').toString()
-		});
-	});
-
-	app.post('/leaderCreate', checkLogin);
-	app.post('/leaderCreate', (req, res, next) => {
-		let newLeader = new Leader({
-			name: req.body.name,
-			title: req.body.title,
-			nick: req.body.nick,
-			success: req.flash('success').toString(),
-			error: req.flash('error').toString()
-		})
-
-		Leader.check(newLeader.nick, (err, nick) => {
-
-			if(err) {
-				req.flash('error', err);
-				return res.redirect('/leaderCreate');
-			} else if(nick) {
-				req.flash('error', '自然名已存在');
-				return res.redirect('/leaderCreate');
-			}
-
-			newLeader.save((err) => {
-				if(err){
-					req.flash('error', err);
-					return res.redirect('/leaderCreate');
-				} else {
-					return res.redirect('/leaderManage');
-				}
-			});
-		});
-	});
-
 	app.get('/leaderManage', checkLogin);
 	app.get('/leaderManage',  (req, res) => {
-		Leader.getAll((err, leaders) => {
+		let page = req.query.p ? parseInt(req.query.p) : 1;
+		Leader.getLimit(null, page, 6,(err, leaders, leaderTotal) => {
 			if(err) {
 				req.flash('error', err);
 				return res.redirect('/leaderManage');
@@ -270,52 +231,13 @@ module.exports =  (app) => {
 				title: '隊長管理',
 				user: req.session.user,
 				leaders: leaders,
+				page: page,
+				isFirstPage: ((page - 1) == 0),
+				isLastPage: (Number((page - 1) * 6 + leaders.length) == Number(leaderTotal)),
 				success: req.flash('success').toString(),
 				error: req.flash('error').toString()
 			});
 		});		
-	});
-
-	app.get('/leader/edit/:nick', checkLogin);
-	app.get('/leader/edit/:nick', (req, res) => {
-		let nick = req.params.nick;
-
-		Leader.get(nick, (err, leader) => {
-			if(err) {
-				res.flash('error', err);
-				return res.redirect('/leaderManage');
-			} else {
-				res.render('leaderEdit', {
-					title: '編輯隊長',
-					user: req.session.user,
-					leader: leader,
-					success: req.flash('success').toString(),
-					error: req.flash('error').toString()
-				});
-			}
-		});
-	});
-
-	app.post('/leader/edit/:nick', checkLogin);
-	app.post('/leader/edit/:nick', (req, res) => {
-		let leader = {
-			name: req.body.name,
-			nick: req.body.nick,
-			title: req.body.title,
-			phone: req.body.phone,
-			email: req.body.email,
-			headImg: req.body.headImg
-		}
-
-		Leader.edit(leader, (err, doc) => {
-			if(err) {
-				req.flash('error', err);
-				return res.redirect('/leaderManage');
-			}else {
-				req.flash('success', '更新成功');
-				return res.redirect('/leaderManage');
-			}
-		});
 	});
 
 	app.get('/teamCreate', checkLogin);
@@ -397,7 +319,7 @@ module.exports =  (app) => {
 	app.post('/uploadImg', upload.single('imgFile'),  (req, res) => {
 		let info = { 
 	        "error": 0, 
-	        "url": 'upload/' + req.file.filename
+	        "url": '/upload/' + req.file.filename
 	    }; 
 	    res.send(info); 
 	});
