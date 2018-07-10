@@ -1,185 +1,23 @@
-    <!DOCTYPE html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title><%= title %></title>
-
-        <!-- CSS -->
-        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500">
-        <link rel="stylesheet" href="https://formden.com/static/cdn/bootstrap-iso.css" />
-        <link rel="stylesheet" href="/activitysignup/bootstrap/css/bootstrap.min.css">
-        <link rel="stylesheet" href="/activitysignup/font-awesome/css/font-awesome.min.css">
-        <link rel="stylesheet" href="/activitysignup/css/form-elements.css">
-        <link rel="stylesheet" href="/activitysignup/css/style.css">
-        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-        <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="/stylesheets/bootstrap.css">
-        <link href="/stylesheets/style.css" rel="stylesheet">
-
-
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.css"/>
-        <!-- Favicon and touch icons -->
-        <link rel="shortcut icon" href="/acssativitysignup/ico/favicon.png">
-        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/activitysignup/ico/apple-touch-icon-144-precomposed.png">
-        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/activitysignup/ico/apple-touch-icon-114-precomposed.png">
-        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/activitysignup/ico/apple-touch-icon-72-precomposed.png">
-        <link rel="apple-touch-icon-precomposed" href="/activitysignup/ico/apple-touch-icon-57-precomposed.png">
-    <body>
-        <%- include nav2 %>
-        <div class="top-content">
-            <div class="inner-bg">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-12" >
-                            <div class="form-top">
-                                <h2 color="white"style="text-align:center">活動名稱：<span><%= post.ACT_SUBJ_NAME %><i class="fa fa-pencil"></i></span></h2>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-3 col-xs-1"></div>
-                        <div class="col-lg-6 col-md-6 col-xs-10">
-                            <div class="form-top-divider"></div>
-                            <div class="form-bottom">
-                                <form role="form" action="" method="post" class="registration-form">
-                                    <div class="form-group">
-                                        <label class="sr-only" for="input1">姓名</label>
-                                        <input type="text" name="input1" placeholder="姓名..." class="form-control form-control-lg" id="input1">
-                                    </div>
-                                    <div class="form-group">
-                                            <label for="input2"class="sr-only">身分：</label>
-                                            <select id="input2" style="height: 50px;" class="form-control form-control-lg"name="LIST_KIND">
-                                                <option value='' disabled selected style='display:none;'>身分...</option>
-                                                <option value="S">校內學生</option>    
-                                                <option value="T">校內教職人員</option>
-                                                <option value="O">其他</option> 
-                                            </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="sr-only" for="input3" id="input3_text">學號</label>
-                                        <input type="text" name="LIST_PER" placeholder="學號..." class="form-control form-control-lg" id="input3">
-                                    </div>
-                                    <% if(post.ACT_K_SEX == 'Y') {%>
-                                        <div class="form-group">
-                                            <label class="sr-only" for="input4">性別</label>
-                                            <select  class="form-control form-control-lg"style="height: 50px;"name="LIST_SEX" id="input4">
-                                                <option value='' disabled selected style='display:none;'>性別...</option>
-                                                <option value="1">男</option>    
-                                                <option value="2">女</option>   
-                                            </select>  
-                                        </div>
-                                        <% } %>
-                                        <% if(post.ACT_K_DEPT == 'Y') {%>
-                                            <div class="form-group">
-                                                <label class="sr-only" for="input5">就讀科系</label>
-                                                <input type="text" class="form-control form-control-lg" placeholder="就讀科系..." name="LIST_DEPT" id="input5">
-                                            </div>
-                                        <% } %>
-                                        <% if(post.ACT_K_FOOD == 'Y') {%>
-                                            <div class="form-group">
-                                                <label class="sr-only" for="input6">便當</label>
-                                                <select  class="form-control form-control-lg" style="height: 50px;"name="LIST_FOOD" id="input6">
-                                                    <option value='' disabled selected style='display:none;'>便當...</option>
-                                                    <option value="P">葷</option>    
-                                                    <option value="V">素</option>
-                                                </select>
-                                            </div>
-                                            <% } %>
-                                        <% if(post.ACT_K_IDNO == 'Y') {%>
-                                            <div class="form-group">
-                                                <label class="sr-only" for="input7">身分證：</label>
-                                                <input type="text" class="form-control form-control-lg" placeholder="身分證..." name="LIST_IDNO" id="input7">
-                                            </div>
-                                        <% } %>
-                                        <% if(post.ACT_K_BIRTH == 'Y') {%>
-                                            <div class="form-group">
-                                                <label class="sr-only" for="input8">生日：</label>
-                                                <input class="form-control" id="date" name="date" placeholder="年/月/日" type="text"/>
-                                            
-                                            </div>
-                                            <% } %>
-                                            <% if(post.ACT_K_TEL == 'Y') {%>
-                                            <div class="form-group">
-                                                <label class="sr-only"for="input9">電話：</label>
-                                                <input type="text" class="form-control form-control-lg"placeholder="電話..." name="LIST_TEL" id="input9">
-                                            </div>
-                                            <% } %>
-                                            <% if(post.ACT_K_ADDR == 'Y') {%>
-                                            <div class="form-group">
-                                                <label class="sr-only"for="input10">地址：</label>
-                                                <input type="text" class="form-control form-control-lg"placeholder="地址..." name="LIST_ADDR" id="input10">
-                                            </div>
-                                            <% } %>
-                                
-                                    <input type="hidden" name="LIST_ACT_ID" value="<%= post._id %>">
-                                    <button type="submit" class="btn">送出</button>
-
-
-                                   
-                                </form>
-                                
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<%- include header %>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h2 style="text-align: center;">活動名稱：<%= post.ACT_SUBJ_NAME %></h2>
         </div>
-        <!-- Javascript -->
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
-        <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-        <script src="/activitysignup/bootstrap/js/bootstrap.min.js"></script>
-        <script src="/activitysignup/js/jquery.backstretch.min.js"></script>
-        <script src="/activitysignup/js/retina-1.1.0.min.js"></script>
-        <script src="/activitysignup/js/scripts.js"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
-        <script> <% if(error) {%>
-            alert('<%= error %>');
-        <% } %>
-        $('#input2').on('change', () => {
-            var text = '';
-    
-            switch($('#input2').val()) {
-                case 'S':
-                    document.getElementById("input3").setAttribute("placeholder","學號...");
-                    text = '學號：';
-                    document.getElementById("input5").setAttribute("placeholder","就讀科系...");
-                    break;
-                case 'T':
-                    document.getElementById("input3").setAttribute("placeholder","教職員編號...");
-                    text = '教職員編號：';
-                    document.getElementById("input5").setAttribute("placeholder","就職單位...");
-                    break;
-                case 'O':
-                    document.getElementById("input3").setAttribute("placeholder","信箱...");
-                    text = '信箱：';
-                    document.getElementById("input5").setAttribute("placeholder","公司/學校名稱...");
-                    break;
-            }
-            $('#input3_text').text(text);
-        });</script>
-        <script>
-                $(document).ready(function(){
-                  var date_input=$('input[name="date"]'); //our date input has the name "date"
-                  var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
-                  var options={
-                    format: 'yyyy/mm/dd',
-                    container: container,
-                    todayHighlight: true,
-                    autoclose: true,
-                  };
-                  date_input.datepicker(options);
-                })
-            </script>
+        <div class="col-3"></div>
+        <div class="col-6">
+            <form method="post">
+                <input type="hidden" value="<%= post._id %>">
+                姓名：<input type="text" class="form-control" name="LIST_CNAME" /><br />
+                性別<input type="text" class="form-control" name="LIST_SEX" /><br />
+                身分：<input type="text" class="form-control" name="LIST_OCCUP" /><br />
+                學號：<input type="text" class="form-control" name="LIST_PER"/><br />
+                身分證：<input type="text" class="form-control" name="LIST_IDNO" /><br />
+                生日：<input type="text" class="form-control" name="LIST_BIRTH" /><br />
+                電話：<input type="text" class="form-control" name="LIST_TEL" /><br />
+                地址：<input type="text" class="form-control" name="LIST_ADDR" /><br />
+            </form>
+        </div>
+    </div>
+</div>
 
-        <!--[if lt IE 10]>
-            <script src="assets/js/placeholder.js"></script>
-        <![endif]-->
-
-    </body>
-
-    </html>
-
-
-
-
-    

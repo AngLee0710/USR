@@ -78,15 +78,6 @@ Leader.get = function(id, callback) {
 	});
 }
 
-Leader.getByNick = function(nick, callback) {
-	leaderUserModel.findOne({nick: nick}, function(err, leader) {
-		if(err)
-			return callback(err);
-		else 
-			return callback(null, leader);
-	});
-}
-
 Leader.edit = function(leader, callback) {
 	let query = {
 		nick: leader.nick

@@ -28,6 +28,9 @@
 	<section id="two" class="main style2">
 			<div class="container">
 					<div class="row">
+						<div class="col-12">
+							<h1 style="text-align: center"><%= post.ACT_SUBJ_NAME %></h1>
+						</div>
 						<div class="col-3">
 							<div class="card" style="width: 100%;">
 								<ul class="list-group list-group-flush">
@@ -44,19 +47,11 @@
 										<%　} %>
 										</li>
 									<li class="list-group-item"><h3>活動人數限制：</h3><span style="font-size: 16px;"><%= post.ACT_LIMIT %>人</span></li>
-									<li class="list-group-item"><h3>目前活動人數：</h3><span style="font-size: 16px;"><%= post.ACT_SIGN_NUM %>人</span></li>
 								</ul>
 							</div>
 						</div>
-						<div class="col-6 text-dark">
-							<div class="card">
-								<div class="card-header">
-									<%= post.ACT_SUBJ_NAME %>
-								</div>
-								<div class="card-body">
-									<%- post.ACT_LIST %>
-								</div>
-							</div>
+						<div class="col-6 activityBody">
+							<%- post.ACT_LIST %>
 						</div>
 						<div class="col-3">
 							<div class="card" style="width: 100%;">
@@ -64,7 +59,7 @@
 									<li class="list-group-item"><h3>主辦隊伍：</h3><span style="font-size: 20px;"><%= post.ACT_DEPTNAME %></span></li>
 									<li class="list-group-item"><h3>聯絡人姓名：</h3><span style="font-size: 20px;"><%= post.ACT_COMM_USER %></span></li>
 									<li class="list-group-item"><h3>聯絡人電話：</h3><span style="font-size: 20px;">0<%= post.ACT_COMM_TEL %></span></li>
-									<li class="list-group-item"><h3>聯絡人信箱：</h3><a href="mailto:<%= post.ACT_COMM_EMAIL %>"><span style="font-size: 20px;"><%= post.ACT_COMM_EMAIL %></span></a></li>
+									<li class="list-group-item"><h3>聯絡人信箱：</h3><span style="font-size: 20px;"><%= post.ACT_COMM_EMAIL %></span></li>
 									<li class="list-group-item"><a href="/activity/SignUp/<%= post._id %>"><button he class="btn btn-danger btn-block"><span style="font-size: 18px;">我想報名</span></button></a></li>
 								</ul>
 							</div>
@@ -81,19 +76,11 @@
 		.main.style2 {
 			background-color: #333;
 			color: black;
-			background-attachment: fixed, fixed;
-			background-image: url("/activity/images/overlay1.png"), url("/activity/images/header2.jpg");
-			background-size: auto, cover;
+			background-attachment: fixed,							fixed;
+			background-image: url("/activity/images/overlay1.png"), url("/activity/images/header.png");
+			background-size: auto,							cover;
 		}
 	</style>
-	<script type="text/javascript">
-		<% if(success) {%>
-			alert('<%= success %>');
-		<% } %>
-		<% if(error) {%>
-			alert('<%= error %>');
-		<% } %>
-	</script>
 </body>
 
 
