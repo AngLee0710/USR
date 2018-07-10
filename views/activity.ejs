@@ -1,100 +1,174 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <title>University Social Responsibility</title>
-    <link rel="icon" type="image/gif/png" href="/images/icon.png">
-    <!-- Bootstrap core CSS -->
-	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/stylesheets/bootstrap.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <!-- Custom styles for this template -->
-    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
-    <link href="/stylesheets/style.css" rel="stylesheet">
-    <link rel="stylesheet" href="/activity/assets/css/main.css" />
-	<noscript><link rel="stylesheet" href="/activity/assets/css/noscript.css" /></noscript>
-</head>
+<%- include header %>
+<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/1.9.1/jquery.min.js"></script>
+<!-- 本頁面之CSS -->
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500">
+<link rel="stylesheet" href="https://formden.com/static/cdn/bootstrap-iso.css" /> 
+
+<link rel="stylesheet" href="/activitysignup/css/form-elements.css">
+
+<link rel="stylesheet" href="/activitysignup/font-awesome/css/font-awesome.min.css"> 
+
+<link rel="stylesheet" href="/activitysignup/css/style.css">
+
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.css"/> -->
+
+<!-- Favicon and touch icons -->
+
 <body>
-	<header class="blog-header py-3">
-		<div class="row flex-nowrap justify-content-between align-items-center">
-			<div class="col-4 d-flex justify-content-end align-items-center"></div>
-		</div>
-	</header>
+		<div class="me">
+<script>
+		$.fn.smartFloat = function() {
+		var position = function(element) {
+		var top = element.position().top, pos = element.css("position");
+		$(window).scroll(function() {
+		var scrolls = $(this).scrollTop();
+		if (scrolls > top) {
+		if (window.XMLHttpRequest) {
+		element.css({
+		position: "fixed",
+		top: 0
+		});
+		} else {
+		element.css({
+		top: scrolls
+		});
+		}
+		}else {
+		element.css({
+		position: pos,
+		top: top
+		});
+		}
+		});
+		};
+		return $(this).each(function() {
+		position($(this)); 
+		});
+		};
+		 
+		//綁定
+		$("#float").smartFloat();
+		</script>  ​
+
 	<%- include nav2 %>
-	<section id="two" class="main style2">
-			<div class="container">
-					<div class="row">
-						<div class="col-3">
-							<div class="card" style="width: 100%;">
-								<ul class="list-group list-group-flush">
-									<li class="list-group-item"><h3>活動時間：</h3><span style="font-size: 16px;"><%= post.ACT_BEG_DATE %> 至<br /> <%= post.ACT_END_DATE %></span></li>
-									<li class="list-group-item"><h3>活動報名時間：</h3><span style="font-size: 16px;"><%= post.ACT_B_BEG %> 至<br /> <%= post.ACT_B_END  %></span></li>
-									<li class="list-group-item"><h3>活動地點：</h3><span style="font-size: 16px;"><%= post.ACT_LOCATION %></span></li>
-									<li class="list-group-item"><h3>活動性別限制：</h3>
-										<% if(post.ACT_LIMIT_SEX == '1') {%>
-											<span style="font-size: 16px;">男</span>
-										<% }else if(post.ACT_LIMIT_SEX == '2') {%>
-											<span style="font-size: 16px;">女</span>
-										<%} else {%>
-											<span style="font-size: 16px;">不限</span>
-										<%　} %>
-										</li>
-									<li class="list-group-item"><h3>活動人數限制：</h3><span style="font-size: 16px;"><%= post.ACT_LIMIT %>人</span></li>
-									<li class="list-group-item"><h3>目前活動人數：</h3><span style="font-size: 16px;"><%= post.ACT_SIGN_NUM %>人</span></li>
-								</ul>
-							</div>
-						</div>
-						<div class="col-6 text-dark">
-							<div class="card">
-								<div class="card-header">
-									<%= post.ACT_SUBJ_NAME %>
+	<section id="two" class="mine">
+			<div class="container"  >
+					<div class="row" >
+						
+						<!-- <div class="col-12">
+							<br>
+							<br>
+							<br>
+							<br>
+								<span class="image object">
+										<img src="images/p1.jpg"class="rounded mx-auto d-block" alt="" /> 團隊合照 
+									</span>	
+						</div>-->
+						<div class="col-1"></div>
+						<div class="col-11">
+								<br>
+							<br>
+							<br>
+							<br>
+									<h1>【<%= post.ACT_DEPTNAME %>】<%= post.ACT_SUBJ_NAME %></h1>
+									</div>
+						<div class="col-1"></div>
+								
+						<div class="col-7">
+								<div class="card" style="width: 100%;">
+									
+								<h3>&nbsp&nbsp&nbsp<img src="images/week.png" width="3%">&nbsp活動時間：&nbsp<%= post.ACT_BEG_DATE %> 至 <%= post.ACT_END_DATE %></h3>
+								<h3>&nbsp&nbsp&nbsp<img src="images/locat.png" width="3%">&nbsp活動地點：&nbsp<%= post.ACT_LOCATION %></h3>
+								<h3>&nbsp&nbsp&nbsp<img src="images/sex.png" width="3%">&nbsp性別限制：
+									<% if(post.ACT_LIMIT_SEX == '1') {%>
+									男
+									<% }else if(post.ACT_LIMIT_SEX == '2') {%>
+									女
+									<%} else {%>
+									不限
+									<%　} %></h3>
+								<h3>&nbsp&nbsp&nbsp<img src="images/group.png" width="3%">&nbsp人數限制：&nbsp<%= post.ACT_LIMIT %>人</h3>
+								<h3>&nbsp&nbsp&nbsp<img src="images/time.png" width="3%">&nbsp報名時間：&nbsp<%= post.ACT_B_BEG %> 至<%= post.ACT_B_END  %></h3>
+								<br>
+							
+							<h2>&nbsp&nbsp活動介紹</h2>
+									
+									<img src="images/p1.jpg"width="50%" class="rounded mx-auto d-block"alt="" />
+									
 								</div>
-								<div class="card-body">
-									<%- post.ACT_LIST %>
-								</div>
-							</div>
 						</div>
-						<div class="col-3">
-							<div class="card" style="width: 100%;">
-								<ul class="list-group list-group-flush">
-									<li class="list-group-item"><h3>主辦隊伍：</h3><span style="font-size: 20px;"><%= post.ACT_DEPTNAME %></span></li>
-									<li class="list-group-item"><h3>聯絡人姓名：</h3><span style="font-size: 20px;"><%= post.ACT_COMM_USER %></span></li>
-									<li class="list-group-item"><h3>聯絡人電話：</h3><span style="font-size: 20px;">0<%= post.ACT_COMM_TEL %></span></li>
-									<li class="list-group-item"><h3>聯絡人信箱：</h3><a href="mailto:<%= post.ACT_COMM_EMAIL %>"><span style="font-size: 20px;"><%= post.ACT_COMM_EMAIL %></span></a></li>
-									<li class="list-group-item"><a href="/activity/SignUp/<%= post._id %>"><button he class="btn btn-danger btn-block"><span style="font-size: 18px;">我想報名</span></button></a></li>
-								</ul>
+						<div class="col-3 activityBody" >
+								<div class="card" style="width: 100%;" >
+							<h4>
+							主辦隊伍：&nbsp<%= post.ACT_DEPTNAME %><br>
+							聯絡人：&nbsp&nbsp<%= post.ACT_COMM_USER %><br>
+							聯絡電話：&nbsp0<%= post.ACT_COMM_TEL %><br>
+							聯絡信箱：<br>&nbsp<%= post.ACT_COMM_EMAIL %><br>
+							<br>
+							</h4>	
+							<a href="/activity/SignUp/<%= post._id %>"><button type="button" style="position:sticky" class="btn btn-primary btn-lg btn-block">我想報名</button></a> 		
 							</div>
 						</div>
 					</div>
-				</div>
+				
+			</div>
 	</section>
-	<style>
-		img {
-			max-width:100%;
-			max-height:100%;
-		}
+</div>
 
-		.main.style2 {
-			background-color: #333;
-			color: black;
-			background-attachment: fixed, fixed;
-			background-image: url("/activity/images/overlay1.png"), url("/activity/images/header2.jpg");
-			background-size: auto, cover;
+<link rel="stylesheet" href="/activity/assets2/css/stytle.css" />
+<script src="/activity/assets2/floatjs/stickUp.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="/activitysignup/bootstrap/js/bootstrap.min.js"></script>
+<script src="/activitysignup/js/jquery.backstretch.min.js"></script>
+<script src="/activitysignup/js/retina-1.1.0.min.js"></script>
+<script src="/activity/assets2/js/scripts.js"></script> 
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+<script type="text/javascript">
+	$(function(){
+		$.fn.stickup=function(){   /*声明插件，这里的this指的是当前元素*/
+			var $cur=this,
+			$width=$cur.width(),
+			$height=$cur.height(),
+			$offsetTop=$cur.offset().top,
+			$offsetLeft=$cur.offset().left
+			var $clone_node=$cur.clone().insertBefore($cur).css({'opacity':"0"}).hide()
+			$(window).on("scroll",function(){
+				var $scrollTop=$(window).scrollTop();
+				console.log($scrollTop)
+				if($scrollTop>=$offsetTop){
+					if(!isFixed()){
+						setFixed();
+					}
+				} else{
+					if(isFixed()){
+						removeFixed()
+					}
+				}
+			});
+			function isFixed(){
+				return $clone_node.data('fixed_mark');
+			}
+			function setFixed(){
+				$clone_node.data('fixed_mark',true)
+				.css({'position':'fixed',
+					'left':$offsetLeft,
+					'top':60,
+					'width':$width,
+					'height':$height,
+					'z-index':9999
+				})
+				$clone_node.css({'opacity':"1"}).show()
+			}
+			function removeFixed(){
+				$clone_node.data('fixed_mark',false)
+				.removeAttr('style')
+				$clone_node.hide()
+			}
 		}
-	</style>
-	<script type="text/javascript">
-		<% if(success) {%>
-			alert('<%= success %>');
-		<% } %>
-		<% if(error) {%>
-			alert('<%= error %>');
-		<% } %>
-	</script>
+		$("#bar").stickup()  
+	})
+</script>
 </body>
-
-
 <%- include footer %>

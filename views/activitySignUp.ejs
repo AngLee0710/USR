@@ -1,39 +1,43 @@
-    <!DOCTYPE html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title><%= title %></title>
+<%- include header %>
 
-        <!-- CSS -->
+        <!-- 本頁面之CSS -->
         <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500">
-        <link rel="stylesheet" href="https://formden.com/static/cdn/bootstrap-iso.css" />
-        <link rel="stylesheet" href="/activitysignup/bootstrap/css/bootstrap.min.css">
-        <link rel="stylesheet" href="/activitysignup/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://formden.com/static/cdn/bootstrap-iso.css" /> 
+
         <link rel="stylesheet" href="/activitysignup/css/form-elements.css">
+
+        <link rel="stylesheet" href="/activitysignup/font-awesome/css/font-awesome.min.css"> 
+        
         <link rel="stylesheet" href="/activitysignup/css/style.css">
-        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-        <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="/stylesheets/bootstrap.css">
-        <link href="/stylesheets/style.css" rel="stylesheet">
 
+        <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.css"/> -->
 
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.css"/>
         <!-- Favicon and touch icons -->
-        <link rel="shortcut icon" href="/acssativitysignup/ico/favicon.png">
+         <link rel="shortcut icon" href="/acssativitysignup/ico/favicon.png">
         <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/activitysignup/ico/apple-touch-icon-144-precomposed.png">
         <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/activitysignup/ico/apple-touch-icon-114-precomposed.png">
         <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/activitysignup/ico/apple-touch-icon-72-precomposed.png">
         <link rel="apple-touch-icon-precomposed" href="/activitysignup/ico/apple-touch-icon-57-precomposed.png">
+
+
     <body>
+
+        <!-- Top menu -->
         <%- include nav2 %>
+
+        <!-- Top content -->
+        <div class="mine">
         <div class="top-content">
             <div class="inner-bg">
                 <div class="container">
                     <div class="row">
                         <div class="col-12" >
                             <div class="form-top">
-                                <h2 color="white"style="text-align:center">活動名稱：<span><%= post.ACT_SUBJ_NAME %><i class="fa fa-pencil"></i></span></h2>
+                               
+                                    <h2 color="white"style="text-align:center">活動名稱：<span><%= post.ACT_SUBJ_NAME %><i class="fa fa-pencil"></i></span></h2>
+                              
+                               
+                                
                             </div>
                         </div>
                         <div class="col-lg-3 col-md-3 col-xs-1"></div>
@@ -122,7 +126,11 @@
                     </div>
                 </div>
             </div>
+
         </div>
+        </div>
+
+
         <!-- Javascript -->
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
         <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
@@ -178,7 +186,7 @@
     </body>
 
     </html>
-
+<%- include footer %>
 
 
 
