@@ -1,6 +1,5 @@
 .blog-header {
   line-height: 1;
-  border-bottom: 1px solid #e5e5e5
 }
 .blog-header-logo {
   font-family: "Playfair Display", Georgia, "Times New Roman", serif;
@@ -210,7 +209,7 @@ dl
 {
   margin: 0;
   padding:0;
-  margin-botton:0;
+  margin-bottom: 0;
   list-style: none
 }
 
@@ -507,10 +506,6 @@ height: 400px;
   height: 60px;
 }
 
-.nav_BGC{ 
-  background: rgba(100%,100%,100%,0.65);
- 
-}
 .txt_s{
   margin:0px auto;
   text-align:center;

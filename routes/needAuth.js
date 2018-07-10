@@ -8,7 +8,7 @@ const User = require('../models/user.js');
 const Team = require('../models/team.js');
 const actPost = require('../models/activity.js');
 const Leader = require('../models/leader.js');
-const actSignUp = require('../models/actSingUp.js');
+const achi = require('../models/achievement.js')
 
 const storage = multer.diskStorage({
 	destination: (req, file, cb) => {
@@ -54,30 +54,32 @@ module.exports =  (app) => {
 	app.get('/activityManage', checkLogin);
 	app.get('/activityManage', (req, res) => {
 		let page = req.query.p ? parseInt(req.query.p) : 1;
-		actPost.getLimit(null, page, 6, (err, actPosts, actTotal) => {
+		actPost.getAll((err, posts) => {
 			if(err) {
-				req.flash('error', err);
-				return res.redirect('/activityManage');
-			}else {
-				Team.getLimit(null, page, 'max', (err, teams, total) => {
-					res.render('activityManage', {
-						title: '活動管理',
-						user: req.session.user,
-						actPosts: actPosts,
-						teams: teams,
-						page: page,
-						isFirstPage: ((page - 1) == 0),
-						isLastPage: (Number((page - 1) * 6 + actPosts.length) == Number(actTotal)),
-						success: req.flash('success').toString(),
-						error: req.flash('error').toString()
-					});		
-				})	
-			}			
+				console.log(err);
+				return res.redirect('/');
+			} else {
+				Team.getAll((err, teams) => {
+					if(err) {
+						console.log(err);
+						return res.redirect('/');
+					} else {
+						res.render('activityManage', {
+							title: '活動管理',
+							user: req.session.user,
+							posts: JSON.stringify(posts),
+							teams: teams,
+							success: req.flash('success').toString(),
+							error: req.flash('error').toString()
+						});
+					}
+				});
+			}
 		});
 	});
 
-	app.post('/activityCreate', checkLogin);
-	app.post('/activityCreate', (req, res, next) => {
+	app.post('/activity/create', checkLogin);
+	app.post('/activity/create', (req, res, next) => {
 		let $ = cheerio.load(req.body.ACT_LIST);
 		let imgArray = [];
 
@@ -88,56 +90,70 @@ module.exports =  (app) => {
 		}
 
 		Team.check(req.body.ACT_DEPTNAME, (err, team) => {
-			let ACT_BEG_DATE = req.body.ACT_BEG_DATE_D + ' ' + req.body.ACT_BEG_DATE_T,
-			ACT_END_DATE = req.body.ACT_END_DATE_D + ' '	+ req.body.ACT_END_DATE_T,
-			ACT_COMM_USER = team.connection.name,
-			ACT_COMM_TEL = team.connection.phone,
-			ACT_COMM_EMAIL = team.connection.email,
-			ACT_B_BEG = req.body.ACT_B_BEG_D + ' ' + req.body.ACT_B_BEG_T,
-			ACT_B_END = req.body.ACT_B_END_D + ' ' + req.body.ACT_B_END_T;
-
-			let activityPost = new actPost(
-				req.body.ACT_SUBJ_NAME,
-				ACT_BEG_DATE,
-				ACT_END_DATE,
-				req.body.ACT_DEPTNAME,
-				req.body.ACT_LOCATION,
-				req.body.ACT_LIMIT_SEX,
-				req.body.ACT_LIMIT,
-				req.body.ACT_URL,
-				ACT_COMM_USER,
-				ACT_COMM_TEL,
-				ACT_COMM_EMAIL,			
-				ACT_B_BEG,
-				ACT_B_END,
-				req.body.ACT_K_TEL,
-				req.body.ACT_K_DEPT,
-				req.body.ACT_K_OCCUP,
-				req.body.ACT_K_IDNO,
-				req.body.ACT_K_SEX,
-				req.body.ACT_K_BIRTH,
-				req.body.ACT_K_FOOD,
-				req.body.ACT_K_ADDR,
-				req.body.ACT_LIST,
-				imgArray
-			);
-
-			activityPost.save((err) => {
-				if(err) {
-					console.log(err);
-					return res.redirect('/activityCreate');
-				} else {
-					return res.redirect('activityManage');
+			if(err) {
+				console.log(err);
+				req.flash('error', 'Server model error !!');
+				return res.redirect('/activityManage');				 
+			} else if(!team) 
+				req.flash('error', '未指定隊伍');
+			else {
+				let ACT_BEG_DATE = req.body.ACT_BEG_DATE_D + ' ' + req.body.ACT_BEG_DATE_T,
+				ACT_END_DATE = req.body.ACT_END_DATE_D + ' '	+ req.body.ACT_END_DATE_T,
+				ACT_COMM_USER = team.connection.name,
+				ACT_COMM_TEL = team.connection.phone,
+				ACT_COMM_EMAIL = team.connection.email,
+				ACT_B_BEG = req.body.ACT_B_BEG_D + ' ' + req.body.ACT_B_BEG_T,
+				ACT_B_END = req.body.ACT_B_END_D + ' ' + req.body.ACT_B_END_T,
+				ACT_LOCATION = {
+					LOCATION_NAME: req.body.ACT_LOCATION_NAME,
+					LOCATION_ADDR: req.body.ACT_LOCATION_ADDR,
+					LOCATION_LAT: req.body.ACT_LOCATION_LAT,
+					LOCATION_LNG:  req.body.ACT_LOCATION_LNG
 				}
-			});
+				let activityPost = new actPost(
+					req.body.ACT_SUBJ_NAME,
+					Date.parse(ACT_BEG_DATE),
+					Date.parse(ACT_END_DATE),
+					req.body.ACT_DEPTNAME,
+					ACT_LOCATION,
+					req.body.ACT_LIMIT_SEX,
+					req.body.ACT_LIMIT,
+					req.body.ACT_URL,
+					ACT_COMM_USER,
+					ACT_COMM_TEL,
+					ACT_COMM_EMAIL,			
+					Date.parse(ACT_B_BEG),
+					Date.parse(ACT_B_END),
+					req.body.ACT_K_TEL,
+					req.body.ACT_K_DEPT,
+					req.body.ACT_K_OCCUP,
+					req.body.ACT_K_IDNO,
+					req.body.ACT_K_SEX,
+					req.body.ACT_K_BIRTH,
+					req.body.ACT_K_FOOD,
+					req.body.ACT_K_ADDR,
+					req.body.ACT_LIST,
+					imgArray
+				);
+
+				activityPost.save((err) => {
+					if(err) {
+						req.flash('error', err);
+						return res.redirect('/activityManage');
+					} else {
+						req.flash('success', '發布成功');
+						return res.redirect('/activityManage');
+					}
+				});
+			}
 		});
 	});
 
 	app.post('/activity/get', checkLogin);
 	app.post('/activity/get', (req, res) => {
-		actPost.tack(req.body.data, (err, actPost) => {
+		actPost.take(req.body.data, (err, actPost) => {
 			if(err){
-				req.flash('error', err);
+				console.log(err);
 				return res.redirect('/activityManage');
 			} else {
 				res.send(actPost);
@@ -194,14 +210,14 @@ module.exports =  (app) => {
 				ACT_LIST: req.body.ACT_LIST,
 				imgArray: imgArray
 			}
-
-			console.log(req.body.editID);
-
 			actPost.edit(req.body.editID, activityPost, (err, errr) => {
-				if(errr == 'success')
+				if(errr == 'success'){
+					req.flash('success', '修改成功！！！');
 					return res.redirect('/activityManage')
+				}
 				else {
 					console.log(err);
+					req.flash('error', '修改失敗！！！');
 					return res.redirect('/activityManage')
 				}
 			});
@@ -218,12 +234,24 @@ module.exports =  (app) => {
 		});
 	});
 
+	app.post('/activity/get/noACHI', checkLogin);
+	app.post('/activity/get/noACHI', (req, res) => {
+		actPost.takeAllofAchiByTeam(req.body.data, false, (err, posts) => {
+			if(err){
+				console.log(err);
+				return res.redirect('/achievementManage');
+			} else {
+				return res.send(posts);
+			}
+		});
+	});
+
 	app.get('/leaderManage', checkLogin);
 	app.get('/leaderManage',  (req, res) => {
 		let page = req.query.p ? parseInt(req.query.p) : 1;
 		Leader.getLimit(null, page, 6,(err, leaders, leaderTotal) => {
 			if(err) {
-				req.flash('error', err);
+				console.log(err);
 				return res.redirect('/leaderManage');
 			}
 
@@ -240,33 +268,38 @@ module.exports =  (app) => {
 		});		
 	});
 
-	app.get('/teamCreate', checkLogin);
-	app.get('/teamCreate', (req, res) => {
-		let p = req.query.p;
-		Leader.get(p, (err, leader) => {
-			if(err) {
-				req.flash('error', err);
-				return res.redirect('back');
-			}
-			else if(leader == null) {
-				req.flash('error', '隊長不存在')
-				return res.redirect('back');
-			}else{
-				res.render('teamCreate', {
-					title: '團隊新增',
-					leader: p,
-					user: req.session.user,
-					success: req.flash('success').toString(),
-					error: req.flash('error').toString()
-				});
+	app.get('/teamManage', checkLogin);
+	app.get('/teamManage', (req, res) => {
+		let page = req.query.p ? parseInt(req.query.p) : 1;
+		Team.getLimit(null, page, 6, (err, teams, total) => {
+			res.render('teamManage', {
+				title: '團隊管理',
+				user: req.session.user,
+				teams: JSON.stringify(teams),
+				page: page,
+				isFirstPage: ((page - 1) == 0),
+				isLastPage: (Number((page - 1) * 6 + teams.length) == Number(total)),
+				success: req.flash('success').toString(),
+				error: req.flash('error').toString()
+			});		
+		});
+	});
+
+	app.post('/team/get', checkLogin);
+	app.post('/team/get', (req, res) => {
+		Team.take(req.body.data, (err, team) => {
+			if(err){
+				console.log(err);
+				return res.redirect('/teamManage');
+			} else {
+				res.send(team);
 			}
 		});
-		
 	});
 
 	app.post('/teamCreate', checkLogin);
-	app.post('/teamCreate', (req, res, next) => {
-		let newTeam = new Team({
+	app.post('/teamCreate', upload.single('teamImg'), (req, res) => {
+		let team = {
 			name: req.body.name,
 			purpose: req.body.purpose,
 			introduction: req.body.introduction,
@@ -278,28 +311,152 @@ module.exports =  (app) => {
 				phone: req.body.phone,
 				email: req.body.email
 			}
-		})
+		}
+
+		if(req.file)
+			team.teamImg = '/upload/' + req.file.filename;
+
+		let newTeam = new Team(team)
 
 		Team.check(newTeam.name, (err, team) => {
 			if(err) {
-				req.flash('error', err);
-				return res.redirect('/teamCreate');
+				console.log(err)
+				return res.redirect('/teamManage');
 			}else if(team){
-				req.flash('error', '隊伍已存在');
-				return res.redirect('/team');
+				req.flash('error', '隊伍名稱已存在');
+				return res.redirect('/teamManage');
+			} else {
+				newTeam.save((err) => {
+					if(err) {
+						console.log(err);
+						return res.redirect('/teamManage');
+						
+					} else {
+						req.flash('success', '隊伍創建成功');
+						return res.redirect('/teamManage');
+					}
+				});
 			}
+		});
+	});
 
-			newTeam.save((err) => {
-				if(err) {
-					req.flash('error', err);
-					return res.redirect('/teamCreate');
-					
-				} else {
-					req.flash('success', '隊伍創建成功');
-					return res.redirect('/team');
-					next();
-				}
-			});
+	app.post('/team/edit', checkLogin);
+	app.post('/team/edit', upload.single('editTeamImg'), (req, res) => {
+		let team = {
+			name: req.body.name,
+			purpose: req.body.purpose,
+			introduction: req.body.introduction,
+			pro_introduction: req.body.pro_introduction,
+			leader: req.body.leader,
+			website: req.body.website,
+			connection: {
+				name: req.body.conecntName,
+				phone: req.body.phone,
+				email: req.body.email
+			}
+		}
+		if(req.file) 
+			team.teamImg =  '/upload/' + req.file.filename;
+		
+		Team.edit(req.body.teamID, team, (err, team) => {
+			if(team == 'success'){
+				req.flash('success', '修改成功！！！');
+				return res.redirect('/TeamManage');
+			}
+			else {
+				console.log(err);
+				return res.redirect('/TeamManage');
+			}
+		});
+	});
+
+	app.post('/team/delete', checkLogin);
+	app.post('/team/delete', (req, res) => {
+		Team.remove(req.body.data, (err) => {
+			if(err == 'error')
+				res.send('error');
+			 else 
+				res.send('success');
+		});
+	});
+
+	app.get('/achievementManage', checkLogin);
+	app.get('/achievementManage', (req, res) => {
+		Team.getAll((err, teams) => {
+			if(err)
+				return res.redirect('/');
+			else {
+				achi.getAll((err, posts) => {
+					if(err)
+						return res.redirect('/');
+					else {
+						res.render('achievementManage', {
+							title: '成果管理',
+							user: req.session.user,
+							teams: teams,
+							posts: JSON.stringify(posts),
+							success: req.flash('success').toString(),
+							error: req.flash('error').toString()
+						});
+					}
+				});
+			}
+		});
+	});
+
+	app.post('/achievement/create', checkLogin);
+	app.post('/achievement/create', upload.array('ACHI_DEP_IMG', 100), (req, res) => {
+		let image = [];
+		req.files.forEach((file, index) => {
+			image[index] = {
+				NAME: '/upload/' + file.filename
+			}
+		});
+
+
+
+		actPost.take(req.body.ACT_ID, (err, act) => {
+			if(err){
+				console.log(err);
+				return res.redirect('/achievementManage');
+			} else {
+				let newAchi = new achi(
+					req.body.ACT_ID,
+					req.body.ACT_NAME,
+					req.body.TEAM_NAME,
+					act.ACT_BEG_DATE,
+					act.ACT_END_DATE,
+					act.ACT_LOCATION,
+					image,
+					req.body.ACHI_DEP
+				)
+
+				newAchi.save((err) => {
+					if(err) {
+						req.flash('error', err);
+						return res.redirect('/achievementManage');
+					} else {
+						req.flash('success', '新增成功');
+						return res.redirect('/achievementManage');
+					}
+				});
+			}
+		});
+	});
+
+	app.post('/achievement/delete', checkLogin);
+	app.post('/achievement/delete', (req, res) => {
+		achi.remove(req.body.data.ID, (err) => {
+			if(err == 'error')
+				res.send('error');
+			 else{
+				 actPost.achiDelete(req.body.data.ACT_ID, (err) => {
+					if(err)
+						console.log(err)
+					else
+						res.send('success');
+				 });
+			 }
 		});
 	});
 
@@ -311,9 +468,8 @@ module.exports =  (app) => {
 	app.get('/logout', checkLogin);
 	app.get('/logout', (req, res) => {
 		req.session.user = null;
-		res.redirect('/');
+		return res.redirect('/');
 	});
-
 
 	app.post('/uploadImg', checkLogin);
 	app.post('/uploadImg', upload.single('imgFile'),  (req, res) => {

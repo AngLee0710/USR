@@ -1,27 +1,89 @@
 <div class="col-12" id="managePage">
-    <table class="table" style="font-size: 24px; font-family:Microsoft JhengHei;">
-        <thead>
-            <tr>
-                <th>選取</th>
-                <th>隊長名稱</th>
-                <th>自然名</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% var i = 0 %>
-            <% leaders.forEach((leader, index) => {%>
-                <tr>
-                    <th><input id="select<%= i %>" class="form-check-input" type="checkbox" value="<%= leader._id %>"></th>
-                    <th>
-                        <a href="leader/<%= leader.nick %>">
-                            <%= leader.name %> <%= leader.title %>
-                        </a>
-                    </th>
-                    <th><%= leader.nick %></th>
-                </tr>
-                <% i++ %>
-            <% }) %>
-        </tbody>
-    </table>
-    <%- include paging %>
+    <table id="dataTableForTeam" class="table table-bordered"></table>
 </div>
+<script>
+    $(document).ready(function() {
+        (function() {
+            let result = <%- teams %>;
+            let nowID = null;
+            let nowID_D = null
+            for(var i = 0 ; i < result.length ; i++)
+                result[i].id = i + 1;
+            let dataTableForTeam = $('#dataTableForTeam').DataTable({
+                "data": result,
+                "columns": [
+                    { "title": "團隊ID", "data": "id" },
+                    { "title": "團隊名稱", "data": "name", 
+                        "fnCreatedCell": function(td, cData, rData, rIndex, cIndex) {
+                            $(td).html('<a href=/team/' + rData._id + '>' + cData + '</a>');
+                        }},
+                    { "title": "團隊領導人", "data": "leader" }
+                ]
+            });
+
+            $('#dataTableForTeam tbody').on( 'click', 'tr', function () {
+                if ($(this).hasClass('selected')) {
+                    $(this).removeClass('selected');
+                    nowID = null;
+                    nowID_D = null
+                }
+                else {
+                    dataTableForTeam.$('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                    if(dataTableForTeam.row( this ).data()){
+                        nowID = dataTableForTeam.row( this ).data()._id;
+                        nowID_D = $(this);
+                    }
+                }
+            });
+
+            $('#update').click(() => {
+                if(nowID == null || nowID_D == null){
+                    alert('尚未選取貼文');
+                    return;
+                }
+                let data = nowID;
+                $('#managePage').hide();
+                $('#features').hide();
+                $('#newPage').hide();
+                $('#backDIV').show();
+                $('#editPage').show();
+
+                $.post('/team/get', { data: data }, (result) => {
+                    $('#editID').val(result._id);
+                    $('#editInputID1').val(result.name);
+                    $('#editInputID2').val(result.leader);
+                    $('#editInputID3').val(result.website);
+                    $('#editInputID4').val(result.connection.name);
+                    $('#editInputID5').val(result.connection.phone);
+                    $('#editInputID6').val(result.connection.email);
+                    $(document.getElementsByTagName('iframe')[3].contentWindow.document.body).html(result.purpose);
+                    $(document.getElementsByTagName('iframe')[4].contentWindow.document.body).html(result.introduction);
+                    $(document.getElementsByTagName('iframe')[5].contentWindow.document.body).html(result.pro_introduction);
+                    $("#editInputID7").attr("src", result.teamImg);
+                    data = null;
+                });
+            });
+
+            $('#delete').click(() => {
+                if(nowID == null || nowID_D == null){
+                    alert('尚未選取貼文');
+                    return;
+                }
+                    
+                let data =  nowID;
+                $.post('/team/delete', { data: data } , (result) => {
+                    if(result == 'success'){
+                        dataTableForAct.row(nowID_D).remove().draw();
+                        nowID = null;
+                        nowID_D = null;
+                    }
+                    else{
+                        console.log('error');
+                        alert('資料庫模組錯誤');
+                    }
+                });
+            });
+        })();
+    });
+</script>

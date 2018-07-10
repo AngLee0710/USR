@@ -16,7 +16,6 @@ const needAuth = require('./routes/needAuth')
 const settings = require('./settings');
 const app = express();
 
-
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs'); //指定範本引擎為 ejs

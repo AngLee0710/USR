@@ -1,27 +1,36 @@
 <div class="col-12 activityManageNewPage" id="editPage" style="display: none;">
     <form class="col-12" method="post" action="/activity/edit">
         <div id="formDIV" class="row">
-                <input id="editID" name="editID" type="hidden" value="">
-            <div class="col-12">
-                活動名稱:<input id="ACT_SUBJ_NAME" class="form-control myInput" type="text" name="ACT_SUBJ_NAME">
+            <div class="form-group col-12">
+                <label for="editInputID1">活動名稱：</label>
+                <input type="text" class="form-control" id="editInputID1" name="ACT_SUBJ_NAME">
             </div>
-            <div class="col-6">
-                活動地點:<input id="ACT_LOCATION" class="form-control myInput" type="text" name="ACT_LOCATION">
+            <div class="form-group col-9 ">
+                <label for="editInputID2">活動地名</label>
+                <input type="text" class="form-control" id="editInputID2" name="ACT_LOCATION_NAME"
+                placeholder="嘉義縣中埔鄉客家文化協會">
             </div>
-            <div class="col-6">
-                活動性別限制:
-                <select id="ACT_LIMIT_SEX" class="form-control form-control-lg" name="ACT_LIMIT_SEX">
-                    <option value="1">男性</option>
-                    <option value="2">女性</option>
-                    <option value="N">不限</option>
-                </select>
+            <div class="form-group col-3 ">
+                <label for="editInputID3">　</label>
+                <input type="button" class="form-control btn btn-warning" id="editInputID3" value="查詢">
+            </div>
+            <div class="form-group col-12 ">
+                <label for="editInputID4">活動地點：（請輸入詳細地址）</label>
+                <input type="text" class="form-control" id="editInputID4" name="ACT_LOCATION_ADDR"
+                placeholder="606台灣嘉義縣中埔鄉金蘭村頂山門29號">
+                <input type="hidden" class="form-control" id="editInputID33" name="ACT_LOCATION_LNG"
+                placeholder="120.4946172">
+                <input type="hidden" class="form-control" id="editInputID32" name="ACT_LOCATION_LAT"
+                placeholder="23.4462119">
             </div>
             <div class="col-6 row" style="margin-right: 15px;">
-                <div class="col-6">
-                    活動開始時間:<input id="ACT_BEG_DATE_D" class="form-control myInput form-control-lg" type="date" name="ACT_BEG_DATE_D">
+                <div class="form-group col-6">
+                    <label for="editInputID5">活動開始時間：</label>
+                    <input type="date" class="form-control" id="editInputID5" name="ACT_BEG_DATE_D">
                 </div>
-                <div class="col-6" style="padding-top: 25px;">
-                    <select id="ACT_BEG_DATE_T" class="form-control form-control-lg" name="ACT_BEG_DATE_T">
+                <div class="form-group col-6">
+                    <label for="editInputID6">　</label>
+                    <select id="editInputID6" class="form-control" name="ACT_BEG_DATE_T">
                         <option value="00:00">00:00</option>
                         <option value="01:00">01:00</option>
                         <option value="02:00">02:00</option>
@@ -50,200 +59,211 @@
                 </div>
             </div>
             <div class="col-6 row" style="margin-right: 15px;">
-                    <div class="col-6">
-                        活動結束時間:<input id="ACT_END_DATE_D" class="form-control myInput form-control-lg" type="date" name="ACT_END_DATE_D">
-                    </div>
-                    <div class="col-6" style="padding-top: 25px;">
-                        <select id="ACT_END_DATE_T" class="form-control form-control-lg" name="ACT_END_DATE_T">
-                            <option value="00:00">00:00</option>
-                            <option value="01:00">01:00</option>
-                            <option value="02:00">02:00</option>
-                            <option value="03:00">03:00</option>
-                            <option value="04:00">04:00</option>
-                            <option value="05:00">05:00</option>
-                            <option value="06:00">06:00</option>
-                            <option value="07:00">07:00</option>
-                            <option value="08:00">08:00</option>
-                            <option value="09:00">09:00</option>
-                            <option value="10:00">10:00</option>
-                            <option value="11:00">11:00</option>
-                            <option value="12:00">12:00</option>
-                            <option value="13:00">13:00</option>
-                            <option value="14:00">14:00</option>
-                            <option value="15:00">15:00</option>
-                            <option value="16:00">16:00</option>
-                            <option value="17:00">17:00</option>
-                            <option value="18:00">18:00</option>
-                            <option value="19:00">19:00</option>
-                            <option value="20:00">20:00</option>
-                            <option value="21:00">21:00</option>
-                            <option value="22:00">22:00</option>
-                            <option value="23:00">23:00</option>
-                        </select>
-                    </div>
+                <div class="form-group col-6">
+                    <label for="editInputID7">活動結束時間：</label>
+                    <input type="date" class="form-control" id="editInputID7" name="ACT_END_DATE_D">
+                </div>
+                <div class="form-group col-6">
+                    <label for="editInputID8">　</label>
+                    <select id="editInputID8" class="form-control" name="ACT_END_DATE_T">
+                        <option value="00:00">00:00</option>
+                        <option value="01:00">01:00</option>
+                        <option value="02:00">02:00</option>
+                        <option value="03:00">03:00</option>
+                        <option value="04:00">04:00</option>
+                        <option value="05:00">05:00</option>
+                        <option value="06:00">06:00</option>
+                        <option value="07:00">07:00</option>
+                        <option value="08:00">08:00</option>
+                        <option value="09:00">09:00</option>
+                        <option value="10:00">10:00</option>
+                        <option value="11:00">11:00</option>
+                        <option value="12:00">12:00</option>
+                        <option value="13:00">13:00</option>
+                        <option value="14:00">14:00</option>
+                        <option value="15:00">15:00</option>
+                        <option value="16:00">16:00</option>
+                        <option value="17:00">17:00</option>
+                        <option value="18:00">18:00</option>
+                        <option value="19:00">19:00</option>
+                        <option value="20:00">20:00</option>
+                        <option value="21:00">21:00</option>
+                        <option value="22:00">22:00</option>
+                        <option value="23:00">23:00</option>
+                    </select>
+                </div>
             </div>
             <div class="col-6 row" style="margin-right: 15px;">
-                    <div class="col-6">
-                        活動開始報名時間:<input id="ACT_B_BEG_D" class="form-control myInput form-control-lg" type="date" name="ACT_B_BEG_D">
-                    </div>
-                    <div class="col-6" style="padding-top: 25px;">
-                        <select id="ACT_B_BEG_T" class="form-control form-control-lg" name="ACT_B_BEG_T">
-                            <option value="00:00">00:00</option>
-                            <option value="01:00">01:00</option>
-                            <option value="02:00">02:00</option>
-                            <option value="03:00">03:00</option>
-                            <option value="04:00">04:00</option>
-                            <option value="05:00">05:00</option>
-                            <option value="06:00">06:00</option>
-                            <option value="07:00">07:00</option>
-                            <option value="08:00">08:00</option>
-                            <option value="09:00">09:00</option>
-                            <option value="10:00">10:00</option>
-                            <option value="11:00">11:00</option>
-                            <option value="12:00">12:00</option>
-                            <option value="13:00">13:00</option>
-                            <option value="14:00">14:00</option>
-                            <option value="15:00">15:00</option>
-                            <option value="16:00">16:00</option>
-                            <option value="17:00">17:00</option>
-                            <option value="18:00">18:00</option>
-                            <option value="19:00">19:00</option>
-                            <option value="20:00">20:00</option>
-                            <option value="21:00">21:00</option>
-                            <option value="22:00">22:00</option>
-                            <option value="23:00">23:00</option>
-                        </select>
-                    </div>
+                <div class="form-group col-6">
+                    <label for="editInputID9">活動開始報名時間：</label>
+                    <input type="date" class="form-control" id="editInputID9" name="ACT_B_BEG_D">
+                </div>
+                <div class="form-group col-6">
+                    <label for="editInputID10">　</label>
+                    <select id="editInputID10" class="form-control" name="ACT_B_BEG_T">
+                        <option value="00:00">00:00</option>
+                        <option value="01:00">01:00</option>
+                        <option value="02:00">02:00</option>
+                        <option value="03:00">03:00</option>
+                        <option value="04:00">04:00</option>
+                        <option value="05:00">05:00</option>
+                        <option value="06:00">06:00</option>
+                        <option value="07:00">07:00</option>
+                        <option value="08:00">08:00</option>
+                        <option value="09:00">09:00</option>
+                        <option value="10:00">10:00</option>
+                        <option value="11:00">11:00</option>
+                        <option value="12:00">12:00</option>
+                        <option value="13:00">13:00</option>
+                        <option value="14:00">14:00</option>
+                        <option value="15:00">15:00</option>
+                        <option value="16:00">16:00</option>
+                        <option value="17:00">17:00</option>
+                        <option value="18:00">18:00</option>
+                        <option value="19:00">19:00</option>
+                        <option value="20:00">20:00</option>
+                        <option value="21:00">21:00</option>
+                        <option value="22:00">22:00</option>
+                        <option value="23:00">23:00</option>
+                    </select>
+                </div>
             </div>
             <div class="col-6 row" style="margin-right: 15px;">
-                    <div class="col-6">
-                        活動結束報名時間:<input id="ACT_B_END_D" class="form-control myInput form-control-lg" type="date" name="ACT_B_END_D">
-                    </div>
-                    <div class="col-6" style="padding-top: 25px;">
-                        <select id="ACT_B_END_T" class="form-control form-control-lg" name="ACT_B_END_T">
-                            <option value="00:00">00:00</option>
-                            <option value="01:00">01:00</option>
-                            <option value="02:00">02:00</option>
-                            <option value="03:00">03:00</option>
-                            <option value="04:00">04:00</option>
-                            <option value="05:00">05:00</option>
-                            <option value="06:00">06:00</option>
-                            <option value="07:00">07:00</option>
-                            <option value="08:00">08:00</option>
-                            <option value="09:00">09:00</option>
-                            <option value="10:00">10:00</option>
-                            <option value="11:00">11:00</option>
-                            <option value="12:00">12:00</option>
-                            <option value="13:00">13:00</option>
-                            <option value="14:00">14:00</option>
-                            <option value="15:00">15:00</option>
-                            <option value="16:00">16:00</option>
-                            <option value="17:00">17:00</option>
-                            <option value="18:00">18:00</option>
-                            <option value="19:00">19:00</option>
-                            <option value="20:00">20:00</option>
-                            <option value="21:00">21:00</option>
-                            <option value="22:00">22:00</option>
-                            <option value="23:00">23:00</option>
-                        </select>
-                    </div>
+                <div class="form-group col-6">
+                    <label for="editInputID11">活動結束報名時間：</label>
+                    <input type="date" class="form-control" id="editInputID11" name="ACT_B_END_D">
+                </div>
+                <div class="form-group col-6">
+                    <label for="editInputID12">　</label>
+                    <select id="editInputID12" class="form-control" name="ACT_B_END_T">
+                        <option value="00:00">00:00</option>
+                        <option value="01:00">01:00</option>
+                        <option value="02:00">02:00</option>
+                        <option value="03:00">03:00</option>
+                        <option value="04:00">04:00</option>
+                        <option value="05:00">05:00</option>
+                        <option value="06:00">06:00</option>
+                        <option value="07:00">07:00</option>
+                        <option value="08:00">08:00</option>
+                        <option value="09:00">09:00</option>
+                        <option value="10:00">10:00</option>
+                        <option value="11:00">11:00</option>
+                        <option value="12:00">12:00</option>
+                        <option value="13:00">13:00</option>
+                        <option value="14:00">14:00</option>
+                        <option value="15:00">15:00</option>
+                        <option value="16:00">16:00</option>
+                        <option value="17:00">17:00</option>
+                        <option value="18:00">18:00</option>
+                        <option value="19:00">19:00</option>
+                        <option value="20:00">20:00</option>
+                        <option value="21:00">21:00</option>
+                        <option value="22:00">22:00</option>
+                        <option value="23:00">23:00</option>
+                    </select>
+                </div>
             </div>
-            <div class="col-6">
-                報名人數上限:<input id="ACT_LIMIT" class="form-control myInput" type="number" name="ACT_LIMIT">
+             <div class="form-group col-6">
+                <label for="editInputID13">活動性別限制：</label>
+                <select class="form-control" id="editInputID13" name="ACT_LIMIT_SEX">
+                    <option value="1">男性</option>
+                    <option value="2">女性</option>
+                    <option value="N">不限</option>
+                </select>
             </div>
-            <div class="col-6">
-                相關連結:<input id="ACT_URL" class="form-control myInput" type="text" name="ACT_URL">
+            <div class="form-group col-6">
+                <label for="editInputID14">報名人數上限：</label>
+                <input type="text" class="form-control" id="editInputID14" name="ACT_LIMIT"
+                placeholder="若無輸入，人數上限為9999">
+            </div>
+            <div class="form-group col-12">
+                <label for="editInputID15">相關連結：</label>
+                <input type="text" class="form-control" id="editInputID15" name="ACT_URL">
             </div>
             <div class="col-6">
                 是否調查連絡電話:
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="ACT_K_TEL" id="q1" value="Y">
-                    <label class="form-check-label" for="q1">Y</label>
+                    <input class="form-check-input" type="radio" name="ACT_K_TEL" id="editInputID16" value="Y">
+                    <label class="form-check-label" for="editInputID16">Y</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="ACT_K_TEL" id="q2" value="N" checked>
-                    <label class="form-check-label" for="q2">N</label>
+                    <input class="form-check-input" type="radio" name="ACT_K_TEL" id="editInputID17" value="N" checked>
+                    <label class="form-check-label" for="editInputID17">N</label>
                 </div><br />
-                是否調查任職單位:
+                是否調查就讀科系名稱：
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="ACT_K_DEPT" id="q3" value="Y">
-                    <label class="form-check-label" for="q3">Y</label>
+                    <input class="form-check-input" type="radio" name="ACT_K_DEPT" id="editInputID18" value="Y">
+                    <label class="form-check-label" for="editInputID18">Y</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="ACT_K_DEPT" id="q4" value="N" checked>
-                    <label class="form-check-label" for="q4">N</label>
-                </div><br />
-                是否調查任職名稱:
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="ACT_K_OCCUP" id="q5" value="Y">
-                    <label class="form-check-label" for="q5">Y</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="ACT_K_OCCUP" id="q6" value="N" checked>
-                    <label class="form-check-label" for="q6">N</label>
+                    <input class="form-check-input" type="radio" name="ACT_K_DEPT" id="editInputID19" value="N" checked>
+                    <label class="form-check-label" for="editInputID19">N</label>
                 </div><br />
                 是否調查身份證字號:
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="ACT_K_IDNO" id="q7" value="Y">
-                    <label class="form-check-label" for="q7">Y</label>
+                    <input class="form-check-input" type="radio" name="ACT_K_IDNO" id="editInputID20" value="Y">
+                    <label class="form-check-label" for="editInputID20">Y</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="ACT_K_IDNO" id="q8" value="N" checked>
-                    <label class="form-check-label" for="q8">N</label>
+                    <input class="form-check-input" type="radio" name="ACT_K_IDNO" id="editInputID21" value="N" checked>
+                    <label class="form-check-label" for="editInputID21">N</label>
                 </div><br />
                 是否調查性別:
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="ACT_K_SEX" id="q9" value="Y">
-                    <label class="form-check-label" for="q9">Y</label>
+                    <input class="form-check-input" type="radio" name="ACT_K_SEX" id="editInputID22" value="Y">
+                    <label class="form-check-label" for="editInputID22">Y</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="ACT_K_SEX" id="q10" value="N" checked>
-                    <label class="form-check-label" for="q10">N</label>
+                    <input class="form-check-input" type="radio" name="ACT_K_SEX" id="editInputID23" value="N" checked>
+                    <label class="form-check-label" for="editInputID23">N</label>
                 </div><br />
                 是否調查生日:
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="ACT_K_BIRTH" id="q11" value="Y">
-                    <label class="form-check-label" for="q11">Y</label>
+                    <input class="form-check-input" type="radio" name="ACT_K_BIRTH" id="editInputID24" value="Y">
+                    <label class="form-check-label" for="editInputID24">Y</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="ACT_K_BIRTH" id="q12" value="N" checked>
-                    <label class="form-check-label" for="q12">N</label>
+                    <input class="form-check-input" type="radio" name="ACT_K_BIRTH" id="editInputID25" value="N" checked>
+                    <label class="form-check-label" for="editInputID25">N</label>
                 </div><br />
                 是否供餐:
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="ACT_K_FOOD" id="q13" value="Y">
-                    <label class="form-check-label" for="q13">Y</label>
+                    <input class="form-check-input" type="radio" name="ACT_K_FOOD" id="editInputID26" value="Y">
+                    <label class="form-check-label" for="editInputID26">Y</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="ACT_K_FOOD" id="q14" value="N" checked>
-                    <label class="form-check-label" for="q14">N</label>
+                    <input class="form-check-input" type="radio" name="ACT_K_FOOD" id="editInputID27" value="N" checked>
+                    <label class="form-check-label" for="editInputID27">N</label>
                 </div><br />
                 是否填報聯絡地址:
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="ACT_K_ADDR" id="q15" value="Y">
-                    <label class="form-check-label" for="q15">Y</label>
+                    <input class="form-check-input" type="radio" name="ACT_K_ADDR" id="editInputID28" value="Y">
+                    <label class="form-check-label" for="editInputID28">Y</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="ACT_K_ADDR" id="q16" value="N" checked>
-                    <label class="form-check-label" for="q16">N</label>
+                    <input class="form-check-input" type="radio" name="ACT_K_ADDR" id="editInputID29" value="N" checked>
+                    <label class="form-check-label" for="editInputID29">N</label>
                 </div>
             </div>
             <div class="col-6">
-                主辨隊伍: 
-                <select id="ACT_DEPTNAME" multiple class="form-control" name="ACT_DEPTNAME">
-                    <% teams.forEach((team, index) => { %>
-                        <option value="<%= team.name %>"><%= team.name %></option>
-                    <% }) %>
-                </select>
+                <div class="form-group">
+                    <label for="editInputID30">主辨隊伍：</label>
+                    <select multiple class="form-control" id="editInputID30" name="ACT_DEPTNAME">
+                        <% teams.forEach((team, index) => { %>
+                            <option value="<%= team.name %>"><%= team.name %></option>
+                        <% }) %>
+                    </select>
+                </div>
             </div>
             <div class="col-12">
-                活動內容:
-                <textarea class="form-control myText" id="editor_id" name="ACT_LIST" width="100%">
-                </textarea>
+                <div class="form-group">
+                    <label for="editInputID31">活動敘述：</label>
+                    <textarea class="form-control" id="editInputID31" rows="3" name="ACT_LIST"></textarea>
+                </div>
             </div>
             <div class="col-8"></div>
             <div class="col-4">
-                <input class="btn btn-warning btn-block" type="submit" value="發佈" />
+                <input class="btn btn-warning btn-block" type="submit" value="修改活動" />
             </div>
         </div>
     </form>

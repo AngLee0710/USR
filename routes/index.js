@@ -7,6 +7,8 @@ const User = require('../models/user.js');
 const Team = require('../models/team.js');
 const actPost = require('../models/activity.js');
 const Leader = require('../models/leader.js');
+const actSignUp = require('../models/actSingUp.js');
+const achi = require('../models/achievement.js')
 
 module.exports =  (app) => {
 	app.get('/', (req, res) => {
@@ -22,6 +24,15 @@ module.exports =  (app) => {
 				error: req.flash('error').toString()
 			});
 		});
+	});
+
+	app.get('/map', (req, res) => {
+		res.render('googleMap', {
+			title: 'googleMap',
+			user: req.session.user,
+			success: req.flash('success').toString(),
+			error: req.flash('error').toString()
+		})
 	});
 
 	app.get('/aboutUs', (req, res) => {
@@ -44,8 +55,6 @@ module.exports =  (app) => {
 
 	app.get('/activity', (req, res) => {
 		let page = req.query.p ? parseInt(req.query.p) : 1;
-
-
 		actPost.getLimit(null, page, 6, (err, posts, total) => {
 			if(err) 
 				posts = [];
@@ -64,25 +73,78 @@ module.exports =  (app) => {
 		});
 	});
 
+
 	app.get('/activity/SignUp/:id', (req, res) => {
-		actPost.get(req.params.id, (err, post) => {
+		actPost.take(req.params.id, (err, post) => {
+			let date = new Date();
+			date = date.getTime();
 			if(err) {
-				req.flash('error', err);
+				console.log(err);
 				return res.redirect('/');
+			}else if((post.ACT_B_BEG < date) && (post.ACT_B_END > date)) {
+				res.render('activitySignUp', {
+					title: 'USR報名表單',
+					post: post,
+					user: req.session.user,
+					success: req.flash('success').toString(),
+					error: req.flash('error').toString()
+				});
+			} else {
+				req.flash('error', '非開放報名時間！！！');
+				return res.redirect('/activity/' + req.params.id);
 			}
-			res.render('activitySignUp', {
-				post: post,
-				user: req.session.user,
-				success: req.flash('success').toString(),
-				error: req.flash('error').toString()
-			});
+		});
+	});
+
+	app.post('/activity/SignUp/:id', (req, res) => {
+		actPost.take(req.params.id, function(err, actPost) {
+			if(err)
+				console.log(err);
+			else if(actPost.ACT_B_BEG < new Date().getTime() < actPost.ACT_B_END) {
+				let date = new Date().getTime();
+				actSignUp.check(req.body.LIST_PER, function(err, sign) {
+					if(err) {
+						console.log(err);
+						return res.redirect('/');
+					}else if(sign) {
+						req.flash('error', '重複報名！！');
+						return res.redirect('/activity/SignUp/' + req.params.id);
+					} else {
+						let activitysignUp = new actSignUp(
+							req.body.LIST_ACT_ID,
+							req.body.LIST_KIND,
+							req.body.LIST_PER,
+							req.body.LIST_CNAME,
+							req.body.LIST_IDNO,
+							req.body.LIST_BIRTH,
+							req.body.LIST_TEL,
+							req.body.LIST_OCCUP,
+							req.body.LIST_SEX,
+							req.body.LIST_ADDR
+						)
+
+						activitysignUp.save((err) => {
+							if(err) {
+								console.log(err);
+								return res.redirect('/activity/SignUp/' + req.body.LIST_ACT_ID);
+							} else {
+								req.flash('success', '報名成功!!!');
+								return res.redirect('/activity/' + req.body.LIST_ACT_ID);
+							}
+						});
+					}
+				});
+			} else {
+				req.flash('error', '非開放報名時間！！！');
+				return res.redirect('/activity/' + req.params.id);
+			}
 		});
 	});
 
 	app.get('/activity/:id', (req, res) => {
 		actPost.get(req.params.id, (err, post) => {
 			if(err) {
-				req.flash('error', err);
+				console.log(err);
 				return res.redirect('/');
 			}
 			Team.get(post.ACT_DEPTNAME, (err, team) => {
@@ -122,26 +184,28 @@ module.exports =  (app) => {
 		});
 	});
 
-	app.get('/team/:name', (req, res) => {
-		Team.get(req.params.name, (err, team) => {
+	app.get('/team/:id', (req, res) => {
+		Team.get(req.params.id, (err, team) => {
 			if(err) {
-				req.flash('error', err);
+				console.log(err);
 				return res.redirect('/');
 			}
 			if(!team) {
 				req.flash('error', '隊伍不存在');
 				return res.redirect('/');
 			}
-
-			Leader.get(team.leader, (err, leader) => {
-				res.render('team', {
-					title: team.name,
-					teams: team,
-					leader: leader.name,
-					user: req.session.user,
-					success: req.flash('success').toString(),
-					error: req.flash('error').toString()
-				});
+			achi.getByTeam(team.name, (err, doc) => {
+				if(err)
+					return res.redirect('/');
+				else
+					res.render('team', {
+						title: team.name,
+						teams: team,
+						achievement: JSON.stringify(doc),
+						user: req.session.user,
+						success: req.flash('success').toString(),
+						error: req.flash('error').toString()
+					});
 			});
 		});
 	});

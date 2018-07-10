@@ -1,0 +1,123 @@
+<%- include manageHeader %>
+<script charset="utf-8" src="/kindeditor/kindeditor-all-min.js"></script>
+<script charset="utf-8" src="/kindeditor/lang/zh-TW.js"></script>
+<script>
+  (function() {
+    var editor;
+    KindEditor.ready(function(K) {
+      editor = K.create('textarea', {
+        uploadJson: '/uploadImg',
+        width : '100%',
+        items: [
+          'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'blod', 'italic',
+          'underline', 'removeformat', 'justifyleft', 'justifycenter',
+          'justifyright',
+          'insertorderedlist', 'insertunorderedlist', '|', 'emoticons', 'link'
+        ]
+      });
+    });
+  })();
+</script>
+<body class="fixed-nav sticky-footer bg-dark" id="page-top">
+  <!-- Navigation-->
+  <%- include manageNav %>
+  <div class="content-wrapper">
+    <div class="container-fluid">
+      <!-- Breadcrumbs-->
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="/">USR管理</a>
+        </li>
+        <li class="breadcrumb-item active"><%= title %></li>
+      </ol>
+      <div class="row">
+      </div>
+      <div class="row">
+          <div class="col-12 row">
+            <%- include features %>
+            <%- include back %>
+            <br />
+            <%- include achievementManagePage %>
+            <%- include achievementManageNewPage %>
+            <%- include achievementManageEditPage %>
+          </div>
+        </div>
+    </div>
+    <!-- /.container-fluid-->
+    <!-- /.content-wrapper-->
+    <footer class="sticky-footer">
+      <div class="container">
+        <div class="text-center">
+          <small>Copyright © MaseLab 2018</small>
+        </div>
+      </div>
+    </footer>
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+      <i class="fa fa-angle-up"></i>
+    </a>
+    <!-- Logout Modal-->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">確定離開?</h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">選擇下方"登出"按鈕，如果你想離開.</div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" type="button" data-dismiss="modal">取消</button>
+            <a class="btn btn-primary" href="/logout">登出</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Bootstrap core JavaScript-->
+    <script src="/activityManage/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Core plugin JavaScript-->
+    <script src="/activityManage/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <!-- Custom scripts for all pages-->
+    <script src="/activityManage/js/sb-admin.min.js"></script>
+    <!-- Custom scripts for this page-->
+  </div>
+</body>
+
+</html>
+
+<script>
+    <% if(success) {%>
+      alert('<%= success %>');
+    <% } %>
+    <% if(error) {%>
+      alert('<%= error %>');
+    <% } %>
+
+    $('#new').click(() => {
+      $('#managePage').hide();
+      $('#features').hide();
+      $('#newPage').show();
+      $('#backDIV').show();
+    });
+
+    $('#backBtn').click(() => {
+      $('#backDIV').hide();
+      $('#features').show();
+      $('#newPage').hide();
+      $('#editPage').hide();
+      $('#managePage').show();
+      $('.myInput').val('');
+      $('#achi_C_table').empty(); 
+      $(document.getElementsByTagName('iframe')[0].contentWindow.document.body).html('')
+    });
+  </script>
+  
+  <style>
+    div.newForm {
+      width: 100%;
+    }
+    .C_Checkbox {
+      margin-left: 0px;
+    }
+  </style>

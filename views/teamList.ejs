@@ -1,5 +1,10 @@
-<%- include header %><%- include nav2 %><%- include to_Top %>
-<%teams.forEach(function(team, index) {%>
-<%- include team_div_bar %>
-<%}) %>
-<%- include paging %><%- include footer %>
+<%- include header %>
+<%- include nav2 %>
+<%- include to_Top %>
+<div style="margin-top: 75px;">
+	<%teams.forEach(function(team, index) {%>
+		<%- include team_div_bar %>
+	<%}) %>
+</div>
+<%- include paging %>
+<%- include footer %>

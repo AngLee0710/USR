@@ -5,14 +5,14 @@
 	</div>
 </header>
 <%- include nav2 %>
-<%- include to_top %>
+<%- include to_Top %>
 <br><br><br><br><br>
 <div class="row mb-2">
 	<div class="col-md-12">
 		<% posts.forEach(function(post, index) {%>
 				<div class="col-md-12 card-body d-flex flex-column align-items-start card flex-md-row mb-4 box-shadow">
 					<div class="col-md-9 activity_txt"><img src="/images/activity.png" style="width: auto;height: 60px;padding-right:5px;">
-						[<%= new Date(post.time).toLocaleDateString() %>]&nbsp;&nbsp;&nbsp;
+						[<%= new Date(post.ACT_C_AT).toLocaleDateString() %>]&nbsp;&nbsp;&nbsp;
 						
 						<a href="/activity/<%= post._id %>"><%- post.ACT_SUBJ_NAME  %></a>
 						

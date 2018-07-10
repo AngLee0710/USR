@@ -16,8 +16,10 @@ let teamSchema = new Schema({
 		email: String,
 		phone: Number
 	},
+	teamImg: String,
+	teamHeadImg: String,
 	achievement: [{title: String, date: String}],
-	pv: Number
+	pv: {type: Number, default: 1}
 }, {
 	collection: 'teams'
 });
@@ -39,15 +41,27 @@ function Team(team) {
 		email: team.connection.email,
 		phone: team.connection.phone
 	}
+	this.teamImg = team.teamImg;
 }
 
-Team.prototype.save = function(callback) {
+Team.prototype.save = function(cb) {
+	if(!this.name)
+		return cb('未輸入團隊名稱');
+	else if(!this.leader)
+		return cb('未輸入領導人');
+	else if(!this.purpose)
+		return cb('未輸入團隊宗旨');
+	else if(!this.introduction)
+		return cb('未輸入團隊介紹');
+	else if(!this.pro_introduction)
+		return cb('未輸入團隊專業介紹');
+	else if(!this.connection.name)
+		return cb('未輸入聯絡人姓名');
+	else if(!this.connection.email)
+		return cb('未輸入聯絡人信箱');
+	else if(!this.connection.phone)
+		return cb('未輸入聯絡人電話');
 
-	if(!(this.name && this.leader && this.purpose && this.introduction &&
-	 this.pro_introduction && this.website && this.connection.name &&
-	 this.connection.email && this.connection.phone)) {
-		return callback('資料不齊全');
-	}
 	let team = {
 		name: this.name,
 		leader: this.leader,
@@ -61,73 +75,93 @@ Team.prototype.save = function(callback) {
 			phone: this.connection.phone
 		},
 		achievement: [],
-		pv: 0
+		teamImg: this.teamImg,
 	};
 
 	let newTeam = new teamOwnerModel(team);
 
-	newTeam.save(function(err, team) {
-		if(err) {
-			return callback(err);
+	newTeam.save(function(err) {
+		if(err){
+			console.log(err);
+			return cb('資料庫存取問題發生問題！！！');
 		}
-		Leader.pushTeam(team.leader, team.name, (err) => {
-			if(err) {
-				return callback(err);
-			}
-		});
-		return callback(null, team);
+		 else
+			return cb(null);
 	});
 }
 
 Team.check = function(name,callback) {
 	teamUserModel.findOne({name: name}, function(err, team) {
-		if(err) {
-			return callback(err);
-		}
-		callback(null, team);
+		if(err)
+			return callback(err, null);
+		else
+			return callback(null, team);
 	});
 }
 
-Team.get = function(name, callback) {
-	teamUserModel.findOne({name: name}, function(err, team) {
-		if(err) {
+Team.get = function(id, callback) {
+	teamUserModel.findOne({_id: id}, function(err, team) {
+		if(err)
 			return callback(err);
-		}
-		teamOwnerModel.update({name:name}, {$inc: {pv: 1}}, function(err) {
-			if(err) {
-				return callback(err);
-			}
-		});
-		callback(null, team);
+		else
+			teamOwnerModel.update({_id: id}, {$inc: {pv: 1}}, function(err) {
+				if(err)
+					return callback(err, null);
+				else
+					return callback(null, team);
+			});
 	});
+}
+
+Team.take = function(id, callback) {
+	teamUserModel.findOne({_id: id}, function(err, team) {
+		if(err)
+			return callback(err, null);
+		else
+			return callback(null, team);
+	});
+}
+
+Team.edit = function(id, team, callback) {
+	teamOwnerModel.update({'_id': id}, { $set: team }, (err, a) => {
+		if(err) 
+			return callback(err, 'error');
+		else
+			return callback(null, 'success');
+	});
+}
+
+//刪除
+Team.remove = function(id, callback) {
+	teamOwnerModel.deleteOne({'_id': id}, (err) => {
+		if(err)
+			return callback('error');
+		else
+			return callback('success');
+	});
+}
+
+Team.getAll = function(callback) {
+	teamUserModel.find({},(err, team) => {
+		if(err)
+			return callback(err, null);
+		else
+			return callback(null, team);
+	})
 }
 
 Team.getLimit = function(name, page, limit, callback) {
-	if(limit == 'max'){
-		teamUserModel.count({}, function(err, total) {
-			if(err){
-				return callback(err);
-			}
-			teamUserModel.find({}, null).sort('-time').exec(function(err, actPosts) {
-				if(err){
-					return callback(err);
-				}
-				return callback(null, actPosts, total);
-			});
-		});
-	}else{
-		teamUserModel.count({}, function(err, total) {
-			if(err){
-				return callback(err);
-			}
+	teamUserModel.count({}, function(err, total) {
+		if(err)
+			return callback(err);
+		else
 			teamUserModel.find({}, null, {skip: (page -1) * limit}).sort('-time').limit(limit).exec(function(err, actPosts) {
-				if(err){
-					return callback(err);
-				}
-				return callback(null, actPosts, total);
+				if(err)
+					return callback(err, null, null);
+				else
+					return callback(null, actPosts, total);
 			});
-		});
-	}
+	});
 }
 
 
