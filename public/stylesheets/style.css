@@ -1,6 +1,5 @@
 .blog-header {
   line-height: 1;
-  border-bottom: 1px solid #e5e5e5
 }
 .blog-header-logo {
   font-family: "Playfair Display", Georgia, "Times New Roman", serif;
@@ -153,28 +152,7 @@ ul.drop-down-menu a:hover {
   border-radius:15px;
   background-color: #DCDCDC;
 }
-ul.drop-down-menu ul {
-  border: #ccc 1px solid;
-  position: absolute;
-  z-index: 99;
-  left: -1px;
-  top: 100%;
-  min-width: 180px
-}
 
-ul.drop-down-menu ul {
-  left: 99999px;
-  opacity: 0;
-  -webkit-transition: opacity .3s;
-  transition: opacity .3s
-}
-ul.drop-down-menu li:hover>ul {
-  opacity: 1;
-  -webkit-transition: opacity .3s;
-  transition: opacity .3s;
-  left: -1px;
-  border-right: 5px
-}
 
 
 ul {
@@ -231,7 +209,7 @@ dl
 {
   margin: 0;
   padding:0;
-  margin-botton:0;
+  margin-bottom: 0;
   list-style: none
 }
 
@@ -308,41 +286,69 @@ dl .mutliSelect {
 
 
 @media screen and (max-width: 990px) {
-  
-  ul.drop-down-menu{
-  display: none;
-  }
-  ul.drop-down-menu>li {
-  list-style: none;
 
+  div.ih img{
+    height: 300px;
   }
   
+  .drop-down-menu {
+    float: none;
+    display: none;
+  }
+  .drop-down-menu.active {
+    display: block;
+  }
+  .drop-down-menu > li {
+    display: block;
+  }
+  a.button-toggle {
+    display: inline-block;
+    z-index:9999;
+  }
+
+  ul.drop-down-menu {
+  font-weight:900;
+  padding-top: 10px;
+  font-family: "Edwardian Script ITC";
+  font-size: 40px;
+  height: auto;
+  float: right;
+  background: rgba(100%,100%,100%,0.85);
+  border-radius: 30px;
+  float: right;
+  }
+
+  ul.drop-down-menu a {
+    color: #333;
+    display: block;
+    padding: 0 30px;
+    text-decoration: none;
+    line-height: 40px
+  }
+
   ul.drop-down-menu li {
-    position:inherit;
-    white-space: none;
-    opacity: 1;
-    border-right: none;
-    
+    width: 100%;
   }
-  ul.drop-down-menu>li {
-  float: inherit;
+  ul.drop-down-menu a:hover {
+    border-bottom: 3px solid #9ACD32;
+    border-radius:15px;
+    background-color: #DCDCDC;
   }
   
-  ul.drop-down-menu ul {
-    position: inherit;
-    border: none;
-
+  a.nav_txt{
+    padding-top: 42px;
+    font-size: 60px;
+    margin-left: 0px; 
+    font-family: "Showcard Gothic";
+    color: black;
+    opacity:1;
   }
-
-  ul.drop-down-menu ul {
-  left: 99999px;
-  opacity: 1;
-}
-ul.drop-down-menu li:hover>ul {
-  opacity: 1;
-  left: -1px;
-  border-right: 5px
-}
+  
+  ul.drop-down-menu li:hover>ul {
+    opacity: 1;
+    left: -1px;
+    border-right: 5px
+  }
   
   #menu_div {
     display: block;
@@ -356,6 +362,15 @@ ul.drop-down-menu li:hover>ul {
     padding-left: 15px;
   }
 }
+
+.ih img{
+    height: 700px;
+  }
+
+div.menu_div{
+  text-align: right;;
+}
+
 
 h4 > img {
   width: 100%;
@@ -446,19 +461,16 @@ height: 400px;
   width: auto;
   object-fit: cover;
 }
-
-.Transition_bar{
-  height: auto;
-  width: auto;
-  background-color: #92B901;
-  text-align: center;
-  font-size:20px;
-  color: #ffffff;
-  font-weight: bold;
-  opacity: 0.75;
-  border-radius:10px;
-  -webkit-transition:  height 2s; 
-    transition:  height 2s;
+.button-toggle{
+  float: right;
+  display: none;
+  padding: 5px 10px;
+  margin: 5px 0;
+  line-height: 24px;
+  color: #777;
+  text-decoration: none;
+  transition: color .3s;
+  border: 1px solid #ccc;
 }
 
 .Transition_bar:hover{
@@ -494,17 +506,26 @@ height: 400px;
   height: 60px;
 }
 
-.nav_BGC{ 
-  background: rgba(100%,100%,100%,0.65);
- 
-}
 .txt_s{
   margin:0px auto;
   text-align:center;
 }
+
+@media screen and (max-width: 990px) {
+  div.thover{
+    font-size: 30px;
+  }
+  div.col-3{
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+
+}
+
+
 .thover{
   margin:0px auto;
-  font-family: "標楷體";
+  font-family: "微軟正黑體";
   font-size: 30px;
 }
 
@@ -513,22 +534,10 @@ height: 400px;
  
 }
 div.thover:hover{
-  border-bottom: 3px solid #9ACD32;
-  border-radius:15px;
-  background-color: #DCDCDC;
+  
   color:  #228B22;
   -webkit-transition: -webkit-transform 2s,opacity 2s,background 2s,width 2s,height 2s,font-size 1s;
 }
-
-.section {
-  width: 100vw;
-  height: 100vh;
-  float: left;
-}
-
-
-
-
 
 #MyBlog{
     position: fixed;  /*固定在網頁上不隨卷軸移動，若要隨卷軸移動用absolute*/
@@ -552,4 +561,83 @@ div.thover img:hover{
   transform:scale(1.1,1.1);
     -webkit-transform:scale(1.1,1.1); 
     -webkit-transition: -webkit-transform 1s;
+}
+
+div.style_clean a{
+  color: black;
+}
+
+div.style_clean a:hover{
+  text-decoration:none;
+  border-bottom: 3px solid #9ACD32;
+  border-radius:15px;
+  background-color: #DCDCDC;
+  color:  #228B22;
+  -webkit-transition: -webkit-transform 2s,opacity 2s,background 2s,width 2s,height 2s,font-size 1s;
+}
+
+.T_D_link{
+    background-color:#86a279; /* Green */
+    border: none;
+    color: white;
+    line-height:100px;
+    height: 250px;
+    text-align: center;
+    display: inline-block;
+    font-size: 40px;
+    border-radius: 30px;
+    cursor: pointer;
+    width: auto;
+    font-family: "Showcard Gothic";
+    
+}
+
+.T_D_link:hover{
+   font-size: 50px;
+   background-color:#9ed188;
+   -webkit-transition: -webkit-transform 2s,opacity 2s,background 2s,width 2s,height 2s,font-size 1s;
+}
+div.h-md-250 a{
+  text-decoration:none;
+}
+
+div.activity_txt{
+  font-family: "Showcard Gothic";
+  font-size: 40px;
+  font-weight:bold;
+}
+
+div.teamList_txt strong {
+  text-align: center;
+  font-size: 50px;
+  font-family: "微軟正黑體";
+  font-weight:bold;
+}
+Txt{
+  font-size: 30px;
+  font-family: "微軟正黑體";
+  font-weight:bold;
+}
+div.teamList{
+  text-align: center;
+  font-size: 450%;
+  font-family: "微軟正黑體";
+  font-weight:bold;
+}
+div.txt_family{
+  font-family: "微軟正黑體";
+}
+div.leader_txt{
+  font-size: 300%;
+}
+div.title_txt{
+  font-size: 170%;
+}
+div.team_txt{
+  font-size: 150%;
+}
+div.activity_txt a{
+  font-family: "微軟正黑體";
+  font-size: 40px;
+  font-weight:bold;
 }

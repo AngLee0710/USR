@@ -1,67 +1,24 @@
 <%- include header %>
 <%- include nav2 %>
-<br>
-<div class="row mb-2">
-		
-		<div class="col-md-12">
-          <div class="card flex-md-row mb-4 box-shadow">
-            <div class="card-body d-flex flex-column align-items-start">
-            	<div class="col-12">
-				<h2>開發者介紹</h2>
-					<div class="col-12">					
-						<div class="card-body d-flex flex-column align-items-start">
-							<h3>指導教授</h3>
-						</div>						
-					</div>
-
+<%- include to_Top %>
+<div class="row mb-2" style="margin-top: 25px;">
+	<div class="col-md-12">
+		<div class="card flex-md-row mb-4 box-shadow">
+			<div class="card-body d-flex flex-column align-items-start">
+				<div class="col-12">	
 					<div class="col-md-12">
-						<div class="col-md-4">
-							<div class="card flex-md-row mb-4 box-shadow">			
-									<div class="card-body  flex-column align-items-start padding5">
-										<img src="https://tepo.nfu.edu.tw/Tepo/Images_user_pic/B13005/jjh%202010-2.jpg" height="100%" width="100%">
-									</div>	
-								</div>		
-						</div>
-
-						<div class="col-md-8">
-							
-				        	<div class="card flex-md-row mb-4 box-shadow middle">			
-									<div class="intro padding5 middle">
-										<h4>
-											
-											姓名 江季翰<br><br>
-											英文姓名 JIANG,JI-HAN<br><br>
-											單位 資訊工程系(含碩士班)<br><br>
-											職稱 副教授<br><br>
-											兼任主管 電子計算機中心 中心主任<br><br>
-											學歷 中正大學 資工所 博士<br><br>
-											電子郵件 
-											jhjiang@nfu.edu.tw<br><br>
-											電話 05-631-5578<br><br>
-											學術專長及研究 資料庫系統設計、行動應用普適計算、感測網路、電子商務安全<br>
-										</h4>
-									</div>	
-							</div>
+						<div class="col-12">
+							<%- include aboutUsr %>
 						</div>
 					</div>
-
-					
-
-					<div class="col-md-12">					
-							<div class="col-12">	
-								<h3>開發團隊 ： M.S.L.A LAB</h3><br>
-								<div class="card flex-md-row mb-4 box-shadow">			
-									<div class="card-body  flex-column align-items-start padding5">
-										<a href="http://maselab318.nfu.edu.tw"><img src="images/TEAM.png" height="100%" width="100%"></a>
-									</div>	
-								</div>					
-							</div>
-												
-					</div>
-				
-				</div>
 				</div>
 			</div>
 		</div>
+	</div>
 </div>
+<style type="text/css">
+	.card {
+		border: 0px;
+	}
+</style>
 <%- include footer %>

@@ -1,0 +1,119 @@
+<div class="col-12 activityManageNewPage" id="newPage" style="display: none;">
+    <form class="col-12" method="post" enctype="multipart/form-data" action="/achievement/create">
+        <div id="formDIV" class="row">
+            <div class="form-group col-10">
+                <label for="inputID1">團隊名稱：</label>
+                <select class="form-control" id="inputID1" name="TEAM_NAME">
+                    <% teams.forEach((team, index) => { %>
+                        <option value="<%= team.name %>"><%= team.name %></option>
+                    <% }) %>
+                </select>
+            </div>
+            <div class="form-group col-2">
+                <label for="inputID2">　</label>
+                <input type="button" id="inputID2" class="form-control btn btn-success" value="確認">
+            </div>
+            <div class="form-group col-12">
+                <input id="inputID3" type="hidden" name="ACT_ID">
+                <table id="achi_C_table" class="table table-bordered" width="100%">
+                    <thead>
+                        <tr>
+                            <th>活動ID</th>
+                            <th>活動名稱</th>
+                            <th>活動開始時間</th>
+                            <th>活動結束時間</th>
+                            <th>活動發佈日期</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="form-group col-12">
+                <label for="inputID4">圖片上傳</label>
+                <input type="file" class="form-control" id="inputID4" name="ACHI_DEP_IMG" multiple>
+                <input type="hidden" id="inputID7" name="ACT_NAME" />
+            </div>
+            <div class="form-group col-12">
+                <label for="inputID5">成果分享：</label>
+                <textarea class="form-control" id="inputID5" rows="10" name="ACHI_DEP"></textarea>
+            </div>
+            <div class="form-group col-9"></div>
+            <div class="form-group col-3">
+                <label for="inputID6"></label>
+                <input type="submit" id="inputID6" class="form-control btn btn-success" value="新增成果">
+            </div>
+        </div>
+    </form>
+</div>
+<style>
+    .activityManageNewPage {
+        font-size: 18px;
+    }
+
+    .col-sm-12 {
+        padding: 0px;
+    }
+</style>
+<script type="text/javascript">
+    (function() {
+        var monthForamt = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
+        var a = null;
+        var achi_C_table = $('#achi_C_table').DataTable();
+        $('#inputID2').click(function() {
+            achi_C_table.destroy();
+            $('#achi_C_table').empty(); 
+            $.post('/activity/get/noACHI', {data: $('#inputID1').val()}, function(result) {
+                for(var i = 0 ; i < result.length ; i++)
+                    result[i].id = i + 1;
+                
+                achi_C_table = $('#achi_C_table').DataTable({
+                    "data": result,
+                    "columns": [
+                        { "title": '活動ID', "data": 'id'},
+                        { "title": '活動名稱', "data": 'ACT_SUBJ_NAME'},                
+                        { "title": '活動結束時間', "data": 'ACT_END_DATE',
+                            "fnCreatedCell": function(td, cData, rData, rIndex, cIndex) {
+                                var date = new Date(parseInt(cData));
+                                var month,hour,minute = '00';
+                                var day = parseInt(date.getDate());
+
+
+                                if(day < 10)
+                                day = '0' + day;
+                                
+                    
+                                if(parseInt(date.getHours()) < 10)
+                                hour = '0' + date.getHours();
+                                else
+                                hour = date.getHours();
+
+                                if(parseInt(date.getMinutes()) < 10)
+                                minute = '0' + date.getMinutes();
+                                else
+                                minute = date.getMinutes();
+                                $(td).html(date.getFullYear() + '年' + monthForamt[date.getMonth()] + '月' + day + '日  '+ hour + ':' + minute);
+                            }}                         
+                    ]
+                });
+                $('#achi_C_table tbody').on( 'click', 'tr', function () {
+                    if ( $(this).hasClass('selected') ) {
+                        $(this).removeClass('selected');
+                        a = null;
+                    }
+                    else {
+                        achi_C_table.$('tr.selected').removeClass('selected');
+                        $(this).addClass('selected');
+                        if(achi_C_table.row( this ).data()) {
+                            a = achi_C_table.row( this ).data()._id;
+                            $.post('/activity/get', {data: a}, function(result) {
+                                $('#inputID7').val(result.ACT_SUBJ_NAME);
+                            });
+                        }
+                        else
+                            a = null;
+                    }
+                    $('#inputID3').val(a);
+                });
+            });
+        });
+    })();
+</script>

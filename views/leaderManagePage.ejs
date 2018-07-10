@@ -1,0 +1,25 @@
+<div class="col-12" id="managePage">
+        <table id="dataTable" class="table table-bordered" style="font-size: 24px; font-family:Microsoft JhengHei;">
+            <thead>
+                <tr>
+                    <th>選取</th>
+                    <th>隊長名稱</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% var i = 0 %>
+                <% leaders.forEach((leader, index) => {%>
+                    <tr>
+                        <th><input id="select<%= i %>" class="form-check-input C_Checkbox" type="checkbox" value="<%= leader._id %>"></th>
+                        <th>
+                            <a href="/leader/<%= leader._id %>">
+                                <%= leader.name %> <%= leader.title %>
+                            </a>
+                        </th>
+                    </tr>
+                    <% i++ %>
+                <% }) %>
+            </tbody>
+        </table>
+        <%- include paging %>
+    </div>
