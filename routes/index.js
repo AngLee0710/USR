@@ -24,6 +24,15 @@ module.exports =  (app) => {
 		});
 	});
 
+	app.get('/achievement', (req, res) => {
+		res.render('achievement', {
+			title: '關於我們',
+			user: req.session.user,
+			success: req.flash('success').toString(),
+			error: req.flash('error').toString()
+		})
+	});
+
 	app.get('/aboutUs', (req, res) => {
 		res.render('aboutUs', {
 			title: '關於我們',
