@@ -1,0 +1,55 @@
+<%- include header %>
+<h3 style="text-align: center;">成果分享相簿</h3><input id="remove" type="button" value="刪除" />
+<div class="container">
+    <div class="row">
+        <% var i = 0 %>
+        <% files.forEach((file, index) => { %>
+            <div class="col-3">
+                <img class="img-thumbnail" id="image<%= i %>" src="/upload/<%= file %>" width="100%" height="200" />
+                <span><%= file %></span>
+            </div>
+            <% i++ %>
+        <% }) %>
+    </div>
+</div>
+<script>
+    let a = [];
+    let b = [];
+    Array.prototype.remove = function () {
+        var what, a = arguments, L = a.length, ax;
+        while (L && this.length) {
+            what = a[--L];
+            while ((ax = this.indexOf(what)) !== -1) {
+                this.splice(ax, 1);
+            }
+        }
+        return this;
+    };
+    for(let i = 0 ; i < <%= files.length %> ; i++) {
+        $('#image' + i).click(function() {
+            if($("#image" + i).css("background-color") == 'rgb(255, 255, 255)'){
+                $("#image" + i).css("background-color","#33CCFF");
+                a.push($('#image' + i).attr('src'));
+                b.push($('#image' + i).attr('id'));
+            }
+            else{
+                $("#image" + i).css("background-color","#fff");
+                a.remove($('#image' + i).attr('src'));
+                b.remove($('#image' + i).attr('id'));
+            }
+        });
+    }
+    $('#remove').click(function() {
+        b.forEach((id, index) => {
+            $('#' + id).parent().remove()
+        });
+        a = [];
+        b = [];
+    });
+    
+</script>
+<style>
+    .col-3 {
+        margin-top: 10px;
+    }
+</style>

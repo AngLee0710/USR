@@ -16,6 +16,8 @@ let achievementSchema = new Schema({
 		LOCATION_LNG: Number,
 	},
 	TEAM_NAME: String,
+	ACHI_IMG: [{NAME: String, URL: String}],
+	ACHI_STORE: String,
 	ACHI_C_AT: {type: Number, default: Date.now},
 	pv: {type: Number, default: 1}
 }, {
@@ -88,6 +90,15 @@ achievement.getAll = function(callback) {
 	});
 }
 
+achievement.getById = function(id, callback) {
+	achievementUserModel.find({'_id': id}, (err, doc) => {
+		if(err)
+			return callback(err, null);
+		else
+			return callback(null, doc);
+	});
+}
+
 //刪除 key = id
 achievement.remove = function(id, callback) {
 	achievementOwnerModel.deleteOne({'_id': id}, (err) => {
@@ -105,6 +116,15 @@ achievement.getByTeam = function(team, callback) {
 			return callback(err, null);
 		else
 			return callback(null, doc);
+	});
+}
+
+achievement.edit = function(id, update, callback) {
+	achievementOwnerModel.update({'_id': id}, { $set: update }, (err) => {
+		if(err)
+			return callback(err);
+		else 
+			return callback(null);
 	});
 }
 

@@ -1,14 +1,12 @@
 "use strict";
-const crypto = require('crypto');
-const multer  = require('multer');
-const fs = require('fs');
-
-const User = require('../models/user.js');
 const Team = require('../models/team.js');
 const actPost = require('../models/activity.js');
 const Leader = require('../models/leader.js');
 const actSignUp = require('../models/actSingUp.js');
-const achi = require('../models/achievement.js')
+const achi = require('../models/achievement.js');
+
+const fs = require('fs');
+
 
 module.exports =  (app) => {
 	app.get('/', (req, res) => {
@@ -26,27 +24,9 @@ module.exports =  (app) => {
 		});
 	});
 
-	app.get('/map', (req, res) => {
-		res.render('googleMap', {
-			title: 'googleMap',
-			user: req.session.user,
-			success: req.flash('success').toString(),
-			error: req.flash('error').toString()
-		})
-	});
-
 	app.get('/aboutUs', (req, res) => {
 		res.render('aboutUs', {
 			title: '關於我們',
-			user: req.session.user,
-			success: req.flash('success').toString(),
-			error: req.flash('error').toString()
-		})
-	});
-
-	app.get('/connectUs', (req, res) => {
-		res.render('connectUs', {
-			title: '聯絡我們',
 			user: req.session.user,
 			success: req.flash('success').toString(),
 			error: req.flash('error').toString()
@@ -73,6 +53,24 @@ module.exports =  (app) => {
 		});
 	});
 
+	app.get('/activity/:id', (req, res) => {
+		actPost.get(req.params.id, (err, post) => {
+			if(err) {
+				console.log(err);
+				return res.redirect('/');
+			}
+			Team.get(post.ACT_DEPTNAME, (err, team) => {
+				res.render('activity', {
+					title: post.title,
+					team: team,
+					post: post,
+					user: req.session.user,
+					success: req.flash('success').toString(),
+					error: req.flash('error').toString()
+				});
+			});
+		});
+	});
 
 	app.get('/activity/SignUp/:id', (req, res) => {
 		actPost.take(req.params.id, (err, post) => {
@@ -141,25 +139,6 @@ module.exports =  (app) => {
 		});
 	});
 
-	app.get('/activity/:id', (req, res) => {
-		actPost.get(req.params.id, (err, post) => {
-			if(err) {
-				console.log(err);
-				return res.redirect('/');
-			}
-			Team.get(post.ACT_DEPTNAME, (err, team) => {
-				res.render('activity', {
-					title: post.title,
-					team: team,
-					post: post,
-					user: req.session.user,
-					success: req.flash('success').toString(),
-					error: req.flash('error').toString()
-				});
-			});
-		});
-	});
-
 	app.get('/team', (req, res) => {
 		let page = req.query.p ? parseInt(req.query.p) : 1;
 
@@ -225,19 +204,40 @@ module.exports =  (app) => {
 		});
 	});
 
-	function checkLogin(req, res, next) {
-		if(!req.session.user) {
-			req.flash('error', '未登錄!!');
-			return res.redirect('/login');
-		}
-		next();
-	}
-
-	function checkNotLogin(req, res, next) {
-		if(req.session.user) {
-			req.flash('error', '已登錄!!');
-			return res.redirect('/');
-		}
-		next();
-	}
+	//
+	//其他
+	//
+	app.get('/personalInfo', (req, res) => {
+		res.render('personal_Info', {
+			title: '個資頁面',
+			user: req.session.user,
+			success: req.flash('success').toString(),
+			error: req.flash('error').toString()
+		});
+	});
+	
+	//
+	//測試
+	//
+	app.get('/map', (req, res) => {
+		res.render('googleMap', {
+			title: 'googleMap',
+			user: req.session.user,
+			success: req.flash('success').toString(),
+			error: req.flash('error').toString()
+		});
+	});
+	
+	app.get('/photo', (req, res) => {
+		const myPath = process.cwd() + '/public/upload';
+		fs.readdir(myPath, function (err, files) {
+			res.render('photo', {
+				title: '相簿',
+				files: files,
+				user: req.session.user,
+				success: req.flash('success').toString(),
+				error: req.flash('error').toString()
+			});
+		});
+	});
 }

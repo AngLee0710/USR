@@ -1,5 +1,5 @@
 <div class="col-12" id="managePage">
-    <table id="achi_M_table" class="table table-bordered"></table>
+    <table id="achi_M_table" class="table table-bordered" width="100%"></table>
 </div>
 <script>
     (function() {
@@ -81,67 +81,70 @@
     });
 
     $('#update').click(() => {
-      if(nowID == null){
-        alert('尚未選取貼文');
-        return;
-      }
-      let data =  $('#' + nowID).val();
+      if(nowID == null)
+        return alert('尚未選取貼文');
+      
+      let data =  nowID;
       $('#managePage').hide();
       $('#features').hide();
       $('#newPage').hide();
       $('#backDIV').show();
       $('#editPage').show();
 
-      $.post('/activity/get', { data: data }, (result) => {
-        $('#editID').val(result._id);
-        $('#ACT_SUBJ_NAME').val(result.ACT_SUBJ_NAME);
-        $('#ACT_LOCATION').val(result.ACT_LOCATION);
-        $('#ACT_LIMIT_SEX').val(result.ACT_LIMIT_SEX);
-        $('#ACT_BEG_DATE_D').val(result.ACT_BEG_DATE.split(' ')[0]);
-        $('#ACT_BEG_DATE_T').val(result.ACT_BEG_DATE.split(' ')[1]);
-        $('#ACT_END_DATE_D').val(result.ACT_END_DATE.split(' ')[0]);
-        $('#ACT_END_DATE_T').val(result.ACT_END_DATE.split(' ')[1]);
-        $('#ACT_B_BEG_D').val(result.ACT_B_BEG.split(' ')[0]);
-        $('#ACT_B_BEG_T').val(result.ACT_B_BEG.split(' ')[1]);
-        $('#ACT_B_END_D').val(result.ACT_B_END.split(' ')[0]);
-        $('#ACT_B_END_T').val(result.ACT_B_END.split(' ')[1]);
-        $('#ACT_LIMIT').val(result.ACT_LIMIT);
-        $('#ACT_URL').val(result.ACT_URL);
-        if(result.ACT_K_TEL == 'Y') 
-          $('#q1').prop('checked', true);
-        else
-          $('#q2').prop('checked', true);
-        if(result.ACT_K_DEPT == 'Y') 
-          $('#q3').prop('checked', true);
-        else
-          $('#q4').prop('checked', true);
-        if(result.ACT_K_OCCUP == 'Y') 
-          $('#q5').prop('checked', true);
-        else
-          $('#q6').prop('checked', true);
-        if(result.ACT_K_IDNO == 'Y') 
-          $('#q7').prop('checked', true);
-        else
-          $('#q8').prop('checked', true);
-        if(result.ACT_K_SEX == 'Y') 
-          $('#q9').prop('checked', true);
-        else
-          $('#q10').prop('checked', true);
-        if(result.ACT_K_BIRTH == 'Y') 
-          $('#q11').prop('checked', true);
-        else
-          $('#q12').prop('checked', true);
-        if(result.ACT_K_FOOD == 'Y') 
-          $('#q13').prop('checked', true);
-        else
-          $('#q14').prop('checked', true);
-        if(result.ACT_K_ADDR == 'Y') 
-          $('#q15').prop('checked', true);
-        else
-          $('#q16').prop('checked', true);
-        $('#ACT_DEPTNAME').val(result.ACT_DEPTNAME);
-        $(document.getElementsByTagName('iframe')[1].contentWindow.document.body).html(result.ACT_LIST)
+      let html = '';
+      let a = [];
+      let b = [];
+
+      $.post('/achievement/get', { data: data }, (result) => {
+        $('#editInput1').text(result[0].ACT_NAME);
+        $('#editInput7').val(result[0]._id);
+        
+        result[0].ACHI_IMG.forEach((image, index) => {  
+            a.push(image.URL);
+            html += `<div class="col-3">
+                    <img class="img-thumbnail" id="image` + index + `" src="` + image.URL + `" width="100%" height="200" />
+                    <span>` + image.NAME.split('.')[0] + `</span>
+                </div>`;
+        });
+        console.log(a);
+
+        $('#editInput2').html(html);
+        $(document.getElementsByTagName('iframe')[1].contentWindow.document.body).html(result[0].ACHI_STORE);
+        
+        for(let i = 0 ; i < result[0].ACHI_IMG.length ; i++) {
+            $('#image' + i).click(function() {
+                if($("#image" + i).css("background-color") == 'rgb(255, 255, 255)'){
+                    $("#image" + i).css("background-color","#33CCFF");
+                    a.remove($('#image' + i).attr('src'));
+                    console.log($('#image' + i).attr('src'));
+                    b.push($('#image' + i).attr('id'));
+                } else {
+                    $("#image" + i).css("background-color","#fff");
+                    a.push($('#image' + i).attr('src'));
+                    b.remove($('#image' + i).attr('id'));
+                }
+            });
+        }
+
+        $('#remove').click(function() {
+            console.log(a);
+           $('#editInput6').val(a);
+            b.forEach((id, index) => {
+                $('#' + id).parent().remove();
+            });
+        });
       });
     });
     })();
+
+Array.prototype.remove = function () {
+    let what, a = arguments, L = a.length, ax;
+    while (L && this.length) {
+        what = a[--L];
+        while ((ax = this.indexOf(what)) !== -1) {
+            this.splice(ax, 1);
+        }
+    }
+    return this;
+};
 </script>

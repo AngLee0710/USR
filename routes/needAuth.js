@@ -22,6 +22,9 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 module.exports =  (app) => {
+	//
+	//使用者權限
+	//
 	app.get('/login', checkNotLogin);
 	app.get('/login', (req, res) => {
 		res.render('login', {
@@ -51,6 +54,19 @@ module.exports =  (app) => {
 		});
 	});
 
+	app.get('/admin', checkLogin);
+	app.get('/admin', (req, res) => {
+		res.redirect('/activityManage');
+	});
+
+	app.get('/logout', checkLogin);
+	app.get('/logout', (req, res) => {
+		req.session.user = null;
+		return res.redirect('/');
+	});
+	//
+	//活動
+	//
 	app.get('/activityManage', checkLogin);
 	app.get('/activityManage', (req, res) => {
 		let page = req.query.p ? parseInt(req.query.p) : 1;
@@ -246,6 +262,9 @@ module.exports =  (app) => {
 		});
 	});
 
+	//
+	//領導
+	//
 	app.get('/leaderManage', checkLogin);
 	app.get('/leaderManage',  (req, res) => {
 		let page = req.query.p ? parseInt(req.query.p) : 1;
@@ -268,6 +287,9 @@ module.exports =  (app) => {
 		});		
 	});
 
+	//
+	//隊伍
+	//
 	app.get('/teamManage', checkLogin);
 	app.get('/teamManage', (req, res) => {
 		let page = req.query.p ? parseInt(req.query.p) : 1;
@@ -380,6 +402,9 @@ module.exports =  (app) => {
 		});
 	});
 
+	//
+	//成果
+	//
 	app.get('/achievementManage', checkLogin);
 	app.get('/achievementManage', (req, res) => {
 		Team.getAll((err, teams) => {
@@ -409,11 +434,10 @@ module.exports =  (app) => {
 		let image = [];
 		req.files.forEach((file, index) => {
 			image[index] = {
-				NAME: '/upload/' + file.filename
+				NAME: file.filename,
+				URL: '/upload/' + file.filename
 			}
 		});
-
-
 
 		actPost.take(req.body.ACT_ID, (err, act) => {
 			if(err){
@@ -430,6 +454,7 @@ module.exports =  (app) => {
 					image,
 					req.body.ACHI_DEP
 				)
+				
 
 				newAchi.save((err) => {
 					if(err) {
@@ -441,6 +466,41 @@ module.exports =  (app) => {
 					}
 				});
 			}
+		});
+	});
+
+	app.post('/achievement/edit', checkLogin);
+	app.post('/achievement/edit', upload.array('ACHI_DEP_IMG', 100), (req, res) => {
+		let image = [];
+		let count = 0;
+		let deleteImg = req.body.deleteImg.split(',');
+		deleteImg.forEach((img, index) => {
+			image[count] = {
+				URL: img,
+				NAME: img.split('/upload/')[1]
+			}
+			count++;
+		});
+
+		req.files.forEach((file, index) => {
+			image[count] = {
+				NAME: file.filename,
+				URL: '/upload/' + file.filename
+			}
+			count++;
+		});
+
+		let update = {
+			ACHI_STORE: req.body.ACHI_DEP,
+			ACHI_IMG: image
+		}
+
+		achi.edit(req.body.ACHI_ID, update, (err) => {
+			if(err)
+				req.flash('error', '資料庫模組異常');
+			else 
+				req.flash('success', '修改成功');
+			return res.redirect('/achievementManage');
 		});
 	});
 
@@ -460,17 +520,32 @@ module.exports =  (app) => {
 		});
 	});
 
-	app.get('/admin', checkLogin);
-	app.get('/admin', (req, res) => {
-		res.redirect('/activityManage');
+	app.post('/achievement/delete/photo', checkLogin);
+	app.post('/achievement/delete/photo', (req, res) => {
+		let myPath = process.cwd() + '/public/';
+		req.body.data.forEach((img, index) => {
+			fs.unlink(myPath + img, (err) => {
+				if(err) throw err;
+				console.log(err);
+			});
+		});
 	});
 
-	app.get('/logout', checkLogin);
-	app.get('/logout', (req, res) => {
-		req.session.user = null;
-		return res.redirect('/');
+	app.post('/achievement/get', checkLogin);
+	app.post('/achievement/get', (req, res) => {
+		achi.getById(req.body.data, (err, doc) => {
+			if(err) {
+				console.log(err);
+				return res.redirect('/')
+			} else {
+				res.send(doc);
+			}
+		});
 	});
 
+	//
+	//其他
+	//
 	app.post('/uploadImg', checkLogin);
 	app.post('/uploadImg', upload.single('imgFile'),  (req, res) => {
 		let info = { 
@@ -480,6 +555,9 @@ module.exports =  (app) => {
 	    res.send(info); 
 	});
 
+	//
+	//函數
+	//
 	function checkLogin(req, res, next) {
 		if(!req.session.user) {
 			req.flash('error', '未登錄!!');
