@@ -1,0 +1,43 @@
+.our-team-w3l-content h3 {
+    font-size: 19px;
+    color: rgb(84, 75, 75);
+    font-weight: bold;
+}
+
+.our-team-w3l-content p {
+    padding-top: 10px;
+    /* text-align: justify; */
+    letter-spacing: 2px;
+    color: #686462;
+}
+
+.our-team-w3l-content a {
+    color: #337ab7;
+    text-decoration: none;
+    padding-left: 28px;
+}
+
+.our-team-w3l-content {
+    margin-top: 47px;
+}
+
+.our-team-w3l-content ul {
+    list-style-type: none;
+    padding-left: 0px;
+}
+
+.our-team-w3l-content li {
+    display: inline;
+    padding: 10px 27px 0px 10px;
+}
+
+.our-team-w3l-content a {
+    color: rgba(0, 0, 0, 0.49);
+    text-decoration: none;
+    padding: 10px;
+    font-size: 19px;
+}
+
+.our-team-w3l-content a:hover {
+    color: rgb(8, 0, 0);
+}

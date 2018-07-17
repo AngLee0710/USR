@@ -33,7 +33,11 @@
                     <div class="row">
                         <div class="col-12" >
                             <div class="form-top">
-                                    <h2 color="white"style="text-align:center">活動名稱：<span><%= post.ACT_SUBJ_NAME %><i class="fa fa-pencil"></i></span></h2> 
+                               
+                                    <h2 color="white"style="text-align:center">活動名稱：<span><%= post.ACT_SUBJ_NAME %><i class="fa fa-pencil"></i></span></h2>
+                              
+                               
+                                
                             </div>
                         </div>
                         <div class="col-lg-3 col-md-3 col-xs-1"></div>
@@ -109,8 +113,8 @@
                                                 <input type="text" class="form-control form-control-lg"placeholder="地址..." name="LIST_ADDR" id="input10">
                                             </div>
                                             <% } %>
+                                
                                     <input type="hidden" name="LIST_ACT_ID" value="<%= post._id %>">
-                                    <p style="font-size: 18px;">點擊「送出」即表示你同意我們的<a href="/personalInfo">個資授權同意書</a>。</p>
                                     <button type="submit" class="btn">送出</button>
 
 
