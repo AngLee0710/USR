@@ -25,13 +25,36 @@ module.exports = (app) => {
     });
 
     app.get('/achievement', (req, res) => {
-        res.render('achievement', {
-            title: '關於我們',
-            user: req.session.user,
-            success: req.flash('success').toString(),
-            error: req.flash('error').toString()
-        })
-    });
+		achi.getAll((err, docs) => {
+			res.render('achievementList', {
+				title: '成果共享',
+				docs: JSON.stringify(docs),
+				user: req.session.user,
+				success: req.flash('success').toString(),
+				error: req.flash('error').toString()
+			});
+		});
+	});
+
+    app.get('/achievement/:id', (req, res) => {
+		achi.getById(req.params.id, (err, doc) => {
+			if(err){
+				req.flash('error', '模組異常');
+				return res.redirect('/');
+			} else if(!doc){
+				req.flash('error', '無效網址');
+				return res.redirect('/');
+			} else {
+				return res.render('achievement', {
+					title: '成果分享',
+					doc: doc[0],
+					user: req.session.user,
+					success: req.flash('success').toString(),
+					error: req.flash('error').toString()
+				});
+			}
+		});
+	});
 
     app.get('/aboutUs', (req, res) => {
         res.render('aboutUs', {

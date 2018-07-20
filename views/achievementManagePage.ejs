@@ -15,7 +15,10 @@
             "data": result,
             "columns": [
                 { "title": "成果ID", "data": "id" },
-                { "title": "活動名稱", "data": "ACT_NAME" },
+                { "title": "活動名稱", "data": "ACT_NAME" , 
+                    "fnCreatedCell": function(td, cData, rData, rIndex, cIndex) {
+                        $(td).html('<a href=/achievement/' + rData._id + '>' + cData + '</a>');
+                    }},
                 { "title": "執行團隊", "data": "TEAM_NAME" },
                 { "title": "結束時間", "data": "ACT_END_DATE", 
                     "fnCreatedCell": function(td, cData, rData, rIndex, cIndex) {

@@ -17,7 +17,8 @@ let teamSchema = new Schema({
 		phone: Number
 	},
 	teamImg: String,
-	teamHeadImg: String,
+	teamLogo: String,
+	teamGoogleMapIcon: String,
 	achievement: [{title: String, date: String}],
 	pv: {type: Number, default: 1}
 }, {
@@ -42,6 +43,8 @@ function Team(team) {
 		phone: team.connection.phone
 	}
 	this.teamImg = team.teamImg;
+	this.teamLogo = team.teamLogo;
+	this.teamIcon = team.teamIcon;
 }
 
 Team.prototype.save = function(cb) {

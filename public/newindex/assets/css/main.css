@@ -11,16 +11,16 @@
 
 /* Based on meyerweb.com/eric/tools/css/reset (v2.0 | 20110126 | License: public domain) */
 
-	html, body, div, span, applet, object,
+	div, span, applet, object,
 	iframe, h1, h2, h3, h4, h5, h6, p, blockquote,
 	pre, abbr, acronym, address, big, cite,
-	code, del, dfn, em, img, ins, kbd, q, s, samp,
+	code, del, dfn, em, ins, kbd, q, s, samp,
 	small, strike, strong, sub, sup, tt, var, b,
 	u, i, center, dl, dt, dd, ol, ul, li, fieldset,
 	form, label, legend, table, caption, tbody,
 	tfoot, thead, tr, th, td, article, aside,
 	canvas, details, embed, figure, figcaption,
-	footer, header, hgroup, menu, nav, output, ruby,
+	footer, header, hgroup, menu, output, ruby,
 	section, summary, time, mark, audio, video {
 		margin: 0;
 		padding: 0;
@@ -31,7 +31,7 @@
 	}
 
 	article, aside, details, figcaption, figure,
-	footer, header, hgroup, menu, nav, section {
+	footer, header, hgroup, menu, section {
 		display: block;
 	}
 
@@ -2939,63 +2939,6 @@
 				border: 0;
 			}
 
-		#header nav {
-			height: inherit;
-			line-height: inherit;
-			position: absolute;
-			right: 0.75em;
-			top: 0;
-			vertical-align: middle;
-		}
-
-			#header nav > ul {
-				list-style: none;
-				margin: 0;
-				padding-left: 0;
-			}
-
-				#header nav > ul > li {
-					display: inline-block;
-					padding-left: 0;
-				}
-
-					#header nav > ul > li > ul {
-						display: none;
-					}
-
-					#header nav > ul > li a {
-						display: inline-block;
-						height: 2em;
-						line-height: 1.95em;
-						padding: 0 1em;
-						border-radius: 6px;
-					}
-
-					#header nav > ul > li a:not(.button) {
-						color: #fff;
-						display: inline-block;
-						text-decoration: none;
-						border: 0;
-					}
-
-						#header nav > ul > li a:not(.button).icon:before {
-							color: #999;
-							margin-right: 0.5em;
-						}
-
-					#header nav > ul > li:first-child {
-						margin-left: 0;
-					}
-
-					#header nav > ul > li.active a:not(.button) {
-						background-color: rgba(153, 153, 153, 0.25);
-					}
-
-					#header nav > ul > li .button {
-						margin: 0 0 0 0.5em;
-						position: relative;
-					}
-
 		#header input[type="submit"],
 		#header input[type="reset"],
 		#header input[type="button"],
@@ -3027,10 +2970,6 @@
 				left: 0;
 			}
 
-			#header .container nav {
-				right: 0;
-			}
-
 		#header.reveal {
 			-moz-animation: reveal-header 0.5s;
 			-webkit-animation: reveal-header 0.5s;
@@ -3047,14 +2986,6 @@
 			color: rgba(255, 255, 255, 0.75);
 			position: absolute;
 		}
-
-			#header.alt nav > ul > li a:not(.button).icon:before {
-				color: rgba(255, 255, 255, 0.75);
-			}
-
-			#header.alt nav > ul > li.active a:not(.button) {
-				background-color: rgba(255, 255, 255, 0.2);
-			}
 
 			#header.alt input[type="submit"],
 			#header.alt input[type="reset"],
@@ -3405,10 +3336,6 @@
 
 /* Narrower */
 
-	#navPanel, #navButton {
-		display: none;
-	}
-
 	@media screen and (max-width: 840px) {
 
 		/* Basic */
@@ -3713,15 +3640,4 @@
 			}
 
 	}
-	#gotop {
-		position: fixed;
-		border-radius: 50px;
-		right: 20px;
-		bottom: 30px;
-		padding: 10px 16px;
-		font-size: 25px;
-		background: rgba(228, 211, 211, 0.36);
-		color: #FAFCFD;
-		cursor: pointer;
-		z-index: 1000;
-	}
+}

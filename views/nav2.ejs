@@ -1,72 +1,53 @@
-<br>
-<div class="nav navbar-default navbar-fixed-top nav_h" role="navigation" style="background: rgba(100%,100%,100%,0.65);">
-    <div class="container-fluid ">
-        <div class="navbar-header">
-            <a class="navbar-brand nav_txt " href="/">USR</a>
-            <a href="#" class="button-toggle">三</a>
-        </div>
-        <ul class="drop-down-menu nav_txt_r " id="nav">
-            <li><a href="/aboutUs"><img src="/images/icon.png" style="width: auto;height: 40px;padding-bottom:10px;">About</a></li>
-            <li><a href="/team"><img src="/images/icon.png" style="width: auto;height: 40px;padding-bottom:10px;">Teams</a></li>
-            <li><a href="/activity"><img src="/images/icon.png" style="width: auto;height: 40px;padding-bottom:10px;">News</a></li>   
+<nav class="navbar navbar-expand-md navbar-light bg-light">
+    <a class="navbar-brand logo_a" href="/">
+        <img class="align-top logo" src="/images/logo.png" alt="">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+        <ul class="navbar-nav ">
+            <li class="nav-item">
+                <a class="nav-link" href="/activity">最新活動</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/team">團隊介紹</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/achievement">成果分享</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/aboutUs">關於我們</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin">後臺管理</a>
+            </li>
         </ul>
     </div>
-</div>    
-
-
-<!--<div class="row flex-nowrap justify-content-between align-items-center">
-    <ul class="drop-down-menu " id="nav">
-        <li><a href="/aboutUs">關於我們</a>
-        </li>
-        <li><a href="/team">研究團隊</a>
-        </li>
-        <li>
-            <a href="#">活動公告</a>
-            <ul>
-                 <li><a href="/activity">最新消息</a>
-                </li> 
-                <li><a href="#">活動消息</a>
-                </li>
-            </ul>
-        </li>
-        <li>
-            <a href="#">在地關懷</a>
-        </li>
-        <li>
-            <a href="#">成果分享</a>
-        </li>
-        <li>
-            <a href="#">居地城鄉</a>
-        </li>
-        <% if(user) { %>
-            <li>
-                <a href="/admin">後臺管理</a>
-            </li>
-            <% } %>
-    </ul>
-</div>
-
-<script>
-$(function() {
-    var nav = $('#nav');
-    var win = $(window);
-    $('#menu').on('click', function(e) {
-        e.preventDefault();
-        nav.slideToggle();
-    });
-
-    win.resize(function() {
-        if (win.width() > 480 && nav.is(':hidden')) {
-            nav.removeAttr('style');
+</nav>
+<style>
+    .logo {
+        width: 20%;
+        height: 20%;
+    }
+    @media only screen and (max-width: 768px) {
+        .logo_a {
+            width: 200px;
+            display: contents;
         }
-    });
-});
-</script>-->
-<script>
-$(document).ready(function(){
-  $('.button-toggle').click(function(e){
-    e.preventDefault();
-    $('.drop-down-menu').toggleClass('active');
-  });
-});
+    }
+    @media only screen and (max-width: 768px) {
+        .logo_a {
+            width: 200px;
+            display: contents;
+        }
+    }
+</style>
+<style>
+    body {
+        font-size: 20px;
+        font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+        color: #212529;
+    }
+</style>
 </script>

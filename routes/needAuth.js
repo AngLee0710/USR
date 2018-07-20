@@ -124,7 +124,7 @@ module.exports =  (app) => {
 					LOCATION_NAME: req.body.ACT_LOCATION_NAME,
 					LOCATION_ADDR: req.body.ACT_LOCATION_ADDR,
 					LOCATION_LAT: req.body.ACT_LOCATION_LAT,
-					LOCATION_LNG:  req.body.ACT_LOCATION_LNG
+					LOCATION_LNG: req.body.ACT_LOCATION_LNG
 				}
 				let activityPost = new actPost(
 					req.body.ACT_SUBJ_NAME,
@@ -320,7 +320,7 @@ module.exports =  (app) => {
 	});
 
 	app.post('/teamCreate', checkLogin);
-	app.post('/teamCreate', upload.single('teamImg'), (req, res) => {
+	app.post('/teamCreate', upload.any(), (req, res) => {
 		let team = {
 			name: req.body.name,
 			purpose: req.body.purpose,
@@ -335,8 +335,22 @@ module.exports =  (app) => {
 			}
 		}
 
-		if(req.file)
-			team.teamImg = '/upload/' + req.file.filename;
+		console.log(req.files[0]);
+
+		for(let i = 0 ; i < req.files.length ; i++) {
+			switch(req.files[i].fieldname) {
+				case 'teamLogo':
+					team.teamLogo = '/upload/' + req.files[i].filename;
+					break;
+				case 'teamIcon':
+					team.teamIcon = '/upload/' + req.files[i].filename;
+					break;
+				case 'teamImg':
+					team.teamImg = '/upload/' + req.files[i].filename;
+					break;
+			}
+		}
+		console.log(team);
 
 		let newTeam = new Team(team)
 
@@ -379,7 +393,7 @@ module.exports =  (app) => {
 		}
 		if(req.file) 
 			team.teamImg =  '/upload/' + req.file.filename;
-		
+
 		Team.edit(req.body.teamID, team, (err, team) => {
 			if(team == 'success'){
 				req.flash('success', '修改成功！！！');
@@ -432,41 +446,48 @@ module.exports =  (app) => {
 	app.post('/achievement/create', checkLogin);
 	app.post('/achievement/create', upload.array('ACHI_DEP_IMG', 100), (req, res) => {
 		let image = [];
-		req.files.forEach((file, index) => {
-			image[index] = {
-				NAME: file.filename,
-				URL: '/upload/' + file.filename
-			}
-		});
-
-		actPost.take(req.body.ACT_ID, (err, act) => {
-			if(err){
-				console.log(err);
-				return res.redirect('/achievementManage');
-			} else {
-				let newAchi = new achi(
-					req.body.ACT_ID,
-					req.body.ACT_NAME,
-					req.body.TEAM_NAME,
-					act.ACT_BEG_DATE,
-					act.ACT_END_DATE,
-					act.ACT_LOCATION,
-					image,
-					req.body.ACHI_DEP
-				)
-				
-
-				newAchi.save((err) => {
-					if(err) {
-						req.flash('error', err);
-						return res.redirect('/achievementManage');
-					} else {
-						req.flash('success', '新增成功');
-						return res.redirect('/achievementManage');
-					}
-				});
-			}
-		});
+		if(req.files.length == 0) {
+			req.flash('error', '未上傳照片');
+			res.redirect('/achievementManage');
+		} else if(req.body.ACHI_DEP == '') {
+			req.flash('error', '成果內容未輸入');
+			res.redirect('/achievementManage');
+		} else {
+			req.files.forEach((file, index) => {
+				image[index] = {
+					NAME: file.filename,
+					URL: '/upload/' + file.filename
+				}
+			});
+	
+			actPost.take(req.body.ACT_ID, (err, act) => {
+				if(err){
+					console.log(err);
+					return res.redirect('/achievementManage');
+				} else {
+					let newAchi = new achi(
+						req.body.ACT_ID,
+						req.body.ACT_NAME,
+						req.body.TEAM_NAME,
+						act.ACT_BEG_DATE,
+						act.ACT_END_DATE,
+						act.ACT_LOCATION,
+						image,
+						req.body.ACHI_DEP
+					)				
+	
+					newAchi.save((err) => {
+						if(err) {
+							req.flash('error', err);
+							return res.redirect('/achievementManage');
+						} else {
+							req.flash('success', '新增成功');
+							return res.redirect('/achievementManage');
+						}
+					});
+				}
+			});
+		}
 	});
 
 	app.post('/achievement/edit', checkLogin);

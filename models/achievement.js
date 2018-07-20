@@ -6,18 +6,19 @@ const actPost = require('./activity');
 const Team = require('./team');
 
 let achievementSchema = new Schema({
-	ACT_ID: String,
-	ACT_NAME: String,
-	ACT_BEG_DATE: Number,
-	ACT_END_DATE: Number,
+	ACT_ID: String,					//活動ID
+	ACT_NAME: String,				//活動名稱
+	ACT_BEG_DATE: Number,			//活動開始日期
+	ACT_END_DATE: Number,			//活動結束日期
 	ACT_LOCATION: {
-		LOCATION_NAME: String,
-		LOCATION_LAT: Number,
-		LOCATION_LNG: Number,
+		LOCATION_NAME: String,		//活動地名
+		LOCATION_ADDR: String,		//活動地址
+		LOCATION_LAT: Number,		//googleMapLat
+		LOCATION_LNG: Number,		//googleMapLng
 	},
-	TEAM_NAME: String,
+	TEAM_NAME: String,				//團隊名稱
 	ACHI_IMG: [{NAME: String, URL: String}],
-	ACHI_STORE: String,
+	ACHI_STORE: String,				//活動介紹
 	ACHI_C_AT: {type: Number, default: Date.now},
 	pv: {type: Number, default: 1}
 }, {

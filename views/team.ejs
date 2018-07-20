@@ -51,15 +51,13 @@
       zoom: 9
     });
 
-    
-
     result.forEach((doc, i) => {
 	    var uluru = {lat: doc.ACT_LOCATION.LOCATION_LAT, lng: doc.ACT_LOCATION.LOCATION_LNG};
     	var marker = new google.maps.Marker({position: uluru, map: map, animation: google.maps.Animation.DROP});
     	var contentString = '<div id="content">'+
 	        '<div id="siteNotice">'+
 	        '</div>'+
-	        '<h3 id="firstHeading" class="firstHeading"><a href="achievement/' + result[i]._id + '">' +
+	        '<h3 id="firstHeading" class="firstHeading"><a href="/achievement/' + result[i]._id + '">' +
 	         result[i].ACT_NAME + '</a></h3></div>';
 
     	var infowindow = new google.maps.InfoWindow({
