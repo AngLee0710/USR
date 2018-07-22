@@ -5,6 +5,13 @@
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     }
+    .teamdiv .row{
+        display: block;
+    }
+    img{
+        width: 200px;
+        height: 200px;
+    }
     @media screen and (max-width: 480px) {
 
         /* // 如果使用者視窗寬度 <= 480px，將字體大小變為 16px */
@@ -32,7 +39,10 @@
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             }
-
+            img{
+                width: 150px;
+                height: 150px;
+            }
         
         }
         
