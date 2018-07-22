@@ -1,5 +1,6 @@
 <%- include header %>
-    <link rel="stylesheet" href="/newindex/assets/css/main.css" />
+	<link rel="stylesheet" href="/newindex/assets/css/main.css" />
+	<link rel="stylesheet" href="/newindex/assets/css/word.css">
 	<%- include to_Top %>
 	<body class="landing is-preload">
 		<%- include nav2 %>
@@ -48,16 +49,55 @@
 							</section>
                         </div>
 					</section>
-                    <section>
-                        <%- include img_bar %>
-                	</section>
+						<!-- <%- include img_bar %> -->
+						<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+								<ol class="carousel-indicators">
+								  <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+								  <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+								  <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+								</ol>
+								<div class="carousel-inner">
+								  <div class="carousel-item active">
+									<a style="color: white" href="*" title="虎科志工"><img class="d-block w-100" src="/newindex/images/p10.jpg" alt="First slide" width="1200" height="800"></a>
+									<div class="carousel-caption d-none d-md-block">
+											<div class="wordsize"><h1 style="color: white">虎科志工</h1></div>
+											<p class="word">照片故事：
+													寒假兩次的兒童營,讓我知道當老師EQ要高之外,還要準備很多東西,不然一不小心就被問倒了。
+													
+													
+													在同仁教學的過程中,出現了很厲害的小朋友,我相信我永遠不會忘記他,照片裡的喵都是她畫的,一個只有線條,一個有上色,完全超出了我的預期。
+													
+													在這次的教學中,我學到了小朋友們每個資質都不相同,有些小孩做得很快,有些
+													小孩學得很慢,需要耐心的一對一教學,有學小孩覺得題目很難,有些覺得很簡單,需要因材施教,才能將每位小朋友的潛力激發出來。
+													</p>
+									</div>
+								  </div>
+								  <div class="carousel-item">
+									<img class="d-block w-100" src="/newindex/images/p2.jpg" alt="Second slide" width="1200" height="800">
+								  </div>
+								  <div class="carousel-item">
+									<img class="d-block w-100" src="/newindex/images/p3.jpg" alt="Third slide" width="1200" height="800">
+								  </div>
+								</div>
+								<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+								  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+								  <span class="sr-only">Previous</span>
+								</a>
+								<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+								  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+								  <span class="sr-only">Next</span>
+								</a>
+							  </div>	
+                	
 			<script src="/newindex/assets/js/jquery.min.js"></script>
 			<script src="/newindex/assets/js/jquery.dropotron.min.js"></script>
 			<script src="/newindex/assets/js/jquery.scrollex.min.js"></script>
 			<script src="/newindex/assets/js/browser.min.js"></script>
 			<script src="/newindex/assets/js/breakpoints.min.js"></script>
 			<script src="/newindex/assets/js/util.js"></script>
-            <script src="/newindex/assets/js/main.js"></script>
+			<script src="/newindex/assets/js/main.js"></script>
+			<script src="/newindex/assets/js/title.js"></script>
+		
 	</body>
 </html>
 <%- include footer %>

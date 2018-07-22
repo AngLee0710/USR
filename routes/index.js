@@ -182,7 +182,7 @@ module.exports = (app) => {
             }
 
             Leader.getAll((err, leaders) => {
-                res.render('teamList', {
+                res.render('teamlist', {
                     title: '團隊介紹',
                     teams: teams,
                     page: page,

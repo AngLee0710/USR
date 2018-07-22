@@ -1,0 +1,293 @@
+<%- include header %>
+<%- include nav2 %>
+<%- include to_Top %>
+<%teams.forEach(function(team, index) {%>
+    <%- include team_div_bar %>
+<%}) %>
+<head>
+    
+
+    <!-- Bootstrap and Font Awesome css -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+
+    <!-- Css animations  -->
+    <link href="/newteam/css/animate.css" rel="stylesheet">
+
+    <!-- Theme stylesheet, if possible do not edit this stylesheet -->
+    <link href="/newteam/css/style.default.css" rel="stylesheet" id="theme-stylesheet">
+
+    <!-- Custom stylesheet - for your changes -->
+    <link href="/newteam/css/custom.css" rel="stylesheet">
+
+    <!-- Responsivity for older IE -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+    <!-- Favicon and apple touch icons-->
+    <link rel="apple-touch-icon" href="/newteam/img/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" sizes="57x57" href="/newteam/img/apple-touch-icon-57x57.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="/newteam/img/apple-touch-icon-72x72.png" />
+    <link rel="apple-touch-icon" sizes="76x76" href="/newteam/img/apple-touch-icon-76x76.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="/newteam/img/apple-touch-icon-114x114.png" />
+    <link rel="apple-touch-icon" sizes="120x120" href="/newteam/img/apple-touch-icon-120x120.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="/newteam/img/apple-touch-icon-144x144.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="/newteam/img/apple-touch-icon-152x152.png" />
+
+    <!-- owl carousel css -->
+
+    <link href="/newteam/css/owl.carousel.css" rel="stylesheet">
+    <link href="/newteam/css/owl.theme.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+
+    <div id="all">
+
+        <!-- *** LOGIN MODAL ***
+_________________________________________________________ -->
+
+        <!-- *** LOGIN MODAL END *** -->
+
+
+        <div id="content">
+            <div class="container">
+
+                <section>
+
+                    <div class="row portfolio">
+                       
+                        <div class="col-sm-4">
+                            
+                            <div class="box-image">
+                                <div class="image">
+                                    <img src="/newteam/img/edu.jpg" alt="" class="img-responsive">
+                                </div>
+                                <div class="bg"></div>
+                                <div class="name">
+                                    <h3><a href="portfolio-detail.html"><%= teams.name %></a></a></h3> 
+                                </div>
+                                <div class="text">
+                                    <p class="hidden-sm">Pellentesque habitant morbi tristique senectus et netus et malesuada</p>
+                                    <p class="buttons">
+                                        <a href="portfolio-detail.html" class="btn btn-template-transparent-primary">View</a>
+                                        <a href="#" class="btn btn-template-transparent-primary">Website</a>
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- /.box-image -->
+
+                        </div>
+                        <div class="col-sm-8">
+                                <h1><%= teams.name %></h1>
+        
+                                <p class="lead">服務宗旨: <%- teams.purpose %></p>
+        
+                            </div>
+                        
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="box-image">
+                                <div class="image">
+                                    <img src="/newteam/img/edu.jpg" alt="" class="img-responsive">
+                                </div>
+                                <div class="bg"></div>
+                                <div class="name">
+                                    <h3><a href="portfolio-detail.html">Portfolio box-image</a></h3> 
+                                </div>
+                                <div class="text">
+                                    <p class="hidden-sm">Pellentesque habitant morbi tristique senectus et netus et malesuada</p>
+                                    <p class="buttons">
+                                        <a href="portfolio-detail.html" class="btn btn-template-transparent-primary">View</a>
+                                        <a href="#" class="btn btn-template-transparent-primary">Website</a>
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- /.box-image -->
+
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="box-image">
+                                <div class="image">
+                                    <img src="/newteam/img/edu.jpg" alt="" class="img-responsive">
+                                </div>
+                                <div class="bg"></div>
+                                <div class="name">
+                                    <h3><a href="portfolio-detail.html">Portfolio box-image</a></h3> 
+                                </div>
+                                <div class="text">
+                                    <p class="hidden-sm">Pellentesque habitant morbi tristique senectus et netus et malesuada</p>
+                                    <p class="buttons">
+                                        <a href="portfolio-detail.html" class="btn btn-template-transparent-primary">View</a>
+                                        <a href="#" class="btn btn-template-transparent-primary">Website</a>
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- /.box-image -->
+
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="box-image">
+                                <div class="image">
+                                    <img src="/newteam/img/edu.jpg" alt="" class="img-responsive">
+                                </div>
+                                <div class="bg"></div>
+                                <div class="name">
+                                    <h3><a href="portfolio-detail.html">Portfolio box-image</a></h3> 
+                                </div>
+                                <div class="text">
+                                    <p class="hidden-sm">Pellentesque habitant morbi tristique senectus et netus et malesuada</p>
+                                    <p class="buttons">
+                                        <a href="portfolio-detail.html" class="btn btn-template-transparent-primary">View</a>
+                                        <a href="#" class="btn btn-template-transparent-primary">Website</a>
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- /.box-image -->
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="box-image">
+                                <div class="image">
+                                    <img src="/newteam/img/edu.jpg" alt="" class="img-responsive">
+                                </div>
+                                <div class="bg"></div>
+                                <div class="name">
+                                    <h3><a href="portfolio-detail.html">Portfolio box-image</a></h3> 
+                                </div>
+                                <div class="text">
+                                    <p class="hidden-sm">Pellentesque habitant morbi tristique senectus et netus et malesuada</p>
+                                    <p class="buttons">
+                                        <a href="portfolio-detail.html" class="btn btn-template-transparent-primary">View</a>
+                                        <a href="#" class="btn btn-template-transparent-primary">Website</a>
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- /.box-image -->
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="box-image">
+                                <div class="image">
+                                    <img src="/newteam/img/edu.jpg" alt="" class="img-responsive">
+                                </div>
+                                <div class="bg"></div>
+                                <div class="name">
+                                    <h3><a href="portfolio-detail.html">Portfolio box-image</a></h3> 
+                                </div>
+                                <div class="text">
+                                    <p class="hidden-sm">Pellentesque habitant morbi tristique senectus et netus et malesuada</p>
+                                    <p class="buttons">
+                                        <a href="portfolio-detail.html" class="btn btn-template-transparent-primary">View</a>
+                                        <a href="#" class="btn btn-template-transparent-primary">Website</a>
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- /.box-image -->
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="box-image">
+                                <div class="image">
+                                    <img src="/newteam/img/edu.jpg" alt="" class="img-responsive">
+                                </div>
+                                <div class="bg"></div>
+                                <div class="name">
+                                    <h3><a href="portfolio-detail.html">Portfolio box-image</a></h3> 
+                                </div>
+                                <div class="text">
+                                    <p class="hidden-sm">Pellentesque habitant morbi tristique senectus et netus et malesuada</p>
+                                    <p class="buttons">
+                                        <a href="portfolio-detail.html" class="btn btn-template-transparent-primary">View</a>
+                                        <a href="#" class="btn btn-template-transparent-primary">Website</a>
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- /.box-image -->
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="box-image">
+                                <div class="image">
+                                    <img src="/newteam/img/edu.jpg" alt="" class="img-responsive">
+                                </div>
+                                <div class="bg"></div>
+                                <div class="name">
+                                    <h3><a href="portfolio-detail.html">Portfolio box-image</a></h3> 
+                                </div>
+                                <div class="text">
+                                    <p class="hidden-sm">Pellentesque habitant morbi tristique senectus et netus et malesuada</p>
+                                    <p class="buttons">
+                                        <a href="portfolio-detail.html" class="btn btn-template-transparent-primary">View</a>
+                                        <a href="#" class="btn btn-template-transparent-primary">Website</a>
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- /.box-image -->
+                        </div>
+
+                    </div>
+
+                </section>
+
+            </div>
+            <!-- /.container -->
+
+
+        </div>
+        <!-- /#content -->
+
+        <!-- *** GET IT ***
+_________________________________________________________ -->
+
+
+        <!-- *** GET IT END *** -->
+
+
+        <!-- *** FOOTER ***
+_________________________________________________________ -->
+
+        <!-- /#footer -->
+
+        <!-- *** FOOTER END *** -->
+
+        <!-- *** COPYRIGHT ***
+_________________________________________________________ -->
+
+        <!-- /#copyright -->
+
+        <!-- *** COPYRIGHT END *** -->
+
+
+
+   
+    <!-- /#all -->
+
+    <!-- #### JAVASCRIPT FILES ### -->
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script>
+        window.jQuery || document.write('<script src="js/jquery-1.11.0.min.js"><\/script>')
+    </script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+    <script src="/newteam/js/jquery.cookie.js"></script>
+    <script src="/newteam/js/waypoints.min.js"></script>
+    <script src="/newteam/js/jquery.counterup.min.js"></script>
+    <script src="/newteam/js/jquery.parallax-1.1.3.js"></script>
+    <script src="/newteam/js/front.js"></script>
+
+    
+
+    <!-- owl carousel -->
+    <script src="/newteam/js/owl.carousel.min.js"></script>
+
+
+
+</body>
+<%- include footer %>

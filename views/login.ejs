@@ -1,18 +1,86 @@
 <%- include header %>
-<body>
-  <%- include nav2 %>
+<%- include nav2 %>
+<link rel="stylesheet" href="/linlamu/public/newlogin/css/top.css">
+ <body> 
   <form method="post">
-      <div class="form-group">
+    <div class="container">
+    <div class="row thistop">
+        <div class="col-12" align="center">
+            <div class="top"><p style="font-size: 300%">登入</p></div>
+          </div>
+          <div class="col-sm-4">
+            </div>
+        <div class="col-sm-4">
         <label for="exampleInputEmail1">用戶名 :</label>
         <input type="text" class="form-control" name="name" aria-describedby="emailHelp" placeholder="Enter user name">
         <!--<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>-->
+    </div>
+    <div class="col-sm-4">
       </div>
-      <div class="form-group">
+    <div class="col-sm-4">
+      </div>
+    <div class="col-sm-4">
         <label for="exampleInputPassword1">密碼 : </label>
         <input type="password" class="form-control" name="password" id="exampleInputPassword1" placeholder="Password">
       </div>
-      <button type="submit"  class="btn btn-primary">登錄</button>
+      <div class="col-sm-4">
+        </div>
+      <div class="col-sm-12">
+        <br>
+      </div>
+      <div class="col-sm-4"></div>
+      <div class="col-sm-4 col-12">
+      <button type="submit"  class="btn btn-primary btn-block">登入</button>
+    </div>
+    <div class="col-sm-4">
+      </div>
+      </div>
+      </div>
     </form>
-</body>
-<%- include footer %>
+</body> 
+<style>
+  .thistop{
+    margin-top: 15%;
+  }
+  @media screen and (max-width: 480px) {
+
+/* // 如果使用者視窗寬度 <= 480px，將字體大小變為 16px */
+
+.thistop{
+    margin-top: 15%;
+  }
+
+}
+
+@media screen and (max-width: 768px) {
+
+/* // 如果使用者視窗寬度 <= 768px，將字體大小變為 20px */
+
+.thistop{
+    margin-top: 15%;
+  }
+
+}
+
+@media screen and (min-width: 768px) and (max-width: 992px) {
+
+/* // 如果使用者視窗寬度介於 768px ~ 992px，將字體大小變為 30px */
+
+.thistop{
+    margin-top: 15%;
+  }
+
+
+}
+
+@media screen and (min-width: 1200px) {
+
+/* // 如果使用者視窗寬度 >= 1200px，將字體大小變為 40px */
+
+.thistop{
+    margin-top: 15%;
+  }
+
+}
+</style>
 

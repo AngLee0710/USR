@@ -1,0 +1,45 @@
+.word{
+    overflow : hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    }
+    @media screen and (max-width: 480px) {
+
+        /* // 如果使用者視窗寬度 <= 480px，將字體大小變為 16px */
+        
+       
+        
+        }
+        
+        @media screen and (max-width: 768px) {
+        
+        /* // 如果使用者視窗寬度 <= 768px，將字體大小變為 20px */
+        
+        
+        
+        }
+        
+        @media screen and (min-width: 768px) and (max-width: 992px) {
+        
+        /* // 如果使用者視窗寬度介於 768px ~ 992px，將字體大小變為 30px */
+        
+        .word{
+            overflow : hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            }
+
+        
+        }
+        
+        @media screen and (min-width: 1200px) {
+        
+        /* // 如果使用者視窗寬度 >= 1200px，將字體大小變為 40px */
+        
+        
+        
+        }
