@@ -22,7 +22,7 @@
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
   <!-- Navigation-->
   <%- include manageNav %>
-  <div class="content-wrapper">
+  <div class="content-wrapper userDiv">
     <div class="container-fluid">
       <!-- Breadcrumbs-->
       <ol class="breadcrumb">
@@ -121,5 +121,10 @@
     }
     .C_Checkbox {
       margin-left: 0px;
+    }
+    @media only screen and (max-width: 768px) {
+      .userDiv {
+        padding-right: 15px;
+      }
     }
   </style>

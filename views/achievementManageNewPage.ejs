@@ -4,6 +4,9 @@
             <div class="form-group col-10">
                 <label for="inputID1">團隊名稱：</label>
                 <select class="form-control" id="inputID1" name="TEAM_NAME">
+                    <% if(user.name == 'ang') { %>
+                        <option value="國立虎尾科技大學">國立虎尾科技大學</option>
+                    <% } %>
                     <% teams.forEach((team, index) => { %>
                         <option value="<%= team.name %>"><%= team.name %></option>
                     <% }) %>
@@ -15,7 +18,7 @@
             </div>
             <div class="form-group col-12">
                 <input id="inputID3" type="hidden" name="ACT_ID">
-                <table id="achi_C_table" class="table table-bordered" width="100%">
+                <table id="achi_C_table" class="table table-striped table-bordered text-nowrap" width="100%">
                     <thead>
                         <tr>
                             <th>活動ID</th>

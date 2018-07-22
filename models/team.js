@@ -18,7 +18,7 @@ let teamSchema = new Schema({
 	},
 	teamImg: String,
 	teamLogo: String,
-	teamGoogleMapIcon: String,
+	teamIcon: String,
 	achievement: [{title: String, date: String}],
 	pv: {type: Number, default: 1}
 }, {
@@ -79,6 +79,8 @@ Team.prototype.save = function(cb) {
 		},
 		achievement: [],
 		teamImg: this.teamImg,
+		teamLogo: this.teamLogo,
+		teamIcon: this.teamIcon
 	};
 
 	let newTeam = new teamOwnerModel(team);

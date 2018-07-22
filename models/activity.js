@@ -41,6 +41,7 @@ let actPostSchema = new Schema({
 	ACT_LIST: String,
 	ACT_IMGARR: [{image: String}],
 	ACT_SIGN_NUM: {type: Number, default: 0},
+	ACT_NOT_SIGN: {type: Boolean, default: true},
 	ACT_TAG: [{ NAME: String }],
 	ACT_ACHI: {type: Boolean, default: false},
 	pv: {type: Number, default: 1}
@@ -52,10 +53,8 @@ let actPostOwnerModel = dbAuth.owner.model('actPost', actPostSchema);
 let actPostUserModel = dbAuth.user.model('actPost', actPostSchema);
 
 
-function actPost(ACT_SUBJ_NAME, ACT_BEG_DATE, ACT_END_DATE, ACT_DEPTNAME, ACT_LOCATION, ACT_LIMIT_SEX, 
-	ACT_LIMIT, ACT_URL, ACT_COMM_USER, ACT_COMM_TEL, ACT_COMM_EMAIL, ACT_B_BEG, ACT_B_END,
-	ACT_K_TEL, ACT_K_DEPT, ACT_K_OCCUP, ACT_K_IDNO, ACT_K_SEX, ACT_K_BIRTH, ACT_K_FOOD, 
-	ACT_K_ADDR, ACT_LIST, ACT_IMGARR)
+function actPost(ACT_SUBJ_NAME, ACT_BEG_DATE, ACT_END_DATE, ACT_DEPTNAME, ACT_LOCATION, ACT_LIMIT_SEX, ACT_LIMIT, ACT_URL, ACT_COMM_USER, ACT_COMM_TEL, ACT_COMM_EMAIL, ACT_B_BEG, ACT_B_END, ACT_K_TEL, ACT_K_DEPT, ACT_K_OCCUP, ACT_K_IDNO, ACT_K_SEX, ACT_K_BIRTH, ACT_K_FOOD, 
+	ACT_K_ADDR, ACT_LIST, ACT_IMGARR, ACT_NOT_SIGN)
 {
 	this.ACT_SUBJ_NAME = ACT_SUBJ_NAME;
 	this.ACT_BEG_DATE = ACT_BEG_DATE;
@@ -80,6 +79,7 @@ function actPost(ACT_SUBJ_NAME, ACT_BEG_DATE, ACT_END_DATE, ACT_DEPTNAME, ACT_LO
 	this.ACT_K_ADDR = ACT_K_ADDR;
 	this.ACT_LIST = ACT_LIST;
 	this.ACT_IMGARR = ACT_IMGARR;
+	this.ACT_NOT_SIGN = ACT_NOT_SIGN;
 }
 
 actPost.prototype.save = function(cb) {
@@ -134,6 +134,7 @@ actPost.prototype.save = function(cb) {
 		ACT_K_ADDR: this.ACT_K_ADDR,
 		ACT_IMGARR: this.ACT_IMGARR,
 		ACT_LIST: this.ACT_LIST,
+		ACT_NOT_SIGN: this.ACT_NOT_SIGN
 	}
 
 	let newActPost = new actPostOwnerModel(actPost);
@@ -190,7 +191,7 @@ actPost.take = function(id, callback) {
 
 //全部拿取 key = null
 actPost.getAll = function(callback) {
-	actPostUserModel.find({}).sort('-ACT_C_AT').exec(function(err, actPosts) {
+	actPostUserModel.find({}).sort('-ACT_BEG_DATE').exec(function(err, actPosts) {
 		if(err)
 			return callback(err, null);
 		else

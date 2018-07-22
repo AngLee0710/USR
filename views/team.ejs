@@ -53,7 +53,12 @@
 
     result.forEach((doc, i) => {
 	    var uluru = {lat: doc.ACT_LOCATION.LOCATION_LAT, lng: doc.ACT_LOCATION.LOCATION_LNG};
-    	var marker = new google.maps.Marker({position: uluru, map: map, animation: google.maps.Animation.DROP});
+    	var marker = new google.maps.Marker({
+			position: uluru, 
+			map: map,
+			icon: '<%- teams.teamIcon %>',
+			animation: google.maps.Animation.DROP
+		});
     	var contentString = '<div id="content">'+
 	        '<div id="siteNotice">'+
 	        '</div>'+

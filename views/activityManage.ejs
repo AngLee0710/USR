@@ -7,6 +7,7 @@
     KindEditor.ready(function(K) {
       editor = K.create('textarea', {
         uploadJson: '/uploadImg',
+        filterMode: false,
         width : '100%',
         items: [
           'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'blod', 'italic',
@@ -118,5 +119,43 @@
     }
     .C_Checkbox {
       margin-left: 0px;
+    }
+    .forEditor4 {
+      margin-right: 15px;
+    }
+    .signUpCheckPage1 {
+      padding-right: 15px;
+      padding-left: 15px;
+    }
+    .forEditor2_2 {
+      padding-left: 24px;
+      padding-right: 0px;
+    }
+    .forEditor4_2 {
+      padding-left: 15px;
+      padding-right: 0px;
+    }
+    @media only screen and (max-width: 768px) {
+      .forEditor {
+        padding-right: 15px;
+      }
+      .forEditor4 {
+        padding-left: 0px;
+      }
+      .forEditor2 {
+        padding-left: 0px;
+        right: -15px;
+      }
+      .forEditor3 {
+        padding-right: 15px;
+      }
+      .signUpCheckPage1 {
+        padding-right: 0px;
+        padding-left: 30px;
+      }
+      .forEditor4_2 {
+        padding-left: 0px;
+        padding-right: 0px;
+      }
     }
   </style>

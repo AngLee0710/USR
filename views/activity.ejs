@@ -15,87 +15,35 @@
 <!-- Favicon and touch icons -->
 
 <body>
-		<div class="me">
-<script>
-		$.fn.smartFloat = function() {
-		var position = function(element) {
-		var top = element.position().top, pos = element.css("position");
-		$(window).scroll(function() {
-		var scrolls = $(this).scrollTop();
-		if (scrolls > top) {
-		if (window.XMLHttpRequest) {
-		element.css({
-		position: "fixed",
-		top: 0
-		});
-		} else {
-		element.css({
-		top: scrolls
-		});
-		}
-		}else {
-		element.css({
-		position: pos,
-		top: top
-		});
-		}
-		});
-		};
-		return $(this).each(function() {
-		position($(this)); 
-		});
-		};
-		 
-		//綁定
-		$("#float").smartFloat();
-		</script>  ​
-
-	<%- include nav2 %>
+<%- include nav2 %>
+<div class="me">
 	<section id="two" class="mine">
-			<div class="container"  >
-					<div class="row" >
-						
-						<!-- <div class="col-12">
+		<div class="container"  >
+			<div class="row" >
+				<div class="col-1"></div>
+				<div class="col-11">
+					<br><br><br><br>
+					<h1>【<%= post.ACT_DEPTNAME %>】<%= post.ACT_SUBJ_NAME %></h1>
+				</div>
+				<div class="col-1"></div>
+					<div class="col-7">
+						<div class="card" style="width: 100%;">
+							<h3>&nbsp&nbsp&nbsp<img src="images/week.png" width="3%">&nbsp活動時間：&nbsp<%= new Date(parseInt(post.ACT_BEG_DATE)).toLocaleString() %> 至 <%= new Date(parseInt(post.ACT_END_DATE)).toLocaleString() %></h3>
+							<h3>&nbsp&nbsp&nbsp<img src="images/locat.png" width="3%">&nbsp活動地點：&nbsp<%= post.ACT_LOCATION.LOCATION_NAME %></h3>
+							<h3>&nbsp&nbsp&nbsp<img src="images/sex.png" width="3%">&nbsp性別限制：
+								<% if(post.ACT_LIMIT_SEX == '1') {%>
+								男
+								<% }else if(post.ACT_LIMIT_SEX == '2') {%>
+								女
+								<%} else {%>
+								不限
+								<%　} %></h3>
+							<h3>&nbsp&nbsp&nbsp<img src="images/group.png" width="3%">&nbsp人數限制：&nbsp<%= post.ACT_LIMIT %>人</h3>
+							<h3>&nbsp&nbsp&nbsp<img src="images/time.png" width="3%">&nbsp報名時間：&nbsp<%= new Date(parseInt(post.ACT_B_BEG)).toLocaleString() %> 至<%= new Date(parseInt(post.ACT_B_END)).toLocaleString() %></h3>
 							<br>
-							<br>
-							<br>
-							<br>
-								<span class="image object">
-										<img src="images/p1.jpg"class="rounded mx-auto d-block" alt="" /> 團隊合照 
-									</span>	
-						</div>-->
-						<div class="col-1"></div>
-						<div class="col-11">
-								<br>
-							<br>
-							<br>
-							<br>
-									<h1>【<%= post.ACT_DEPTNAME %>】<%= post.ACT_SUBJ_NAME %></h1>
-									</div>
-						<div class="col-1"></div>
-								
-						<div class="col-7">
-								<div class="card" style="width: 100%;">
-									
-								<h3>&nbsp&nbsp&nbsp<img src="images/week.png" width="3%">&nbsp活動時間：&nbsp<%= new Date(parseInt(post.ACT_BEG_DATE)).toLocaleString() %> 至 <%= new Date(parseInt(post.ACT_END_DATE)).toLocaleString() %></h3>
-								<h3>&nbsp&nbsp&nbsp<img src="images/locat.png" width="3%">&nbsp活動地點：&nbsp<%= post.ACT_LOCATION.LOCATION_NAME %></h3>
-								<h3>&nbsp&nbsp&nbsp<img src="images/sex.png" width="3%">&nbsp性別限制：
-									<% if(post.ACT_LIMIT_SEX == '1') {%>
-									男
-									<% }else if(post.ACT_LIMIT_SEX == '2') {%>
-									女
-									<%} else {%>
-									不限
-									<%　} %></h3>
-								<h3>&nbsp&nbsp&nbsp<img src="images/group.png" width="3%">&nbsp人數限制：&nbsp<%= post.ACT_LIMIT %>人</h3>
-								<h3>&nbsp&nbsp&nbsp<img src="images/time.png" width="3%">&nbsp報名時間：&nbsp<%= new Date(parseInt(post.ACT_B_BEG)).toLocaleString() %> 至<%= new Date(parseInt(post.ACT_B_END)).toLocaleString() %></h3>
-								<br>
-							
 							<h2>&nbsp&nbsp活動介紹</h2>
-									
-									<img src="images/p1.jpg"width="50%" class="rounded mx-auto d-block"alt="" />
-									
-								</div>
+							<%- post.ACT_LIST %>
+							</div>
 						</div>
 						<div class="col-3 activityBody" >
 								<div class="card" style="width: 100%;" >
@@ -110,11 +58,9 @@
 							</div>
 						</div>
 					</div>
-				
 			</div>
 	</section>
 </div>
-
 <link rel="stylesheet" href="/activity/assets2/css/stytle.css" />
 <script src="/activity/assets2/floatjs/stickUp.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
@@ -175,5 +121,38 @@
 		$("#bar").stickup()  
 	})
 </script>
+<script>
+	$.fn.smartFloat = function() {
+	var position = function(element) {
+	var top = element.position().top, pos = element.css("position");
+	$(window).scroll(function() {
+	var scrolls = $(this).scrollTop();
+	if (scrolls > top) {
+	if (window.XMLHttpRequest) {
+	element.css({
+	position: "fixed",
+	top: 0
+	});
+	} else {
+	element.css({
+	top: scrolls
+	});
+	}
+	}else {
+	element.css({
+	position: pos,
+	top: top
+	});
+	}
+	});
+	};
+	return $(this).each(function() {
+	position($(this)); 
+	});
+	};
+	 
+	//綁定
+	$("#float").smartFloat();
+</script>  ​
 </body>
 <%- include footer %>

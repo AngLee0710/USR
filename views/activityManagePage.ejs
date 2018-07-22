@@ -1,5 +1,5 @@
 <div class="col-12" id="managePage">
-    <table id="dataTableForAct" class="table table-bordered" width="100%"></table>
+    <table id="dataTableForAct" class="table table-responsive-sm table-bordered text-nowrap" style="width: 100%"></table>
 </div>
 <script type="text/javascript">
     $(document).ready(function() {
@@ -12,6 +12,7 @@
                 actData[i].id = i + 1;
             var dataTableForAct = $('#dataTableForAct').DataTable({
                 "data": actData,
+                "responsive": true,
                 "columns": [
                     { "title": '活動ID', "data": 'id'},
                     { "title": '活動名稱', "data": 'ACT_SUBJ_NAME', 
@@ -50,8 +51,8 @@
 
                             if(day < 10)
                               day = '0' + day;
-                            
-                   
+                           
+
                             if(parseInt(date.getHours()) < 10)
                               hour = '0' + date.getHours();
                             else
@@ -124,6 +125,15 @@
                 $('#editInputID4').val(result.ACT_LOCATION.LOCATION_ADDR);
                 $('#editInputID32').val(result.ACT_LOCATION.LOCATION_LAT);
                 $('#editInputID33').val(result.ACT_LOCATION.LOCATION_LNG);
+                $('#editInputID34').val(result.ACT_NOT_SIGN);
+                if(!result.ACT_NOT_SIGN) {
+                  $('#editCheckPage1').hide();
+                  $('#editCheckPage2').hide();
+                }
+                else {
+                  $('#editCheckPage1').show();
+                  $('#editCheckPage2').show();
+                }
                 var date1 = new Date(parseInt(result.ACT_BEG_DATE)),
                 month = '00',
                 hour = '00',

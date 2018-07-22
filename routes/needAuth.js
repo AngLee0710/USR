@@ -98,7 +98,6 @@ module.exports =  (app) => {
 	app.post('/activity/create', (req, res, next) => {
 		let $ = cheerio.load(req.body.ACT_LIST);
 		let imgArray = [];
-
 		for(let i = 0 ; i < $('img').length ; i++) {
 			imgArray[i] = {
 				url: $('img')[i].attribs.src
@@ -106,30 +105,54 @@ module.exports =  (app) => {
 		}
 
 		Team.check(req.body.ACT_DEPTNAME, (err, team) => {
+			if(!req.body.signUpCheck) {
+				team = true;
+			}
 			if(err) {
 				console.log(err);
-				req.flash('error', 'Server model error !!');
+				req.flash('error', '模組異常!!');
 				return res.redirect('/activityManage');				 
-			} else if(!team) 
-				req.flash('error', '未指定隊伍');
-			else {
-				let ACT_BEG_DATE = req.body.ACT_BEG_DATE_D + ' ' + req.body.ACT_BEG_DATE_T,
-				ACT_END_DATE = req.body.ACT_END_DATE_D + ' '	+ req.body.ACT_END_DATE_T,
-				ACT_COMM_USER = team.connection.name,
-				ACT_COMM_TEL = team.connection.phone,
-				ACT_COMM_EMAIL = team.connection.email,
-				ACT_B_BEG = req.body.ACT_B_BEG_D + ' ' + req.body.ACT_B_BEG_T,
-				ACT_B_END = req.body.ACT_B_END_D + ' ' + req.body.ACT_B_END_T,
-				ACT_LOCATION = {
+			} else if(!team) {
+				req.flash('error', '未輸入隊伍');
+				return res.redirect('/activityManage');	
+			} else {
+				let ACT_BEG_DATE = req.body.ACT_BEG_DATE_D + ' ' + req.body.ACT_BEG_DATE_T;
+				let ACT_END_DATE = req.body.ACT_END_DATE_D + ' ' + req.body.ACT_END_DATE_T;
+				let ACT_B_BEG = req.body.ACT_B_BEG_D + ' ' + req.body.ACT_B_BEG_T;
+				let ACT_B_END = req.body.ACT_B_END_D + ' ' + req.body.ACT_B_END_T;
+				let ACT_COMM_USER, ACT_COMM_TEL, ACT_COMM_EMAIL = null;
+				let ACT_LOCATION = {
 					LOCATION_NAME: req.body.ACT_LOCATION_NAME,
 					LOCATION_ADDR: req.body.ACT_LOCATION_ADDR,
 					LOCATION_LAT: req.body.ACT_LOCATION_LAT,
 					LOCATION_LNG: req.body.ACT_LOCATION_LNG
 				}
+
+				let ACT_BEG_DATE_POCH = Date.parse(ACT_BEG_DATE),
+					ACT_END_DATE_POCH = Date.parse(ACT_END_DATE),
+					ACT_B_BEG_POCH = Date.parse(ACT_B_BEG),
+					ACT_B_END_POCH = Date.parse(ACT_B_END),
+					ACT_NOT_SIGN = true;
+
+				if(!req.body.signUpCheck) {
+					ACT_COMM_USER = '國立虎尾科技大學秘書室';
+					ACT_COMM_TEL = '05-6315000';
+					ACT_COMM_EMAIL = 'secretary@nfu.edu.tw'
+					ACT_B_BEG_POCH = 1;
+					ACT_B_END_POCH = 1;
+					req.body.ACT_DEPTNAME = '國立虎尾科技大學';
+					req.body.ACT_LIMIT = 1;
+					ACT_NOT_SIGN = false;
+				} else {
+					ACT_COMM_USER = team.connection.name;
+					ACT_COMM_TEL = team.connection.phone;
+					ACT_COMM_EMAIL = team.connection.email;
+				}
+				
 				let activityPost = new actPost(
 					req.body.ACT_SUBJ_NAME,
-					Date.parse(ACT_BEG_DATE),
-					Date.parse(ACT_END_DATE),
+					ACT_BEG_DATE_POCH,
+					ACT_END_DATE_POCH,
 					req.body.ACT_DEPTNAME,
 					ACT_LOCATION,
 					req.body.ACT_LIMIT_SEX,
@@ -138,8 +161,8 @@ module.exports =  (app) => {
 					ACT_COMM_USER,
 					ACT_COMM_TEL,
 					ACT_COMM_EMAIL,			
-					Date.parse(ACT_B_BEG),
-					Date.parse(ACT_B_END),
+					ACT_B_BEG_POCH,
+					ACT_B_END_POCH,
 					req.body.ACT_K_TEL,
 					req.body.ACT_K_DEPT,
 					req.body.ACT_K_OCCUP,
@@ -149,7 +172,8 @@ module.exports =  (app) => {
 					req.body.ACT_K_FOOD,
 					req.body.ACT_K_ADDR,
 					req.body.ACT_LIST,
-					imgArray
+					imgArray,
+					ACT_NOT_SIGN
 				);
 
 				activityPost.save((err) => {
@@ -188,23 +212,24 @@ module.exports =  (app) => {
 			}
 		}
 
-		Team.check(req.body.ACT_DEPTNAME, (err, team) => {
-			if(err) {
-				console.log(err);
-				return res.redirect('/activityManage');
-			}
-			let ACT_BEG_DATE = req.body.ACT_BEG_DATE_D + ' ' + req.body.ACT_BEG_DATE_T,
-			ACT_END_DATE = req.body.ACT_END_DATE_D + ' '	+ req.body.ACT_END_DATE_T,
-			ACT_COMM_USER = team.connection.name,
-			ACT_COMM_TEL = team.connection.phone,
-			ACT_COMM_EMAIL = team.connection.email,
-			ACT_B_BEG = req.body.ACT_B_BEG_D + ' ' + req.body.ACT_B_BEG_T,
-			ACT_B_END = req.body.ACT_B_END_D + ' ' + req.body.ACT_B_END_T;
+		let ACT_BEG_DATE = req.body.ACT_BEG_DATE_D + ' ' + req.body.ACT_BEG_DATE_T;
+		let ACT_END_DATE = req.body.ACT_END_DATE_D + ' '	+ req.body.ACT_END_DATE_T;
+		let ACT_B_BEG = req.body.ACT_B_BEG_D + ' ' + req.body.ACT_B_BEG_T;
+		let ACT_B_END = req.body.ACT_B_END_D + ' ' + req.body.ACT_B_END_T;
+		let ACT_BEG_DATE_POCH = Date.parse(ACT_BEG_DATE),
+			ACT_END_DATE_POCH = Date.parse(ACT_END_DATE),
+			ACT_B_BEG_POCH = Date.parse(ACT_B_BEG),
+			ACT_B_END_POCH = Date.parse(ACT_B_END);
+		let ACT_NOT_SIGN = req.body.ACT_NOT_SIGN;
+		let ACT_COMM_USER = null;
+		let ACT_COMM_TEL = null;
+		let ACT_COMM_EMAIL = null;
 
+		if(!ACT_NOT_SIGN) {
 			let activityPost = {
 				ACT_SUBJ_NAME: req.body.ACT_SUBJ_NAME,
-				ACT_BEG_DATE: ACT_BEG_DATE,
-				ACT_END_DATE: ACT_END_DATE,
+				ACT_BEG_DATE: ACT_BEG_DATE_POCH,
+				ACT_END_DATE: ACT_END_DATE_POCH,
 				ACT_DEPTNAME: req.body.ACT_DEPTNAME,
 				ACT_LOCATION: req.body.ACT_LOCATION,
 				ACT_LIMIT_SEX: req.body.ACT_LIMIT_SEX,
@@ -213,8 +238,8 @@ module.exports =  (app) => {
 				ACT_COMM_USER: ACT_COMM_USER,
 				ACT_COMM_TEL: ACT_COMM_TEL,
 				ACT_COMM_EMAIL: ACT_COMM_EMAIL,			
-				ACT_B_BEG: ACT_B_BEG,
-				ACT_B_END: ACT_B_END,
+				ACT_B_BEG: ACT_B_BEG_POCH,
+				ACT_B_END: ACT_B_END_POCH,
 				ACT_K_TEL: req.body.ACT_K_TEL,
 				ACT_K_DEPT: req.body.ACT_K_DEPT,
 				ACT_K_OCCUP: req.body.ACT_K_OCCUP,
@@ -226,6 +251,7 @@ module.exports =  (app) => {
 				ACT_LIST: req.body.ACT_LIST,
 				imgArray: imgArray
 			}
+
 			actPost.edit(req.body.editID, activityPost, (err, errr) => {
 				if(errr == 'success'){
 					req.flash('success', '修改成功！！！');
@@ -237,7 +263,55 @@ module.exports =  (app) => {
 					return res.redirect('/activityManage')
 				}
 			});
-		});
+		} else {
+			Team.check(req.body.ACT_DEPTNAME, (err, team) => {
+				if(err) {
+					console.log(err);
+					return res.redirect('/activityManage');
+				} else {
+					ACT_COMM_USER = team.connection.name;
+					ACT_COMM_TEL = team.connection.phone;
+					ACT_COMM_EMAIL = team.connection.email;
+					let activityPost = {
+						ACT_SUBJ_NAME: req.body.ACT_SUBJ_NAME,
+						ACT_BEG_DATE: ACT_BEG_DATE_POCH,
+						ACT_END_DATE: ACT_END_DATE_POCH,
+						ACT_DEPTNAME: req.body.ACT_DEPTNAME,
+						ACT_LOCATION: req.body.ACT_LOCATION,
+						ACT_LIMIT_SEX: req.body.ACT_LIMIT_SEX,
+						ACT_LIMIT: req.body.ACT_LIMIT,
+						ACT_URL: req.body.ACT_URL,
+						ACT_COMM_USER: ACT_COMM_USER,
+						ACT_COMM_TEL: ACT_COMM_TEL,
+						ACT_COMM_EMAIL: ACT_COMM_EMAIL,			
+						ACT_B_BEG: ACT_B_BEG_POCH,
+						ACT_B_END: ACT_B_END_POCH,
+						ACT_K_TEL: req.body.ACT_K_TEL,
+						ACT_K_DEPT: req.body.ACT_K_DEPT,
+						ACT_K_OCCUP: req.body.ACT_K_OCCUP,
+						ACT_K_IDNO: req.body.ACT_K_IDNO,
+						ACT_K_SEX: req.body.ACT_K_SEX,
+						ACT_K_BIRTH: req.body.ACT_K_BIRTH,
+						ACT_K_FOOD: req.body.ACT_K_FOOD,
+						ACT_K_ADDR: req.body.ACT_K_ADDR,
+						ACT_LIST: req.body.ACT_LIST,
+						imgArray: imgArray
+					}
+
+					actPost.edit(req.body.editID, activityPost, (err, errr) => {
+						if(errr == 'success'){
+							req.flash('success', '修改成功！！！');
+							return res.redirect('/activityManage')
+						}
+						else {
+							console.log(err);
+							req.flash('error', '修改失敗！！！');
+							return res.redirect('/activityManage')
+						}
+					});
+				}
+			});
+		}
 	});
 
 	app.post('/activity/delete', checkLogin);
@@ -335,8 +409,6 @@ module.exports =  (app) => {
 			}
 		}
 
-		console.log(req.files[0]);
-
 		for(let i = 0 ; i < req.files.length ; i++) {
 			switch(req.files[i].fieldname) {
 				case 'teamLogo':
@@ -350,7 +422,6 @@ module.exports =  (app) => {
 					break;
 			}
 		}
-		console.log(team);
 
 		let newTeam = new Team(team)
 
@@ -448,10 +519,10 @@ module.exports =  (app) => {
 		let image = [];
 		if(req.files.length == 0) {
 			req.flash('error', '未上傳照片');
-			res.redirect('/achievementManage');
+			return res.redirect('/achievementManage');
 		} else if(req.body.ACHI_DEP == '') {
 			req.flash('error', '成果內容未輸入');
-			res.redirect('/achievementManage');
+			return res.redirect('/achievementManage');
 		} else {
 			req.files.forEach((file, index) => {
 				image[index] = {
@@ -503,13 +574,16 @@ module.exports =  (app) => {
 			count++;
 		});
 
-		req.files.forEach((file, index) => {
-			image[count] = {
-				NAME: file.filename,
-				URL: '/upload/' + file.filename
-			}
-			count++;
-		});
+		if(!req.files.length == 0) {
+			req.files.forEach((file, index) => {
+				image[count] = {
+					NAME: file.filename,
+					URL: '/upload/' + file.filename
+				}
+				count++;
+			});
+		}
+		
 
 		let update = {
 			ACHI_STORE: req.body.ACHI_DEP,

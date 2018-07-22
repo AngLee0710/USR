@@ -43,7 +43,7 @@
         <input id="continueSearchBtn" class="btn btn-block" type="button" value="繼續查詢" style="margin-top: 0px;" />
     </div>
     <div class="col-6">
-        <input id="goMapBtn" class="btn btn-block" type="button" value="返回地圖" />
+        <input id="goMapBtn" class="btn btn-block" type="button" value="返回" />
     </div>
 </div>
 <div id="achiTableDiv" class="row" style="display: none; padding-top: 2px;">
@@ -206,24 +206,28 @@
     function initMap() {
         map = new google.maps.Map(document.getElementById('map'), {
         center: {lat: 23.7031129, lng: 120.4279623},
-        zoom: 9
+        zoom: 12
         });
 
         result.forEach((doc, i) => {
             var uluru = {lat: doc.ACT_LOCATION.LOCATION_LAT, lng: doc.ACT_LOCATION.LOCATION_LNG};
             var marker = new google.maps.Marker({position: uluru, map: map, animation: google.maps.Animation.DROP});
             var contentString = '<div id="content">'+
-                '<div id="siteNotice">'+
+                '<div id="siteNotice">'+ 
                 '</div>'+
                 '<h3 id="firstHeading" class="firstHeading"><a href="/achievement/' + result[i]._id + '">' +
-                result[i].ACT_NAME + '</a></h3></div>';
+                result[i].ACT_NAME + '</a></h3>活動成果放置區</div>';
 
             var infowindow = new google.maps.InfoWindow({
-            content: contentString
+                content: contentString
             });
 
-            marker.addListener('click', function() {
-            infowindow.open(map, marker);
+            marker.addListener('mouseover', function() {
+                infowindow.open(map, marker);
+            });
+
+            marker.addListener('mouseout', function() {
+                setTimeout(function () { infowindow.close(); }, 3000);
             });
         });
     }

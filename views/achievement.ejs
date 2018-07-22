@@ -3,8 +3,6 @@
     <head>
         <link rel="stylesheet" href="/achievement/assets/css/main.css" />
     </head>
-
-
     <body>
         <%- include nav2 %>
             <!-- Banner -->
@@ -13,65 +11,27 @@
                     <img src="/achievement/images/word.jpg" alt="" />
                     <div class="inner">
                         <header>
-                            <p style="font-size:300%;">虎科志工</p>
+                            <p style="font-size:300%;"><%= doc.TEAM_NAME %> </p>
                         </header>
                     </div>
                 </article>
-                <article>
-                    <img src="/achievement/images/p1.jpg" alt="" />
-                </article>
-                <article>
-                    <img src="/achievement/images/p2.jpg" alt="" />
-                </article>
-                <article>
-                    <img src="/achievement/images/p3.jpg" alt="" />
-                </article>
-                <article>
-                    <img src="/achievement/images/p4.jpg" alt="" />
-                </article>
-                <article>
-                    <img src="/achievement/images/p5.jpg" alt="" />
-                </article>
-                <!-- <article>
-            <img src="images/p5.jpg" alt="" />
-            <div class="inner">
-                <header>
-                    <p>Ipsum dolor sed magna veroeros lorem ipsum</p>
-                    <h2>Lorem adipiscing</h2>
-                </header>
-            </div>
-		</article> -->
+                <% doc.ACHI_IMG.forEach((img, index) => { %>
+                    <article>
+                        <img src="<%= img.URL %>" alt="" />
+                    </article>
+                <% }); %>
             </section>
-            <!-- Three -->
-
-            <!-- Two -->
-            <!-- <section id="two" class="wrapper style3">
-        <div class="inner">
-            <header class="align-center">
-                <p style="font-size:300%;">活動心得</p>
-            </header>
-        </div>
-    </section> -->
             <section id="three" class="wrapper style2">
                 <div class="inner">
                     <div class="our-team-w3l">
                         <div class="our-team-w3l-info text-center">
-                            <p style="font-size:300%;">活動心得</p>
+                            <p style="font-size:300%;">活動敘述</p>
                             <label></label>
                         </div>
-                        <h2 align="left">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp雖然跟沄水國小的小朋友都已經算是很熟了，但是每年換個新團隊還是得需要重新再破冰一次，一開始就需要成功塑造一個好的團隊氣氛，這樣子我們隊輔在之後的幾天帶起來就會比較輕鬆，這是在第一天時的破冰情況，我們紅檜小隊正在討論我們的隊呼應該要怎麼樣進行，小朋友們很熱烈地在想我們應該要做怎樣的動作，最後我們一起完成了一個很棒的隊呼。</h2>
+                        <h2 align="left">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<%- doc.ACHI_STORE %></h2>
                         <label></label>
                     </div>
             </section>
-            <!-- Two -->
-            <!-- <section id="two" class="wrapper style3">
-        <div class="inner">
-            <header class="align-center">
-                <p style="font-size:300%;">團隊成員</p>
-            </header>
-        </div>
-    </section> -->
-
             <section id="two" class="wrapper style2" style="background-color: rgb(255, 255, 255)">
                 <div class="our-team-w3l">
                     <div class="our-team-w3l-info text-center">
@@ -89,13 +49,6 @@
                                         <p>Contrary to popular belief, Lorem Ipsum is not simply random text. </p>
 
                                     </div>
-                                    <!-- <div class="our-team-w3l-icons">
-                                <ul>
-                                    <li><a href="#" class="icon1"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-                                    <li><a href="#" class="icon2"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-                                    <li><a href="#" class="icon3"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
-                                </ul>
-                            </div> -->
                                 </div>
                                 <div class="col-xs-6 col-sm-6 col-md-3 team-info">
                                     <div class="thumbnail">
@@ -105,13 +58,6 @@
                                             <p>Contrary to popular belief, Lorem Ipsum is not simply random text. </p>
 
                                         </div>
-                                        <!-- <div class="our-team-w3l-icons">
-                                    <ul>
-                                        <li><a href="#" class="icon1"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-                                        <li><a href="#" class="icon2"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-                                        <li><a href="#" class="icon3"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
-                                    </ul>
-                                </div> -->
                                     </div>
                                 </div>
                                 <div class="col-xs-6 col-sm-6 col-md-3 team-info">

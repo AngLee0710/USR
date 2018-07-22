@@ -68,7 +68,6 @@ achievement.prototype.save = function(cb) {
 	let newAchievement = new achievementOwnerModel(achievement);
 
 	newAchievement.save(function(err, doc) {
-		console.log(doc);
 		if(err)
 			return cb(err);
 		else {
