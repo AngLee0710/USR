@@ -1,19 +1,18 @@
 <%- include header %>
 <%- include nav2 %>
-<link rel="stylesheet" href="/linlamu/public/newlogin/css/top.css">
+<!-- <link rel="stylesheet" href="/newlogin/css/top.css"> -->
  <body> 
   <form method="post">
     <div class="container">
     <div class="row thistop">
         <div class="col-12" align="center">
             <div class="top"><p style="font-size: 300%">登入</p></div>
-          </div>
-          <div class="col-sm-4">
-            </div>
+        </div>
+        <div class="col-sm-4">
+        </div>
         <div class="col-sm-4">
         <label for="exampleInputEmail1">用戶名 :</label>
         <input type="text" class="form-control" name="name" aria-describedby="emailHelp" placeholder="Enter user name">
-        <!--<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>-->
     </div>
     <div class="col-sm-4">
       </div>
@@ -24,9 +23,9 @@
         <input type="password" class="form-control" name="password" id="exampleInputPassword1" placeholder="Password">
       </div>
       <div class="col-sm-4">
-        </div>
+      </div>
       <div class="col-sm-12">
-        <br>
+      <br>
       </div>
       <div class="col-sm-4"></div>
       <div class="col-sm-4 col-12">
@@ -40,16 +39,12 @@
 </body> 
 <style>
   .thistop{
-    margin-top: 15%;
+    margin-top: 5%;
   }
   @media screen and (max-width: 480px) {
-
-/* // 如果使用者視窗寬度 <= 480px，將字體大小變為 16px */
-
-.thistop{
-    margin-top: 15%;
+  .thistop{
+    margin-top: 5%;
   }
-
 }
 
 @media screen and (max-width: 768px) {
@@ -57,7 +52,7 @@
 /* // 如果使用者視窗寬度 <= 768px，將字體大小變為 20px */
 
 .thistop{
-    margin-top: 15%;
+    margin-top: 5%;
   }
 
 }
@@ -78,9 +73,17 @@
 /* // 如果使用者視窗寬度 >= 1200px，將字體大小變為 40px */
 
 .thistop{
-    margin-top: 15%;
+    margin-top: 5%;
   }
 
 }
 </style>
+<script>
+  <% if(success) { %>
+    alert('<%= success %>');
+  <% } %>
+  <% if(error) {%>
+    alert('<%= error %>');
+  <% } %>
+</script>
 

@@ -39,7 +39,7 @@
 
             $('#update').click(() => {
                 if(nowID == null || nowID_D == null){
-                    alert('尚未選取貼文');
+                    alert('尚未選取隊伍');
                     return;
                 }
                 let data = nowID;
@@ -69,16 +69,18 @@
 
             $('#delete').click(() => {
                 if(nowID == null || nowID_D == null){
-                    alert('尚未選取貼文');
+                    alert('尚未選取隊伍');
                     return;
                 }
                     
                 let data =  nowID;
                 $.post('/team/delete', { data: data } , (result) => {
+                    // console.log('123');
                     if(result == 'success'){
-                        dataTableForAct.row(nowID_D).remove().draw();
+                        dataTableForTeam.row(nowID_D).remove().draw();
                         nowID = null;
                         nowID_D = null;
+                        alert('刪除隊伍成功');
                     }
                     else{
                         console.log('error');

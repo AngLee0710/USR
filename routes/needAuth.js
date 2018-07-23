@@ -50,13 +50,13 @@ module.exports =  (app) => {
 			}
 			req.session.user = user;
 			req.flash('success', '登錄成功!!');
-			res.redirect('/activityManage');
+			res.redirect('/admin');
 		});
 	});
 
 	app.get('/admin', checkLogin);
 	app.get('/admin', (req, res) => {
-		res.redirect('/activityManage');
+		res.redirect('/teamManage');
 	});
 
 	app.get('/logout', checkLogin);
@@ -105,9 +105,6 @@ module.exports =  (app) => {
 		}
 
 		Team.check(req.body.ACT_DEPTNAME, (err, team) => {
-			if(!req.body.ACT_CHECK) {
-				team = true;
-			}
 			if(err) {
 				console.log(err);
 				req.flash('error', '模組異常!!');
@@ -135,19 +132,15 @@ module.exports =  (app) => {
 					ACT_NOT_SIGN = true;
 
 				if(!req.body.ACT_CHECK) {
-					ACT_COMM_USER = '國立虎尾科技大學秘書室';
-					ACT_COMM_TEL = '05-6315000';
-					ACT_COMM_EMAIL = 'secretary@nfu.edu.tw'
 					ACT_B_BEG_POCH = 1;
 					ACT_B_END_POCH = 1;
-					req.body.ACT_DEPTNAME = '國立虎尾科技大學';
 					req.body.ACT_LIMIT = 1;
 					ACT_NOT_SIGN = false;
-				} else {
-					ACT_COMM_USER = team.connection.name;
+				}
+				
+				ACT_COMM_USER = team.connection.name;
 					ACT_COMM_TEL = team.connection.phone;
 					ACT_COMM_EMAIL = team.connection.email;
-				}
 				
 				let activityPost = new actPost(
 					req.body.ACT_SUBJ_NAME,
@@ -181,7 +174,7 @@ module.exports =  (app) => {
 						req.flash('error', err);
 						return res.redirect('/activityManage');
 					} else {
-						req.flash('success', '發布成功');
+						req.flash('success', '活動發佈成功');
 						return res.redirect('/activityManage');
 					}
 				});
@@ -575,15 +568,19 @@ module.exports =  (app) => {
 		let image = [];
 		let count = 0;
 		let deleteImg = req.body.deleteImg.split(',');
-		deleteImg.forEach((img, index) => {
-			if(img != '') {
-				image[count] = {
-					URL: img,
-					NAME: img.split('/upload/')[1]
+		let key = false;
+		if(!(deleteImg[0] == '')) {
+			deleteImg.forEach((img, index) => {
+				if(img != '') {
+					image[count] = {
+						URL: img,
+						NAME: img.split('/upload/')[1]
+					}
+					count++;
 				}
-				count++;
-			}
-		});
+			});
+			key = true;
+		}
 
 		if(!req.files.length == 0) {
 			req.files.forEach((file, index) => {
@@ -593,21 +590,34 @@ module.exports =  (app) => {
 				}
 				count++;
 			});
+			key = true;
 		}
 		
-
-		let update = {
-			ACHI_STORE: req.body.ACHI_DEP,
-			ACHI_IMG: image
+		if(key) {
+			let update = {
+				ACHI_STORE: req.body.ACHI_DEP,
+				ACHI_IMG: image
+			}
+			achi.edit(req.body.ACHI_ID, update, (err) => {
+				if(err)
+					req.flash('error', '資料庫模組異常');
+				else 
+					req.flash('success', '修改成功');
+				return res.redirect('/achievementManage');
+			});
+		} else {
+			let update = {
+				ACHI_STORE: req.body.ACHI_DEP,
+			}
+			achi.edit(req.body.ACHI_ID, update, (err) => {
+				if(err)
+					req.flash('error', '資料庫模組異常');
+				else 
+					req.flash('success', '修改成功');
+				return res.redirect('/achievementManage');
+			});
 		}
-
-		achi.edit(req.body.ACHI_ID, update, (err) => {
-			if(err)
-				req.flash('error', '資料庫模組異常');
-			else 
-				req.flash('success', '修改成功');
-			return res.redirect('/achievementManage');
-		});
+	
 	});
 
 	app.post('/achievement/delete', checkLogin);

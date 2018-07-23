@@ -3,7 +3,7 @@
         <div id="formDIV" class="row">
             <div class="form-group col-12">
                 <label for="inputID1">活動名稱：</label>
-                <input type="text" class="form-control" id="inputID1" name="ACT_SUBJ_NAME">
+                <input type="text" class="form-control" id="inputID1" name="ACT_SUBJ_NAME" placeholder="客家文化饗宴">
             </div>
             <div class="form-group col-9 ">
                 <label for="inputID2">活動地名</label>
@@ -190,6 +190,16 @@
                         <input type="text" class="form-control" id="inputID15" name="ACT_URL">
                     </div>
                     <div class="col-sm-6 col-12">
+                        是否提供保險:
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio"
+                            id="inputID34" value="Y" name="ACT_K_SURE">
+                            <label class="form-check-label" for="inputID34">Y</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="inputID35" value="N" name="ACT_K_SURE" checked>
+                            <label class="form-check-label" for="inputID35">N</label>
+                        </div><br />
                         是否調查連絡電話:
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="ACT_K_TEL" id="inputID16" value="Y">
@@ -254,16 +264,16 @@
                             <label class="form-check-label" for="inputID29">N</label>
                         </div>
                     </div>
-                    <div class="col-sm-6 col-12">
-                        <div class="form-group">
-                            <label for="inputID30">主辨隊伍：</label>
-                            <select multiple class="form-control" id="inputID30" name="ACT_DEPTNAME">
-                                <% teams.forEach((team, index) => { %>
-                                    <option value="<%= team.name %>"><%= team.name %></option>
-                                <% }) %>
-                            </select>
-                        </div>
-                    </div>
+            </div>
+            <div class="col-12">
+                <div class="form-group">
+                    <label for="inputID30">主辨隊伍：</label>
+                    <select multiple class="form-control" id="inputID30" name="ACT_DEPTNAME">
+                        <% teams.forEach((team, index) => { %>
+                            <option value="<%= team.name %>"><%= team.name %></option>
+                        <% }) %>
+                    </select>
+                </div>
             </div>
             <div class="col-12 forEditor">
                 <div class="form-group">
@@ -313,5 +323,19 @@
             $('#signUpCheckPage2').hide();
             $('#signUpCheck').val('false');
         }
+    });
+    $('#inputID34').click(() => {
+        $('#inputID16').prop('checked', true);
+        $('#inputID20').prop('checked', true);
+        $('#inputID22').prop('checked', true);
+        $('#inputID24').prop('checked', true);
+        $('#inputID28').prop('checked', true);      
+    });
+    $('#inputID35').click(() => {
+        $('#inputID16').prop('checked', false);
+        $('#inputID20').prop('checked', false);
+        $('#inputID22').prop('checked', false);
+        $('#inputID24').prop('checked', false);
+        $('#inputID28').prop('checked', false);      
     });
 </script>

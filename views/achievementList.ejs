@@ -53,7 +53,6 @@
     </div>
 </div>
 <div id="map"></div>
-<%- include newfooter %>
 <style>
     body {
         font-style: '微軟正黑體'
@@ -229,11 +228,11 @@
 
             marker.addListener('click', function() {
                 infowindow.open(map, marker);
-                setTimeout(function () { infowindow.close(); }, 10000);
+                setTimeout(function () { infowindow.close(); }, 3000);
             });
 
             marker.addListener('mouseout', function() {
-                setTimeout(function () { infowindow.close(); }, 10000);
+                setTimeout(function () { infowindow.close(); }, 3000);
             });
         });
     }
@@ -267,4 +266,5 @@
         }
     }
 </style>
+<%- include newfooter %>
 </body>

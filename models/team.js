@@ -129,12 +129,30 @@ Team.take = function(id, callback) {
 }
 
 Team.edit = function(id, team, callback) {
-	teamOwnerModel.update({'_id': id}, { $set: team }, (err, a) => {
-		if(err) 
-			return callback(err, 'error');
-		else
-			return callback(null, 'success');
-	});
+	if(!team.name)
+		return cb('未輸入團隊名稱');
+	else if(!team.leader)
+		return cb('未輸入領導人');
+	else if(!team.purpose)
+		return cb('未輸入團隊宗旨');
+	else if(!team.introduction)
+		return cb('未輸入團隊介紹');
+	else if(!team.pro_introduction)
+		return cb('未輸入團隊專業介紹');
+	else if(!team.connection.name)
+		return cb('未輸入聯絡人姓名');
+	else if(!team.connection.email)
+		return cb('未輸入聯絡人信箱');
+	else if(!team.connection.phone)
+		return cb('未輸入聯絡人電話');
+	else {
+		teamOwnerModel.update({'_id': id}, { $set: team }, (err, a) => {
+			if(err) 
+				return callback(err, 'error');
+			else
+				return callback(null, 'success');
+		});
+	}
 }
 
 //刪除
