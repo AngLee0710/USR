@@ -104,12 +104,11 @@
         
         result[0].ACHI_IMG.forEach((image, index) => {  
             a.push(image.URL);
-            html += `<div class="col-3">
-                    <img class="img-thumbnail" id="image` + index + `" src="` + image.URL + `" width="100%" height="200" />
+            html += `<div class="col-sm-3 col-12">
+                    <img class="img-thumbnail img-fluid img-thumbnail" id="image` + index + `" src="` + image.URL + `" width="100%" height="200" />
                     <span>` + image.NAME.split('.')[0] + `</span>
                 </div>`;
         });
-        console.log(a);
 
         $('#editInput2').html(html);
         $(document.getElementsByTagName('iframe')[1].contentWindow.document.body).html(result[0].ACHI_STORE);

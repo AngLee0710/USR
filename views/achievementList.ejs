@@ -30,6 +30,15 @@
             <input type="date" class="form-control" id="search6" />
             <label for="search7">活動結束日期(迄)：</label>
             <input type="date" class="form-control" id="search7" />
+        </div>
+        <div id="search" class="row" style="display: none;">
+            <div class="col-sm-6 col-12">
+                <input id="searchBtn" class="btn btn-block def-btn" style="margin-bottom: 10px;" type="button" value="查詢" />
+                <input id="continueSearchBtn" class="btn btn-block def-btn" type="button" value="繼續查詢" style="margin-top: 0px;" />
+            </div>
+            <div class="col-sm-6 col-12">
+                <input id="goMapBtn" class="btn btn-block" type="button" value="返回" />
+            </div>
         </div>      
     </div>
     <div class="col-sm-3 col-1"></div>
@@ -37,22 +46,14 @@
 <div id="switchIfSearch" class="row">
     <input id="switchIfSearchBtn" class="btn btn-block btn-primary" type="button" value="條件查詢" />
 </div>
-<div id="search" class="row" style="display: none;">
-    <div class="col-6">
-        <input id="searchBtn" class="btn btn-block" type="button" value="查詢" />
-        <input id="continueSearchBtn" class="btn btn-block" type="button" value="繼續查詢" style="margin-top: 0px;" />
-    </div>
-    <div class="col-6">
-        <input id="goMapBtn" class="btn btn-block" type="button" value="返回" />
-    </div>
-</div>
 <div id="achiTableDiv" class="row" style="display: none; padding-top: 2px;">
     <div class="col-12">
-        <table id="achiTable" class="table table-striped table-bordered text-nowrap" style="width: 100%">
+        <table id="achiTable" class="table table-responsive table-striped table-bordered text-nowrap" style="width: 100%">
         </table>
     </div>
 </div>
 <div id="map"></div>
+<%- include newfooter %>
 <style>
     body {
         font-style: '微軟正黑體'
@@ -237,6 +238,11 @@
 <style>
     #map {
         height: 500px;
+    }
+    @media only screen and (max-width: 768px) {
+        #def_btn {
+            margin-bottom: 10px;
+        }
     }
 </style>
 </body>

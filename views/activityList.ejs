@@ -7,20 +7,30 @@
 	<table class="table table-responsive-sm text-nowrap table-bordered col-12" >
 			<thead>
 			  <tr>
-				<th scope="col">活動日期</th>
+				<th scope="col">活動開始日期</th>
 				<th scope="col">活動名稱</th>
 			  </tr>
 			</thead>		
 			<% posts.forEach(function(post, index) {%>
 					
-				<tbody>
+				<tbody> 
 						<tr>
-						  <th scope="row">[<%= new Date(post.ACT_C_AT).toLocaleDateString() %>]</th>
-						  <td><a href="/activity/<%= post._id %>"><%- post.ACT_SUBJ_NAME  %>&nbsp</a><span class="badge badge-secondary">New</span></td>
-						</tr>
-							
-						</tbody>
-						
+						  <th scope="row">[<%= new Date(parseInt(post.ACT_BEG_DATE)).toLocaleDateString() %>]</th>
+							<td><a href="/activity/<%= post._id %>"><%- post.ACT_SUBJ_NAME  %>&nbsp</a>
+							<% if( ( new Date().getTime() - parseInt(post.ACT_C_AT) ) <= ( 7 * 24 * 60 * 60 * 1000 ) ) { %>
+								<span class="badge badge-secondary">最近發佈</span>
+							<% } %>
+							<% if(parseInt(post.ACT_B_END) != 1) {%>
+								<% if( ( parseInt(post.ACT_B_END) -  new Date().getTime() ) > 0 ) { %>
+									<span class="badge badge-danger">招募夥伴中</span>
+								<% } %>
+							<% } %>
+							<% if (post.ACT_K_FOOD == 'Y') { %>
+								<span class="badge badge-warning">提供餐點</span>
+							<% } %>
+							</td>
+						</tr>							
+					</tbody>
 			<% }) %>
 	</table>
 	</div>
@@ -32,4 +42,4 @@
 </body>
 
 <%- include paging %>
-<%- include footer %>
+<%- include newfooter %>

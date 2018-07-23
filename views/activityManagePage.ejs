@@ -127,12 +127,10 @@
                 $('#editInputID33').val(result.ACT_LOCATION.LOCATION_LNG);
                 $('#editInputID34').val(result.ACT_NOT_SIGN);
                 if(!result.ACT_NOT_SIGN) {
-                  $('#editCheckPage1').hide();
-                  $('#editCheckPage2').hide();
+                  $('#editCheckPage').hide();
                 }
                 else {
-                  $('#editCheckPage1').show();
-                  $('#editCheckPage2').show();
+                  $('#editCheckPage').show();
                 }
                 var date1 = new Date(parseInt(result.ACT_BEG_DATE)),
                 month = '00',
@@ -265,7 +263,7 @@
                 else
                   $('#editInputID29').prop('checked', true);
                 $('#editInputID30').val(result.ACT_DEPTNAME);
-                $(document.getElementsByTagName('iframe')[1].contentWindow.document.body).html(result.ACT_LIST)
+                $(document.getElementsByTagName('iframe')[1].contentWindow.document.body).html(result.ACT_LIST);
               });
             });
 

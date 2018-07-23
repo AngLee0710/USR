@@ -19,6 +19,7 @@ let teamSchema = new Schema({
 	teamImg: String,
 	teamLogo: String,
 	teamIcon: String,
+	team_C_USER: String,
 	achievement: [{title: String, date: String}],
 	pv: {type: Number, default: 1}
 }, {

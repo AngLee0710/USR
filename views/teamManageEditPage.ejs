@@ -2,11 +2,11 @@
     <form class="col-12" method="post" action="/team/edit" encType="multipart/form-data">
         <div id="formDIV" class="row">
             <input id="editID" type="hidden" name="teamID">
-            <div class="form-group col-6">
+            <div class="form-group col-sm-6 col-12">
                 <label for="editInputID1">團隊名稱：</label>
                 <input type="text" class="form-control myInput" id="editInputID1" name="name">
             </div>
-            <div class="form-group col-6">
+            <div class="form-group col-sm-6 col-12">
                 <label for="editInputID2">團隊負責人：</label>
                 <input type="text" class="form-control myInput" id="editInputID2" name="leader">
             </div>
@@ -22,7 +22,7 @@
                 <label for="textareaID3">團隊專業：</label>
                 <textarea class="form-control" id="textareaID3" rows="3" name="pro_introduction"></textarea>
             </div>
-            <div class="form-group col-6">
+            <div class="form-group col-sm-6 col-12">
                 <label for="editInputID3">團隊網站：</label>
                 <input type="text" class="form-control myInput" id="editInputID3" name="website">
             </div>
@@ -43,18 +43,23 @@
                 <input type="email" placeholder="example@com" class="form-control myInput" id="editInputID6" name="email">
             </div>
             <div class="form-group col-12">
+                <img class="img-fluid img-thumbnail" width="100" height="100" id="editInputID8"><br />
                 <label for="file1">團隊Icon上傳</label>
-                <img id="editInputID8">
                 <input type="file" class="form-control-file" id="editFile2" name="editTeamIcon">
             </div>
-            <div class="form-group col-4">
+            <div class="form-group col-12">
+                <img class="img-fluid" id="editInputID9" width="200" height="200"><br />
+                <label for="file1">團隊Logo上傳</label>
+                <input type="file" class="form-control-file" id="editFile1" name="editTeamLogo">
+            </div>
+            <div class="form-group col-12">
+                <img class="img-fluid" id="editInputID7"><br />
                 <label for="file1">團隊合照上傳</label>
-                <img id="editInputID7">
                 <input type="file" class="form-control-file" id="editFile1" name="editTeamImg">
             </div>
             <div class="col-8"></div>
-            <div class="col-8"></div>
-            <div class="col-4">
+            <div class="col-sm-8 col-0"></div>
+            <div class="col-sm-4 col-12">
                 <input style="width: 100%;" class="btn btn-warning" type="submit" value="修改團隊" />
             </div>
         </div>

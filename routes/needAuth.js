@@ -105,7 +105,7 @@ module.exports =  (app) => {
 		}
 
 		Team.check(req.body.ACT_DEPTNAME, (err, team) => {
-			if(!req.body.signUpCheck) {
+			if(!req.body.ACT_CHECK) {
 				team = true;
 			}
 			if(err) {
@@ -134,7 +134,7 @@ module.exports =  (app) => {
 					ACT_B_END_POCH = Date.parse(ACT_B_END),
 					ACT_NOT_SIGN = true;
 
-				if(!req.body.signUpCheck) {
+				if(!req.body.ACT_CHECK) {
 					ACT_COMM_USER = '國立虎尾科技大學秘書室';
 					ACT_COMM_TEL = '05-6315000';
 					ACT_COMM_EMAIL = 'secretary@nfu.edu.tw'
@@ -567,11 +567,13 @@ module.exports =  (app) => {
 		let count = 0;
 		let deleteImg = req.body.deleteImg.split(',');
 		deleteImg.forEach((img, index) => {
-			image[count] = {
-				URL: img,
-				NAME: img.split('/upload/')[1]
+			if(img != '') {
+				image[count] = {
+					URL: img,
+					NAME: img.split('/upload/')[1]
+				}
+				count++;
 			}
-			count++;
 		});
 
 		if(!req.files.length == 0) {

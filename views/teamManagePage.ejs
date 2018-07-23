@@ -1,5 +1,5 @@
-<div class="col-12" id="managePage" class="table-responsive">
-    <table id="dataTableForTeam" class="table table-bordered text-nowrap" style="width: 100%"></table>
+<div class="col-12" id="managePage">
+    <table id="dataTableForTeam" class="table table-bordered table-responsive-sm text-nowrap" style="width: 100%"></table>
 </div>
 <script>
     $(document).ready(function() {
@@ -61,6 +61,8 @@
                     $(document.getElementsByTagName('iframe')[4].contentWindow.document.body).html(result.introduction);
                     $(document.getElementsByTagName('iframe')[5].contentWindow.document.body).html(result.pro_introduction);
                     $("#editInputID7").attr("src", result.teamImg);
+                    $("#editInputID8").attr("src", result.teamIcon);
+                    $("#editInputID9").attr("src", result.teamLogo);
                     data = null;
                 });
             });

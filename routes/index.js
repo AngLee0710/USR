@@ -10,14 +10,14 @@ const fs = require('fs');
 
 module.exports = (app) => {
     app.get('/', (req, res) => {
-        actPost.getLimit(null, 1, 3, (err, posts, total) => {
+        achi.getAll((err, docs) => {
             if (err)
                 posts = [];
 
             res.render('newindex', {
                 title: '大學生社會責任平台',
                 user: req.session.user,
-                posts: posts,
+                docs: docs,
                 success: req.flash('success').toString(),
                 error: req.flash('error').toString()
             });
@@ -45,25 +45,6 @@ module.exports = (app) => {
 				req.flash('error', '無效網址');
 				return res.redirect('/');
 			} else {
-				return res.render('achievement', {
-					title: '成果分享',
-					doc: doc[0],
-					user: req.session.user,
-					success: req.flash('success').toString(),
-					error: req.flash('error').toString()
-				});
-			}
-		});
-    });
-    app.get('/newachievement/:id', (req, res) => {
-		achi.getById(req.params.id, (err, doc) => {
-			if(err){
-				req.flash('error', '模組異常');
-				return res.redirect('/');
-			} else if(!doc){
-				req.flash('error', '無效網址');
-				return res.redirect('/');
-			} else {
 				return res.render('newachievement', {
 					title: '成果分享',
 					doc: doc[0],
@@ -83,8 +64,6 @@ module.exports = (app) => {
             error: req.flash('error').toString()
         })
     });
-  
-
 
     app.get('/activity', (req, res) => {
         let page = req.query.p ? parseInt(req.query.p) : 1;

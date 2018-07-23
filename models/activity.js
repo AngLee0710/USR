@@ -44,6 +44,7 @@ let actPostSchema = new Schema({
 	ACT_NOT_SIGN: {type: Boolean, default: true},
 	ACT_TAG: [{ NAME: String }],
 	ACT_ACHI: {type: Boolean, default: false},
+	ACT_C_USER: String,
 	pv: {type: Number, default: 1}
 }, {
 	collection: 'actPosts'
@@ -234,7 +235,7 @@ actPost.getLimit = function(title, page, limit, callback) {
 	actPostUserModel.count({}, function(err, total) {
 		if(err)
 			return callback(err);
-		actPostUserModel.find({}, null, {skip: (page -1) * limit}).sort('-ACT_C_AT').limit(limit).exec(function(err, actPosts) {
+		actPostUserModel.find({}, null, {skip: (page -1) * limit}).sort('-ACT_BEG_DATE').limit(limit).exec(function(err, actPosts) {
 			if(err)
 				return callback(err, null, null);
 			else

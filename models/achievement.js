@@ -20,6 +20,7 @@ let achievementSchema = new Schema({
 	ACHI_IMG: [{NAME: String, URL: String}],
 	ACHI_STORE: String,				//活動介紹
 	ACHI_C_AT: {type: Number, default: Date.now},
+	ACHI_C_USER: String,
 	pv: {type: Number, default: 1}
 }, {
 	collection: 'achievement'
