@@ -54,6 +54,25 @@ module.exports = (app) => {
 				});
 			}
 		});
+    });
+    app.get('/newachievement/:id', (req, res) => {
+		achi.getById(req.params.id, (err, doc) => {
+			if(err){
+				req.flash('error', '模組異常');
+				return res.redirect('/');
+			} else if(!doc){
+				req.flash('error', '無效網址');
+				return res.redirect('/');
+			} else {
+				return res.render('newachievement', {
+					title: '成果分享',
+					doc: doc[0],
+					user: req.session.user,
+					success: req.flash('success').toString(),
+					error: req.flash('error').toString()
+				});
+			}
+		});
 	});
 
     app.get('/aboutUs', (req, res) => {
