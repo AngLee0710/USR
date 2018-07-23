@@ -9,6 +9,8 @@
 <link rel="stylesheet" href="/activitysignup/font-awesome/css/font-awesome.min.css"> 
 
 <link rel="stylesheet" href="/activitysignup/css/style.css">
+<link rel="stylesheet" href="/activity/assets2/css/pad.css">
+
 
 <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.css"/> -->
 
@@ -20,17 +22,17 @@
 	<section id="two" class="mine">
 		<div class="container"  >
 			<div class="row" >
-				<div class="col-1"></div>
-				<div class="col-11">
-					<br><br><br><br>
-					<h1>【<%= post.ACT_DEPTNAME %>】<%= post.ACT_SUBJ_NAME %></h1>
-				</div>
-				<div class="col-1"></div>
-					<div class="col-7">
+					<br><br>
+					<h1><%= post.ACT_SUBJ_NAME %></h1>
+
+					
+						<h2>活動資訊</h2>
 						<div class="card" style="width: 100%;">
-							<h3>&nbsp&nbsp&nbsp<img src="images/week.png" width="3%">&nbsp活動時間：&nbsp<%= new Date(parseInt(post.ACT_BEG_DATE)).toLocaleString() %> 至 <%= new Date(parseInt(post.ACT_END_DATE)).toLocaleString() %></h3>
-							<h3>&nbsp&nbsp&nbsp<img src="images/locat.png" width="3%">&nbsp活動地點：&nbsp<%= post.ACT_LOCATION.LOCATION_NAME %></h3>
-							<h3>&nbsp&nbsp&nbsp<img src="images/sex.png" width="3%">&nbsp性別限制：
+							<span class="mypandding"><h3>活動時間：<br><%- include two_blank %><%= new Date(parseInt(post.ACT_BEG_DATE)).toLocaleString() %> 
+								<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<%- include two_blank %><%- include two_blank %>至 <br>
+								<%- include two_blank %><%= new Date(parseInt(post.ACT_END_DATE)).toLocaleString() %></h3>
+							<h3>活動地點：<br><%- include two_blank %><%= post.ACT_LOCATION.LOCATION_NAME %></h3>
+							<h3>性別限制：<br><%- include two_blank %>
 								<% if(post.ACT_LIMIT_SEX == '1') {%>
 								男
 								<% }else if(post.ACT_LIMIT_SEX == '2') {%>
@@ -38,24 +40,31 @@
 								<%} else {%>
 								不限
 								<%　} %></h3>
-							<h3>&nbsp&nbsp&nbsp<img src="images/group.png" width="3%">&nbsp人數限制：&nbsp<%= post.ACT_LIMIT %>人</h3>
-							<h3>&nbsp&nbsp&nbsp<img src="images/time.png" width="3%">&nbsp報名時間：&nbsp<%= new Date(parseInt(post.ACT_B_BEG)).toLocaleString() %> 至<%= new Date(parseInt(post.ACT_B_END)).toLocaleString() %></h3>
-							<br>
-							<h2>&nbsp&nbsp活動介紹</h2>
-							<%- post.ACT_LIST %>
-							</div>
+							<h3>人數限制：<br>&nbsp<%- include two_blank %><%= post.ACT_LIMIT %>人</h3>
+							<h3>報名時間：<br><%- include two_blank %><%= new Date(parseInt(post.ACT_B_BEG)).toLocaleString() %> 
+								<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<%- include two_blank %><%- include two_blank %>至 <br>
+								<%- include two_blank %><%= new Date(parseInt(post.ACT_B_END)).toLocaleString() %></h3>
+							</span></div>
+						
+						
+						
+						<h2>活動介紹</h2>
+						<div class="card" style="width: 100%;">
+						<span class="mypandding"><h3><%- include two_blank %><%- post.ACT_LIST %></h3></span>
 						</div>
-						<div class="col-3 activityBody" >
+
+					
+							<h2>聯絡窗口</h2>
 								<div class="card" style="width: 100%;" >
-							<h4>
-							主辦隊伍：&nbsp<%= post.ACT_DEPTNAME %><br>
-							聯絡人：&nbsp&nbsp<%= post.ACT_COMM_USER %><br>
-							聯絡電話：&nbsp0<%= post.ACT_COMM_TEL %><br>
-							聯絡信箱：<br>&nbsp<%= post.ACT_COMM_EMAIL %><br>
-							<br>
-							</h4>	
+							<span class="mypandding"><h3>
+									主辦隊伍：<br>&nbsp<%- include two_blank %><%= post.ACT_DEPTNAME %><br>
+									聯絡人：<br>&nbsp<%- include two_blank %><%= post.ACT_COMM_USER %><br>
+									聯絡電話：<br>&nbsp<%- include two_blank %><%= post.ACT_COMM_TEL %><br>
+									聯絡信箱：<br>&nbsp<%- include two_blank %><%= post.ACT_COMM_EMAIL %>
+							</h3></span>	
 							<a href="/activity/SignUp/<%= post._id %>"><button type="button" style="position:sticky" class="btn btn-primary btn-lg btn-block">我想報名</button></a> 		
 							</div>
+
 						</div>
 					</div>
 			</div>

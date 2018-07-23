@@ -1,0 +1,32 @@
+.mypandding{
+    padding-left: 50px;
+}
+@media screen and (max-width: 480px) {
+
+  
+    .mypandding{
+        padding-left: 0px;
+    }
+    
+    }
+    
+    @media screen and (max-width: 768px) {
+    
+   
+    
+    .mypandding{
+        padding-left: 0px;
+    }
+    
+    }
+    
+    @media screen and (min-width: 768px) and (max-width: 992px) {
+    
+    
+    
+    .mypandding{
+        padding-left: 0px;
+    }
+    
+    }
+    

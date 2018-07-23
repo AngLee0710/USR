@@ -1,33 +1,37 @@
 <%- include header %>
 <%- include nav2 %>
 <%- include to_Top %>
+<div class="container">
+<div class="row">
 <div class="row mb-2" style="margin-top: 25px;">
-		<div class="col-md-12">
-			<div class="card flex-md-row mb-4 box-shadow">
-				<div class="card-body d-flex flex-column align-items-start">
-					<div class="col-12">	
-						<div class="col-md-12">
-							<div class="col-12">
-								<div class="teamList"><%= teams.name %></div><br>
-								<p><div class="title_txt">團隊成果共享：</div><br></p>
-								<div id="map"></div>
-								<div class="txt_family">
-								<div class="leader_txt">領隊人：<%= teams.leader %></div><br>
-								<div class="team_txt">
-								<p><div class="title_txt">團隊服務宗旨：</div><br><%- include two_blank %><%-teams.purpose %></p>
-								<br>
-								<span><div class="title_txt">團隊介紹：</div><br><%- include two_blank %><%- teams.introduction %></span><br />
-								<br>
-								<span><div class="title_txt">團隊專業介紹：</div><br><%- include two_blank %> <%- teams.pro_introduction %></span><br />
+			<div class=" flex-md-row mb-4 box-shadow">
+				<div class=" d-flex flex-column align-items-start">
+					
 								
-								<div class="title_txt"><span>團隊聯絡方式： </span></div><br />
-								<span>團隊網站：<a href="http://<%= teams.website %>">點我</a></span><br />
-								<span>聯絡人：<%= teams.connection.name %></span><br />
-								<span>聯絡人電話：0<%= teams.connection.phone %></span><br />
-								<span>聯絡人信箱：<a href="mailto:<%= teams.connection.email %>"><%= teams.connection.email %></a></span><br />
-								<span>點擊數：<%= teams.pv %></span>
+								
+							
+								<div class="col-12">
+
+								<div style="font-size: 200%"><%= teams.name %></div>
+								
+								<div style="font-size: 150%"><br>領隊：<%= teams.leader %></div>
+
+								<div class="txt_family">
+								
+								<div class="team_txt">
+								<p><div class="title_txt" style="font-size: 150%">團隊服務宗旨：</div><br><%- include two_blank %><%-teams.purpose %></p>
+								<br>
+								<span><div class="title_txt" style="font-size: 150%">團隊介紹：</div><br><%- include two_blank %><%- teams.introduction %></span><br />
+								<br>
+								<span><div class="title_txt" style="font-size: 150%">團隊專業介紹：</div><br><%- include two_blank %> <%- teams.pro_introduction %></span><br />
+								
+								
+								
 								</div>
 								</div>
+								<p><div class="title_txt" style="font-size: 150%">團隊成果共享：</div><br></p>
+								<div id="map"></div>
+								<p><div class="title_txt" style="font-size: 150%">團隊大團拍：</div><br></p>
 								<% if(teams.teamImg) {%>
 								<div class="card flex-md-row mb-4 box-shadow">
 									<div class="card-body flex-column align-items-start padding5">
@@ -35,12 +39,18 @@
 									</div>
 								</div>
 								<% } %>
-							</div>
+								<div class="title_txt" style="font-size: 150%"><span>團隊聯絡方式： </span></div><br />
+								<span>團隊網站：<a href="http://<%= teams.website %>">點我</a></span><br />
+								<span>聯絡人：<%= teams.connection.name %></span><br />
+								<span>聯絡人電話：0<%= teams.connection.phone %></span><br />
+								<span>聯絡人信箱：<a href="mailto:<%= teams.connection.email %>"><%= teams.connection.email %></a></span><br />
+								<span>點擊數：<%= teams.pv %></span>
 						</div>
 					</div>
-				</div>
 			</div>
-		</div>
+		
+</div>
+</div>
 </div>
 <script>
   var map;
@@ -82,4 +92,4 @@
     	height: 300px;
     }
 </style>
-<%- include footer %>
+<%- include newfooter %>
