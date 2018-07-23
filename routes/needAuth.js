@@ -220,18 +220,25 @@ module.exports =  (app) => {
 			ACT_END_DATE_POCH = Date.parse(ACT_END_DATE),
 			ACT_B_BEG_POCH = Date.parse(ACT_B_BEG),
 			ACT_B_END_POCH = Date.parse(ACT_B_END);
-		let ACT_NOT_SIGN = req.body.ACT_NOT_SIGN;
+		let ACT_NOT_SING = req.body.ACT_NOT_SING;
 		let ACT_COMM_USER = null;
 		let ACT_COMM_TEL = null;
 		let ACT_COMM_EMAIL = null;
+		let ACT_LOCATION = {
+			LOCATION_NAME: req.body.ACT_LOCATION_NAME,
+			LOCATION_ADDR: req.body.ACT_LOCATION_ADDR,
+			LOCATION_LAT: req.body.ACT_LOCATION_LNG,
+			LOCATION_LNG: req.body.ACT_LOCATION_LAT
+		}
 
-		if(!ACT_NOT_SIGN) {
+
+		if(!ACT_NOT_SING) {
 			let activityPost = {
 				ACT_SUBJ_NAME: req.body.ACT_SUBJ_NAME,
 				ACT_BEG_DATE: ACT_BEG_DATE_POCH,
 				ACT_END_DATE: ACT_END_DATE_POCH,
 				ACT_DEPTNAME: req.body.ACT_DEPTNAME,
-				ACT_LOCATION: req.body.ACT_LOCATION,
+				ACT_LOCATION: ACT_LOCATION,
 				ACT_LIMIT_SEX: req.body.ACT_LIMIT_SEX,
 				ACT_LIMIT: req.body.ACT_LIMIT,
 				ACT_URL: req.body.ACT_URL,
@@ -251,6 +258,8 @@ module.exports =  (app) => {
 				ACT_LIST: req.body.ACT_LIST,
 				imgArray: imgArray
 			}
+
+			console.log(ACT_LIST)
 
 			actPost.edit(req.body.editID, activityPost, (err, errr) => {
 				if(errr == 'success'){
@@ -272,12 +281,12 @@ module.exports =  (app) => {
 					ACT_COMM_USER = team.connection.name;
 					ACT_COMM_TEL = team.connection.phone;
 					ACT_COMM_EMAIL = team.connection.email;
-					let activityPost = {
+					let activityPost2 = {
 						ACT_SUBJ_NAME: req.body.ACT_SUBJ_NAME,
 						ACT_BEG_DATE: ACT_BEG_DATE_POCH,
 						ACT_END_DATE: ACT_END_DATE_POCH,
 						ACT_DEPTNAME: req.body.ACT_DEPTNAME,
-						ACT_LOCATION: req.body.ACT_LOCATION,
+						ACT_LOCATION: ACT_LOCATION,
 						ACT_LIMIT_SEX: req.body.ACT_LIMIT_SEX,
 						ACT_LIMIT: req.body.ACT_LIMIT,
 						ACT_URL: req.body.ACT_URL,
@@ -298,7 +307,7 @@ module.exports =  (app) => {
 						imgArray: imgArray
 					}
 
-					actPost.edit(req.body.editID, activityPost, (err, errr) => {
+					actPost.edit(req.body.editID, activityPost2, (err, errr) => {
 						if(errr == 'success'){
 							req.flash('success', '修改成功！！！');
 							return res.redirect('/activityManage')
