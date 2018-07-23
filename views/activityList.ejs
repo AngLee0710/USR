@@ -1,13 +1,12 @@
 <%- include header %>
 <body>
 	<%- include nav2 %>
-	
 	<div class="container">
 	<div class="row" style="margin-top: 5%">
 	<table class="table table-responsive-sm text-nowrap table-bordered col-12" >
 			<thead>
 			  <tr>
-				<th scope="col">活動開始日期</th>
+				<th scope="col">活動執行日期</th>
 				<th scope="col">活動名稱</th>
 			  </tr>
 			</thead>		
@@ -22,7 +21,7 @@
 							<% } %>
 							<% if(parseInt(post.ACT_B_END) != 1) {%>
 								<% if( ( parseInt(post.ACT_B_END) -  new Date().getTime() ) > 0 ) { %>
-									<span class="badge badge-danger">招募夥伴中</span>
+									<span class="badge badge-danger">夥伴招募中</span>
 								<% } %>
 							<% } %>
 							<% if (post.ACT_K_FOOD == 'Y') { %>
@@ -35,10 +34,6 @@
 	</table>
 	</div>
 	</div>
-
-					
-	
-	
 </body>
 
 <%- include paging %>

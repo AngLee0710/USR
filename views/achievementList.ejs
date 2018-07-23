@@ -213,11 +213,11 @@
         result.forEach((doc, i) => {
             var uluru = {lat: doc.ACT_LOCATION.LOCATION_LAT, lng: doc.ACT_LOCATION.LOCATION_LNG};
             var marker = new google.maps.Marker({position: uluru, map: map, animation: google.maps.Animation.DROP});
-            var contentString = '<div id="content">'+
+            var contentString = '<div id="content" class="contentDIV">'+
                 '<div id="siteNotice">'+ 
                 '</div>'+
                 '<h3 id="firstHeading" class="firstHeading"><a href="/achievement/' + result[i]._id + '">' +
-                result[i].ACT_NAME + '</a></h3>活動成果放置區</div>';
+                result[i].ACT_NAME + '</a></h3><p class="mapCotent">' + result[i].ACHI_STORE + '</p></div>';
 
             var infowindow = new google.maps.InfoWindow({
                 content: contentString
@@ -227,8 +227,13 @@
                 infowindow.open(map, marker);
             });
 
+            marker.addListener('click', function() {
+                infowindow.open(map, marker);
+                setTimeout(function () { infowindow.close(); }, 10000);
+            });
+
             marker.addListener('mouseout', function() {
-                setTimeout(function () { infowindow.close(); }, 3000);
+                setTimeout(function () { infowindow.close(); }, 10000);
             });
         });
     }
@@ -239,9 +244,26 @@
     #map {
         height: 500px;
     }
+    .mapCotent {
+        height: 50px;
+        overflow : hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
     @media only screen and (max-width: 768px) {
-        #def_btn {
+        #map {
+            height: 700px;
+        }
+
+        .def_btn {
             margin-bottom: 10px;
+        }
+
+        .contentDIV {
+            width: 300px;
+            height: 150px;
         }
     }
 </style>

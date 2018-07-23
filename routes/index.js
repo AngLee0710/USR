@@ -71,6 +71,10 @@ module.exports = (app) => {
             if (err)
                 posts = [];
 
+            console.log('page:' + page);
+            console.log('isFirstPage:' + (page - 1) == 0);
+            console.log('isLastPage:' + ((page - 1) * 6 + posts.length) == total);
+
             res.render('activityList', {
                 title: '活動消息',
                 posts: posts,

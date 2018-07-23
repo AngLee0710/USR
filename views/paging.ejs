@@ -1,9 +1,14 @@
 <br />
-<div>
-<% if (!isFirstPage) {%>
-<span class="prepage"><a title="上一頁" href="?p=<%= page-1 %>">上一頁</a></span>
-<% } %>
-<% if (!isLastPage) { %>
-<span class="nextpage"><a title="下一頁" href="?p=<%= page+1 %>">下一頁</a></span>
-<% } %>
+<div class="row">
+    <div class="col-sm-3">
+        <% if (!isFirstPage) {%>
+            <span class="prepage"><a title="上一頁" href="?p=<%= page-1 %>"><input class="btn btn-block btn-primary" type="button" value="上一頁" /></a></span>
+        <% } %>
+    </div>
+    <div class="col-sm-6"></div>
+    <div class="col-sm-3">
+        <% if (!isLastPage) { %>
+            <span class="nextpage text-right"><a title="下一頁" href="?p=<%= page+1 %>"><input class="btn btn-block btn-primary" type="button" value="下一頁" /></a></span>
+        <% } %>
+    </div>
 </div>
