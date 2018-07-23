@@ -15,7 +15,7 @@
 <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.css"/> -->
 
 <!-- Favicon and touch icons -->
-
+<%- include to_Top %>
 <body>
 <%- include nav2 %>
 <div class="me">
@@ -24,6 +24,8 @@
 			<div class="row" >
 					<br><br>
 					<h1><%= post.ACT_SUBJ_NAME %></h1>
+                        <div>
+					
 						<h2>活動資訊</h2>
 						<div class="card" style="width: 100%;">
 							<span class="mypandding"><h3>活動時間：<br><%- include two_blank %><%= new Date(parseInt(post.ACT_BEG_DATE)).toLocaleString() %> 
@@ -43,6 +45,9 @@
 								<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<%- include two_blank %><%- include two_blank %>至 <br>
 								<%- include two_blank %><%= new Date(parseInt(post.ACT_B_END)).toLocaleString() %></h3>
 							</span></div>
+						
+						
+						
 						<h2>活動介紹</h2>
 						<div class="card" style="width: 100%;">
 						<span class="mypandding"><h3><%- include two_blank %><%- post.ACT_LIST %></h3></span>
@@ -54,18 +59,20 @@
 							<span class="mypandding"><h3>
 									主辦隊伍：<br>&nbsp<%- include two_blank %><%= post.ACT_DEPTNAME %><br>
 									聯絡人：<br>&nbsp<%- include two_blank %><%= post.ACT_COMM_USER %><br>
-									聯絡電話：<br>&nbsp<%- include two_blank %>0<%= post.ACT_COMM_TEL %><br>
-									聯絡信箱：<br>&nbsp<%- include two_blank %><%= post.ACT_COMM_EMAIL %>
+									聯絡電話：<br>&nbsp<%- include two_blank %><%= post.ACT_COMM_TEL %><br>
+									聯絡信箱：<br>&nbsp<%- include two_blank %><a href="mailto:<%= post.ACT_COMM_EMAIL %>">聯絡我們</a>
 							</h3></span>	
-							<a href="/activity/SignUp/<%= post._id %>"><button type="button" style="position:sticky" class="btn btn-primary btn-lg btn-block">我想報名</button></a> 	
+							<a href="/activity/SignUp/<%= post._id %>"><button type="button" style="position:sticky" class="btn btn-primary btn-lg btn-block">我想報名</button></a> 		
 							</div>
+
 						</div>
+					</div>
 					</div>
 			</div>
 	</section>
 </div>
 <link rel="stylesheet" href="/activity/assets2/css/stytle.css" />
-<!-- <script src="/activity/assets2/floatjs/stickUp.min.js"></script> -->
+<script src="/activity/assets2/floatjs/stickUp.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
 <script src="/activitysignup/bootstrap/js/bootstrap.min.js"></script>
@@ -80,49 +87,49 @@
 <% if(error) {%>
 	alert('<%= error %>');
 <% } %>
-	// $(function(){
-	// 	$.fn.stickup=function(){   /*声明插件，这里的this指的是当前元素*/
-	// 		var $cur=this,
-	// 		$width=$cur.width(),
-	// 		$height=$cur.height(),
-	// 		$offsetTop=$cur.offset().top,
-	// 		$offsetLeft=$cur.offset().left
-	// 		var $clone_node=$cur.clone().insertBefore($cur).css({'opacity':"0"}).hide()
-	// 		$(window).on("scroll",function(){
-	// 			var $scrollTop=$(window).scrollTop();
-	// 			console.log($scrollTop)
-	// 			if($scrollTop>=$offsetTop){
-	// 				if(!isFixed()){
-	// 					setFixed();
-	// 				}
-	// 			} else{
-	// 				if(isFixed()){
-	// 					removeFixed()
-	// 				}
-	// 			}
-	// 		});
-	// 		function isFixed(){
-	// 			return $clone_node.data('fixed_mark');
-	// 		}
-	// 		function setFixed(){
-	// 			$clone_node.data('fixed_mark',true)
-	// 			.css({'position':'fixed',
-	// 				'left':$offsetLeft,
-	// 				'top':60,
-	// 				'width':$width,
-	// 				'height':$height,
-	// 				'z-index':9999
-	// 			})
-	// 			$clone_node.css({'opacity':"1"}).show()
-	// 		}
-	// 		function removeFixed(){
-	// 			$clone_node.data('fixed_mark',false)
-	// 			.removeAttr('style')
-	// 			$clone_node.hide()
-	// 		}
-	// 	}
-	// 	$("#bar").stickup()  
-	// })
+	$(function(){
+		$.fn.stickup=function(){   /*声明插件，这里的this指的是当前元素*/
+			var $cur=this,
+			$width=$cur.width(),
+			$height=$cur.height(),
+			$offsetTop=$cur.offset().top,
+			$offsetLeft=$cur.offset().left
+			var $clone_node=$cur.clone().insertBefore($cur).css({'opacity':"0"}).hide()
+			$(window).on("scroll",function(){
+				var $scrollTop=$(window).scrollTop();
+				console.log($scrollTop)
+				if($scrollTop>=$offsetTop){
+					if(!isFixed()){
+						setFixed();
+					}
+				} else{
+					if(isFixed()){
+						removeFixed()
+					}
+				}
+			});
+			function isFixed(){
+				return $clone_node.data('fixed_mark');
+			}
+			function setFixed(){
+				$clone_node.data('fixed_mark',true)
+				.css({'position':'fixed',
+					'left':$offsetLeft,
+					'top':60,
+					'width':$width,
+					'height':$height,
+					'z-index':9999
+				})
+				$clone_node.css({'opacity':"1"}).show()
+			}
+			function removeFixed(){
+				$clone_node.data('fixed_mark',false)
+				.removeAttr('style')
+				$clone_node.hide()
+			}
+		}
+		$("#bar").stickup()  
+	})
 </script>
 <script>
 	$.fn.smartFloat = function() {
@@ -157,5 +164,5 @@
 	//綁定
 	$("#float").smartFloat();
 </script>  ​
-<%- include newfooter %>
 </body>
+<%- include newfooter %>

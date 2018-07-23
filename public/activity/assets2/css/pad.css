@@ -1,11 +1,12 @@
 .mypandding{
-    padding-left: 50px;
+    padding: 50px;
 }
 @media screen and (max-width: 480px) {
 
   
     .mypandding{
         padding-left: 0px;
+        padding: 0px;
     }
     
     }
@@ -16,6 +17,7 @@
     
     .mypandding{
         padding-left: 0px;
+        padding: 0px;
     }
     
     }
@@ -26,6 +28,7 @@
     
     .mypandding{
         padding-left: 0px;
+        padding: 0px;
     }
     
     }

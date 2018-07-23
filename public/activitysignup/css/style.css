@@ -15,7 +15,7 @@ strong {
 a,
 a:hover,
 a:focus {
-    color: #66d6c5;
+    color: #007bff;
     text-decoration: none;
     -o-transition: all .3s;
     -moz-transition: all .3s;
