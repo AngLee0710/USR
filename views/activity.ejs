@@ -23,14 +23,14 @@
 		<div class="container"  >
 			<div class="row" >
 					<br><br>
-					<h1><%= post.ACT_SUBJ_NAME %></h1>
+					<h1><%- post.ACT_SUBJ_NAME %></h1>
                         <div>
 						<h2>活動資訊</h2>
 						<div class="card" style="width: 100%;">
 							<span class="mypandding"><h3>活動時間：<br><%- include two_blank %><%= new Date(parseInt(post.ACT_BEG_DATE)).toLocaleString() %> 
 								<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<%- include two_blank %><%- include two_blank %>至 <br>
 								<%- include two_blank %><%= new Date(parseInt(post.ACT_END_DATE)).toLocaleString() %></h3>
-							<h3>活動地點：<br><%- include two_blank %><%= post.ACT_LOCATION.LOCATION_NAME %></h3>
+							<h3>活動地點：<br><%- include two_blank %><%- post.ACT_LOCATION.LOCATION_NAME %></h3>
 							<h3>性別限制：<br><%- include two_blank %>
 								<% if(post.ACT_LIMIT_SEX == '1') {%>
 								男
@@ -56,9 +56,9 @@
 							<h2>聯絡窗口</h2>
 								<div class="card" style="width: 100%;" >
 							<span class="mypandding"><h3>
-									主辦隊伍：<br>&nbsp<%- include two_blank %><%= post.ACT_DEPTNAME %><br>
-									聯絡人：<br>&nbsp<%- include two_blank %><%= post.ACT_COMM_USER %><br>
-									聯絡電話：<br>&nbsp<%- include two_blank %><%= post.ACT_COMM_TEL %><br>
+									主辦隊伍：<br>&nbsp<%- include two_blank %><%- post.ACT_DEPTNAME %><br>
+									聯絡人：<br>&nbsp<%- include two_blank %><%- post.ACT_COMM_USER %><br>
+									聯絡電話：<br>&nbsp<%- include two_blank %><%- post.ACT_COMM_TEL %><br>
 									聯絡信箱：<br>&nbsp<%- include two_blank %><a href="mailto:<%= post.ACT_COMM_EMAIL %>">聯絡我們</a>
 							</h3></span>	
 							<a href="/activity/SignUp/<%= post._id %>"><button type="button" style="position:sticky" class="btn btn-primary btn-lg btn-block">我想報名</button></a> 		

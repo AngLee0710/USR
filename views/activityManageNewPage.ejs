@@ -270,7 +270,7 @@
                     <label for="inputID30">主辨隊伍：</label>
                     <select multiple class="form-control" id="inputID30" name="ACT_DEPTNAME">
                         <% teams.forEach((team, index) => { %>
-                            <option value="<%= team.name %>"><%= team.name %></option>
+                            <option value="<%- team.name %>"><%- team.name %></option>
                         <% }) %>
                     </select>
                 </div>

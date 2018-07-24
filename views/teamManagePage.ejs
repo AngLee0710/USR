@@ -57,9 +57,9 @@
                     $('#editInputID4').val(result.connection.name);
                     $('#editInputID5').val(result.connection.phone);
                     $('#editInputID6').val(result.connection.email);
-                    $(document.getElementsByTagName('iframe')[3].contentWindow.document.body).html(result.purpose);
-                    $(document.getElementsByTagName('iframe')[4].contentWindow.document.body).html(result.introduction);
-                    $(document.getElementsByTagName('iframe')[5].contentWindow.document.body).html(result.pro_introduction);
+                    $('#editTextareaID1').html(result.purpose);
+                    $('#editTextareaID2').html(result.introduction);
+                    $('#editTextareaID3').html(result.pro_introduction);
                     $("#editInputID7").attr("src", result.teamImg);
                     $("#editInputID8").attr("src", result.teamIcon);
                     $("#editInputID9").attr("src", result.teamLogo);

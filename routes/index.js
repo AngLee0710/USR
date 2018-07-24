@@ -259,6 +259,7 @@ module.exports = (app) => {
                 req.flash('error', '隊伍不存在');
                 return res.redirect('/');
             }
+            console.log(team.name);
             achi.getByTeam(team.name, (err, doc) => {
                 if (err)
                     return res.redirect('/');

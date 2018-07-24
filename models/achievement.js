@@ -114,7 +114,7 @@ achievement.remove = function(id, callback) {
 }
 
 achievement.getByTeam = function(team, callback) {
-	achievementOwnerModel.find({'TEAM_NAME': team}, (err, doc) => {
+	achievementOwnerModel.find({'TEAM_NAME': htmlencode.htmlDecode(team)}, (err, doc) => {
 		if(err)
 			return callback(err, null);
 		else
