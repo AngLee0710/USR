@@ -5,6 +5,8 @@ const Schema = mongoose.Schema;
 const actPost = require('./activity');
 const Team = require('./team');
 
+const htmlencode = require('htmlencode');
+
 let achievementSchema = new Schema({
 	ACT_ID: String,					//活動ID
 	ACT_NAME: String,				//活動名稱

@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 const dbAuth = require('./db');
 const Schema = mongoose.Schema;
 
+const htmlencode = require('htmlencode');
+
 
 let leaderSchema = new Schema({
 	name: String,

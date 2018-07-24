@@ -112,7 +112,7 @@
         });
 
         $('#editInput2').html(html);
-        $(document.getElementsByTagName('iframe')[1].contentWindow.document.body).html(result[0].ACHI_STORE);
+        $('#editInput3').html(result[0].ACHI_STORE);
         
         for(let i = 0 ; i < result[0].ACHI_IMG.length ; i++) {
             $('#image' + i).click(function() {

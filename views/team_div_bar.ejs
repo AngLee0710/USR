@@ -8,7 +8,11 @@
       <a href="/team/<%= team.name %>">
         <div class="card-body d-flex flex-column align-items-start T_D_link"> 
           <br>
-            <img src="<%= team.teamLogo %>" alt="" class="img-responsive"  style="margin:auto;">
+            <% if(team.teamLogo) { %>
+              <img src="<%= team.teamLogo %>" alt="" class="img-responsive"  style="margin:auto;">
+            <% } else { %>
+              <img src="/images/nfu_icon.png" alt="" class="img-responsive"  style="margin:auto;">
+            <% } %>
          </div>
        </a> 
       </div>
@@ -17,7 +21,7 @@
   <div class="col-md-9">
       
         <div class="card-body d-flex flex-column align-items-start teamList_txt">
-          <strong class="d-inline-block mb-2 text-success teamList_txt"><a href="/team/<%= team._id %>"><div style="font-size: 150%"><%= team.name %></div></a></strong>
+          <strong class="d-inline-block mb-2 text-success teamList_txt"><a href="/team/<%= team._id %>"><div style="font-size: 150%"><%- team.name %></div></a></strong>
           <Txt class="card-text mb-auto text-align:center word">服務宗旨: <%- team.purpose %></Txt>
         </div>
       </div>

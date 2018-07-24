@@ -6,6 +6,7 @@ const actSignUp = require('../models/actSingUp.js');
 const achi = require('../models/achievement.js');
 
 const fs = require('fs');
+const htmlencode = require('htmlencode');
 
 
 module.exports = (app) => {
@@ -14,7 +15,14 @@ module.exports = (app) => {
             if (err)
                 posts = [];
 
-            res.render('newindex', {
+            docs.forEach((doc, index) => {
+                doc.ACT_LOCATION.LOCATION_NAME = htmlencode.htmlDecode(doc.ACT_LOCATION.LOCATION_NAME);
+                doc.ACT_LOCATION.LOCATION_ADDR = htmlencode.htmlDecode(doc.ACT_LOCATION.LOCATION_ADDR);
+                doc.ACT_NAME = htmlencode.htmlDecode(doc.ACT_NAME);
+                doc.TEAM_NAME = htmlencode.htmlDecode(doc.TEAM_NAME);
+                doc.ACHI_STORE = htmlencode.htmlDecode(doc.ACHI_STORE);
+            });
+            return res.render('newindex', {
                 title: '大學生社會責任平台',
                 user: req.session.user,
                 docs: docs,

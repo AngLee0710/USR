@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 const dbAuth = require('./db');
 const Schema = mongoose.Schema;
 
+const htmlencode = require('htmlencode');
+
 let actPostSchema = new Schema({
 	ACT_ID: {type: Number, default: null},
 	ACT_KIND: {type: String, default:'D'},
@@ -287,7 +289,7 @@ actPost.takeAllofAchi = function(key ,callback) {
 //限制拿取 // key = team achi
 actPost.takeAllofAchiByTeam = function(team, key ,callback) {
 	let date = new Date().getTime()
-	actPostUserModel.find({ 'ACT_DEPTNAME': team, 'ACT_ACHI': key, 'ACT_END_DATE': {$lt: date } }).sort('-ACT_C_AT').exec(function(err, actPosts) {
+	actPostUserModel.find({ 'ACT_DEPTNAME': htmlencode.htmlEncode(team), 'ACT_ACHI': key, 'ACT_END_DATE': {$lt: date } }).sort('-ACT_C_AT').exec(function(err, actPosts) {
 		if(err)
 			return callback(err, null);
 		else

@@ -3,6 +3,7 @@ const crypto = require('crypto');
 const multer  = require('multer');
 const fs = require('fs');
 const cheerio = require('cheerio');
+const htmlencode = require('htmlencode');
 
 const User = require('../models/user.js');
 const Team = require('../models/team.js');
@@ -80,6 +81,7 @@ module.exports =  (app) => {
 						console.log(err);
 						return res.redirect('/');
 					} else {
+						
 						res.render('activityManage', {
 							title: '活動管理',
 							user: req.session.user,
@@ -139,32 +141,32 @@ module.exports =  (app) => {
 				}
 				
 				ACT_COMM_USER = team.connection.name;
-					ACT_COMM_TEL = team.connection.phone;
-					ACT_COMM_EMAIL = team.connection.email;
+				ACT_COMM_TEL = team.connection.phone;
+				ACT_COMM_EMAIL = team.connection.email;
 				
 				let activityPost = new actPost(
-					req.body.ACT_SUBJ_NAME,
+					htmlencode.htmlEncode(req.body.ACT_SUBJ_NAME),
 					ACT_BEG_DATE_POCH,
 					ACT_END_DATE_POCH,
-					req.body.ACT_DEPTNAME,
+					htmlencode.htmlEncode(req.body.ACT_DEPTNAME),
 					ACT_LOCATION,
-					req.body.ACT_LIMIT_SEX,
+					htmlencode.htmlEncode(req.body.ACT_LIMIT_SEX),
 					req.body.ACT_LIMIT,
-					req.body.ACT_URL,
+					htmlencode.htmlEncode(req.body.ACT_URL),
 					ACT_COMM_USER,
 					ACT_COMM_TEL,
 					ACT_COMM_EMAIL,			
 					ACT_B_BEG_POCH,
 					ACT_B_END_POCH,
-					req.body.ACT_K_TEL,
-					req.body.ACT_K_DEPT,
-					req.body.ACT_K_OCCUP,
-					req.body.ACT_K_IDNO,
-					req.body.ACT_K_SEX,
-					req.body.ACT_K_BIRTH,
-					req.body.ACT_K_FOOD,
-					req.body.ACT_K_ADDR,
-					req.body.ACT_LIST,
+					htmlencode.htmlEncode(req.body.ACT_K_TEL),
+					htmlencode.htmlEncode(req.body.ACT_K_DEPT),
+					htmlencode.htmlEncode(req.body.ACT_K_OCCUP),
+					htmlencode.htmlEncode(req.body.ACT_K_IDNO),
+					htmlencode.htmlEncode(req.body.ACT_K_SEX),
+					htmlencode.htmlEncode(req.body.ACT_K_BIRTH),
+					htmlencode.htmlEncode(req.body.ACT_K_FOOD),
+					htmlencode.htmlEncode(req.body.ACT_K_ADDR),
+					htmlencode.htmlEncode(req.body.ACT_LIST),
 					imgArray,
 					ACT_NOT_SIGN
 				);
@@ -189,6 +191,11 @@ module.exports =  (app) => {
 				console.log(err);
 				return res.redirect('/activityManage');
 			} else {
+				actPost.ACT_LOCATION.LOCATION_NAME = htmlencode.htmlDecode(actPost.ACT_LOCATION.LOCATION_NAME);
+				actPost.ACT_LOCATION.LOCATION_ADDR = htmlencode.htmlDecode(actPost.ACT_LOCATION.LOCATION_ADDR);
+				actPost.ACT_SUBJ_NAME = htmlencode.htmlDecode(actPost.ACT_SUBJ_NAME);
+				actPost.ACT_LIST = htmlencode.htmlDecode(actPost.ACT_LIST);
+				actPost.ACT_DEPTNAME = htmlencode.htmlDecode(actPost.ACT_DEPTNAME);
 				res.send(actPost);
 			}
 		});
@@ -218,42 +225,39 @@ module.exports =  (app) => {
 		let ACT_COMM_TEL = null;
 		let ACT_COMM_EMAIL = null;
 		let ACT_LOCATION = {
-			LOCATION_NAME: req.body.ACT_LOCATION_NAME,
-			LOCATION_ADDR: req.body.ACT_LOCATION_ADDR,
+			LOCATION_NAME: htmlencode.htmlEncode(req.body.ACT_LOCATION_NAME),
+			LOCATION_ADDR: htmlencode.htmlEncode(req.body.ACT_LOCATION_ADDR),
 			LOCATION_LAT: req.body.ACT_LOCATION_LNG,
 			LOCATION_LNG: req.body.ACT_LOCATION_LAT
 		}
 
-
-		if(!ACT_NOT_SING) {
+		if(ACT_NOT_SING) { //如果不開放報名
+			console.log('我在這');
 			let activityPost = {
-				ACT_SUBJ_NAME: req.body.ACT_SUBJ_NAME,
+				ACT_SUBJ_NAME: htmlencode.htmlEncode(req.body.ACT_SUBJ_NAME),
 				ACT_BEG_DATE: ACT_BEG_DATE_POCH,
 				ACT_END_DATE: ACT_END_DATE_POCH,
-				ACT_DEPTNAME: req.body.ACT_DEPTNAME,
+				ACT_DEPTNAME: htmlencode.htmlEncode(req.body.ACT_DEPTNAME),
 				ACT_LOCATION: ACT_LOCATION,
-				ACT_LIMIT_SEX: req.body.ACT_LIMIT_SEX,
+				ACT_LIMIT_SEX: htmlencode.htmlEncode(req.body.ACT_LIMIT_SEX),
 				ACT_LIMIT: req.body.ACT_LIMIT,
-				ACT_URL: req.body.ACT_URL,
+				ACT_URL: htmlencode.htmlEncode(req.body.ACT_URL),
 				ACT_COMM_USER: ACT_COMM_USER,
 				ACT_COMM_TEL: ACT_COMM_TEL,
 				ACT_COMM_EMAIL: ACT_COMM_EMAIL,			
 				ACT_B_BEG: ACT_B_BEG_POCH,
 				ACT_B_END: ACT_B_END_POCH,
-				ACT_K_TEL: req.body.ACT_K_TEL,
-				ACT_K_DEPT: req.body.ACT_K_DEPT,
-				ACT_K_OCCUP: req.body.ACT_K_OCCUP,
-				ACT_K_IDNO: req.body.ACT_K_IDNO,
-				ACT_K_SEX: req.body.ACT_K_SEX,
-				ACT_K_BIRTH: req.body.ACT_K_BIRTH,
-				ACT_K_FOOD: req.body.ACT_K_FOOD,
-				ACT_K_ADDR: req.body.ACT_K_ADDR,
-				ACT_LIST: req.body.ACT_LIST,
+				ACT_K_TEL: htmlencode.htmlEncode(req.body.ACT_K_TEL),
+				ACT_K_DEPT: htmlencode.htmlEncode(req.body.ACT_K_DEPT),
+				ACT_K_OCCUP: htmlencode.htmlEncode(req.body.ACT_K_OCCUP),
+				ACT_K_IDNO: htmlencode.htmlEncode(req.body.ACT_K_IDNO),
+				ACT_K_SEX: htmlencode.htmlEncode(req.body.ACT_K_SEX),
+				ACT_K_BIRTH: htmlencode.htmlEncode(req.body.ACT_K_BIRTH),
+				ACT_K_FOOD: htmlencode.htmlEncode(req.body.ACT_K_FOOD),
+				ACT_K_ADDR: htmlencode.htmlEncode(req.body.ACT_K_ADDR),
+				ACT_LIST: htmlencode.htmlEncode(req.body.ACT_LIST),
 				imgArray: imgArray
 			}
-
-			console.log(ACT_LIST)
-
 			actPost.edit(req.body.editID, activityPost, (err, errr) => {
 				if(errr == 'success'){
 					req.flash('success', '修改成功！！！');
@@ -275,28 +279,28 @@ module.exports =  (app) => {
 					ACT_COMM_TEL = team.connection.phone;
 					ACT_COMM_EMAIL = team.connection.email;
 					let activityPost2 = {
-						ACT_SUBJ_NAME: req.body.ACT_SUBJ_NAME,
+						ACT_SUBJ_NAME: htmlencode.htmlEncode(req.body.ACT_SUBJ_NAME),
 						ACT_BEG_DATE: ACT_BEG_DATE_POCH,
 						ACT_END_DATE: ACT_END_DATE_POCH,
-						ACT_DEPTNAME: req.body.ACT_DEPTNAME,
+						ACT_DEPTNAME: htmlencode.htmlEncode(req.body.ACT_DEPTNAME),
 						ACT_LOCATION: ACT_LOCATION,
-						ACT_LIMIT_SEX: req.body.ACT_LIMIT_SEX,
+						ACT_LIMIT_SEX: htmlencode.htmlEncode(req.body.ACT_LIMIT_SEX),
 						ACT_LIMIT: req.body.ACT_LIMIT,
-						ACT_URL: req.body.ACT_URL,
+						ACT_URL: htmlencode.htmlEncode(req.body.ACT_URL),
 						ACT_COMM_USER: ACT_COMM_USER,
 						ACT_COMM_TEL: ACT_COMM_TEL,
 						ACT_COMM_EMAIL: ACT_COMM_EMAIL,			
 						ACT_B_BEG: ACT_B_BEG_POCH,
 						ACT_B_END: ACT_B_END_POCH,
-						ACT_K_TEL: req.body.ACT_K_TEL,
-						ACT_K_DEPT: req.body.ACT_K_DEPT,
-						ACT_K_OCCUP: req.body.ACT_K_OCCUP,
-						ACT_K_IDNO: req.body.ACT_K_IDNO,
-						ACT_K_SEX: req.body.ACT_K_SEX,
-						ACT_K_BIRTH: req.body.ACT_K_BIRTH,
-						ACT_K_FOOD: req.body.ACT_K_FOOD,
-						ACT_K_ADDR: req.body.ACT_K_ADDR,
-						ACT_LIST: req.body.ACT_LIST,
+						ACT_K_TEL: htmlencode.htmlEncode(req.body.ACT_K_TEL),
+						ACT_K_DEPT: htmlencode.htmlEncode(req.body.ACT_K_DEPT),
+						ACT_K_OCCUP: htmlencode.htmlEncode(req.body.ACT_K_OCCUP),
+						ACT_K_IDNO: htmlencode.htmlEncode(req.body.ACT_K_IDNO),
+						ACT_K_SEX: htmlencode.htmlEncode(req.body.ACT_K_SEX),
+						ACT_K_BIRTH: htmlencode.htmlEncode(req.body.ACT_K_BIRTH),
+						ACT_K_FOOD: htmlencode.htmlEncode(req.body.ACT_K_FOOD),
+						ACT_K_ADDR: htmlencode.htmlEncode(req.body.ACT_K_ADDR),
+						ACT_LIST: htmlencode.htmlEncode(req.body.ACT_LIST),
 						imgArray: imgArray
 					}
 
@@ -368,15 +372,12 @@ module.exports =  (app) => {
 	//
 	app.get('/teamManage', checkLogin);
 	app.get('/teamManage', (req, res) => {
-		let page = req.query.p ? parseInt(req.query.p) : 1;
-		Team.getLimit(null, page, 6, (err, teams, total) => {
+		// let page = req.query.p ? parseInt(req.query.p) : 1;
+		Team.getAll((err, teams) => {
 			res.render('teamManage', {
 				title: '團隊管理',
 				user: req.session.user,
 				teams: JSON.stringify(teams),
-				page: page,
-				isFirstPage: ((page - 1) == 0),
-				isLastPage: (Number((page - 1) * 6 + teams.length) == Number(total)),
 				success: req.flash('success').toString(),
 				error: req.flash('error').toString()
 			});		
@@ -398,16 +399,16 @@ module.exports =  (app) => {
 	app.post('/teamCreate', checkLogin);
 	app.post('/teamCreate', upload.any(), (req, res) => {
 		let team = {
-			name: req.body.name,
-			purpose: req.body.purpose,
-			introduction: req.body.introduction,
-			pro_introduction: req.body.pro_introduction,
-			leader: req.body.leader,
-			website: req.body.website,
+			name: htmlencode.htmlEncode(req.body.name),
+			purpose: htmlencode.htmlEncode(req.body.purpose),
+			introduction: htmlencode.htmlEncode(req.body.introduction),
+			pro_introduction: htmlencode.htmlEncode(req.body.pro_introduction),
+			leader: htmlencode.htmlEncode(req.body.leader),
+			website: htmlencode.htmlEncode(req.body.website),
 			connection: {
-				name: req.body.conecntName,
-				phone: req.body.phone,
-				email: req.body.email
+				name: htmlencode.htmlEncode(req.body.conecntName),
+				phone: htmlencode.htmlEncode(req.body.phone),
+				email: htmlencode.htmlEncode(req.body.email)
 			}
 		}
 
@@ -452,16 +453,16 @@ module.exports =  (app) => {
 	app.post('/team/edit', checkLogin);
 	app.post('/team/edit', upload.any(), (req, res) => {
 		let team = {
-			name: req.body.name,
-			purpose: req.body.purpose,
-			introduction: req.body.introduction,
-			pro_introduction: req.body.pro_introduction,
-			leader: req.body.leader,
-			website: req.body.website,
+			name: htmlencode.htmlEncode(req.body.name),
+			purpose: htmlencode.htmlEncode(req.body.purpose),
+			introduction: htmlencode.htmlEncode(req.body.introduction),
+			pro_introduction: htmlencode.htmlEncode(req.body.pro_introduction),
+			leader: htmlencode.htmlEncode(req.body.leader),
+			website: htmlencode.htmlEncode(req.body.website),
 			connection: {
-				name: req.body.conecntName,
-				phone: req.body.phone,
-				email: req.body.email
+				name: htmlencode.htmlEncode(req.body.conecntName),
+				phone: htmlencode.htmlEncode(req.body.phone),
+				email: htmlencode.htmlEncode(req.body.email)
 			}
 		}
 		for(let i = 0 ; i < req.files.length ; i++) {
@@ -478,15 +479,14 @@ module.exports =  (app) => {
 			}
 		}
 
-		console.log(team);
 		Team.edit(req.body.teamID, team, (err, team) => {
 			if(team == 'success'){
 				req.flash('success', '修改成功！！！');
-				return res.redirect('/TeamManage');
+				return res.redirect('/teamManage');
 			}
 			else {
-				console.log(err);
-				return res.redirect('/TeamManage');
+				req.flash('error', err);
+				return res.redirect('/teamManage');
 			}
 		});
 	});
@@ -552,13 +552,13 @@ module.exports =  (app) => {
 				} else {
 					let newAchi = new achi(
 						req.body.ACT_ID,
-						req.body.ACT_NAME,
-						req.body.TEAM_NAME,
+						htmlencode.htmlEncode(req.body.ACT_NAME),
+						htmlencode.htmlEncode(req.body.TEAM_NAME),
 						act.ACT_BEG_DATE,
 						act.ACT_END_DATE,
 						act.ACT_LOCATION,
 						image,
-						req.body.ACHI_DEP
+						htmlencode.htmlEncode(req.body.ACHI_DEP)
 					)				
 	
 					newAchi.save((err) => {
@@ -604,10 +604,10 @@ module.exports =  (app) => {
 			});
 			key = true;
 		}
-		
+		htmlencode.htmlEncode
 		if(key) {
 			let update = {
-				ACHI_STORE: req.body.ACHI_DEP,
+				ACHI_STORE: htmlencode.htmlEncode(req.body.ACHI_DEP),
 				ACHI_IMG: image
 			}
 			achi.edit(req.body.ACHI_ID, update, (err) => {
@@ -619,7 +619,7 @@ module.exports =  (app) => {
 			});
 		} else {
 			let update = {
-				ACHI_STORE: req.body.ACHI_DEP,
+				ACHI_STORE: htmlencode.htmlEncode(req.body.ACHI_DEP),
 			}
 			achi.edit(req.body.ACHI_ID, update, (err) => {
 				if(err)
@@ -651,8 +651,8 @@ module.exports =  (app) => {
 	app.post('/achievement/delete/photo', checkLogin);
 	app.post('/achievement/delete/photo', (req, res) => {
 		let myPath = process.cwd() + '/public/';
-		req.body.data.forEach((img, index) => {
-			fs.unlink(myPath + img, (err) => {
+			req.body.data.forEach((img, index) => {
+				fs.unlink(myPath + img, (err) => {
 				if(err) throw err;
 				console.log(err);
 			});
@@ -666,6 +666,8 @@ module.exports =  (app) => {
 				console.log(err);
 				return res.redirect('/')
 			} else {
+				doc[0].ACT_NAME = htmlencode.htmlDecode(doc[0].ACT_NAME);
+				doc[0].TEAM_NAME = htmlencode.htmlDecode(doc[0].TEAM_NAME);
 				res.send(doc);
 			}
 		});

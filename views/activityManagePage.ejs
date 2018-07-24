@@ -1,5 +1,5 @@
 <div class="col-12" id="managePage">
-    <table id="dataTableForAct" class="table table-responsive-sm table-bordered text-nowrap" style="width: 100%"></table>
+    <table id="dataTableForAct" class="table table-responsive table-bordered text-nowrap" style="width: 100%"></table>
 </div>
 <script type="text/javascript">
     $(document).ready(function() {
@@ -19,6 +19,7 @@
                         "fnCreatedCell": function(td, cData, rData, rIndex, cIndex) {
                             $(td).html('<a href=/activity/' + rData._id + '>' + cData + '</a>');
                         }},
+                    { "title": '活動名稱', "data": 'ACT_DEPTNAME'}, 
                     { "title": '活動開始時間', "data": 'ACT_BEG_DATE', 
                         "fnCreatedCell": function(td, cData, rData, rIndex, cIndex) {
                             var date = new Date(parseInt(cData));
@@ -262,6 +263,7 @@
                   $('#editInputID28').prop('checked', true);
                 else
                   $('#editInputID29').prop('checked', true);
+                console.log(result.ACT_DEPTNAME);
                 $('#editInputID30').val(result.ACT_DEPTNAME);
                 $(document.getElementsByTagName('iframe')[1].contentWindow.document.body).html(result.ACT_LIST);
               });

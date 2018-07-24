@@ -35,7 +35,7 @@
             </div>
             <div class="form-group col-6">
                 <label for="inputID5">聯絡人電話：</label>
-                <input type="text" placeholder="09xxxxxxxx" class="form-control" id="inputID5" name="phone">
+                <input type="text" placeholder="09xxxxxxxx" class="form-control" id="inputID5" name="phone" onkeyup="return ValidateNumber($(this),value)">
             </div>
             <div class="form-group col-12">
                 <label for="inputID6">團隊信箱：</label>
@@ -73,4 +73,12 @@
         if(this.value.length > 10)
             this.value = this.value.substring(0, 10);
     });
+    function ValidateNumber(e, pnumber)
+    {
+        if (!/^\d+$/.test(pnumber))
+        {
+            $(e).val(/^\d+/.exec($(e).val()));
+        }
+        return false;
+    }
 </script>

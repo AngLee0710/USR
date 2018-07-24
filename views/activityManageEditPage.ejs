@@ -248,16 +248,16 @@
                             <label class="form-check-label" for="editInputID29">N</label>
                         </div>
                     </div>
-                    <div class="col-6">
-                        <div class="form-group">
-                            <label for="editInputID30">主辨隊伍：</label>
-                            <select multiple class="form-control" id="editInputID30" name="ACT_DEPTNAME">
-                                <% teams.forEach((team, index) => { %>
-                                    <option value="<%= team.name %>"><%= team.name %></option>
-                                <% }) %>
-                            </select>
-                        </div>
-                    </div>
+            </div>
+            <div class="col-12">
+                <div class="form-group">
+                    <label for="editInputID30">主辨隊伍：</label>
+                    <select multiple class="form-control" id="editInputID30" name="ACT_DEPTNAME">
+                        <% teams.forEach((team, index) => { %>
+                            <option value="<%- team.name %>"><%- team.name %></option>
+                        <% }) %>
+                    </select>
+                </div>
             </div>
             <div class="col-12">
                 <div class="form-group">

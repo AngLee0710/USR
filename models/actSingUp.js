@@ -1,8 +1,10 @@
 "use strict"
 const mongoose = require('mongoose');
 const dbAuth = require('./db');
+const htmlencode = require('htmlencode');
 const activity = require('./activity');
 const Schema = mongoose.Schema;
+
 
 
 let actSignUpSchema = new Schema({
