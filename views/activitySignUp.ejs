@@ -29,7 +29,7 @@
         <div class="mine">
         <div class="top-content">
             <div class="inner-bg">
-                <div class="container">
+                <div class="container border">
                     <div class="row">
                         <div class="col-12" >
                             <div class="form-top">
@@ -41,11 +41,11 @@
                             <div class="form-top-divider"></div>
                             <div class="form-bottom">
                                 <form role="form" action="" method="post" class="registration-form">
-                                    <div class="form-group">
+                                    <div class="form-group border">
                                         <label class="sr-only" for="input1">姓名</label>
-                                        <input type="text" name="input1" placeholder="姓名..." class="form-control form-control-lg" id="input1">
+                                        <input type="text" name="LIST_CNAME" placeholder="姓名..." class="form-control form-control-lg" id="input1">
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group border">
                                             <label for="input2"class="sr-only">身分：</label>
                                             <select id="input2" style="height: 50px;" class="form-control form-control-lg"name="LIST_KIND">
                                                 <option value='' disabled selected style='display:none;'>身分...</option>
@@ -54,12 +54,12 @@
                                                 <option value="O">其他</option> 
                                             </select>
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group border">
                                         <label class="sr-only" for="input3" id="input3_text">學號</label>
                                         <input type="text" name="LIST_PER" placeholder="學號..." class="form-control form-control-lg" id="input3">
                                     </div>
                                     <% if(post.ACT_K_SEX == 'Y') {%>
-                                        <div class="form-group">
+                                        <div class="form-group border">
                                             <label class="sr-only" for="input4">性別</label>
                                             <select  class="form-control form-control-lg"style="height: 50px;"name="LIST_SEX" id="input4">
                                                 <option value='' disabled selected style='display:none;'>性別...</option>
@@ -69,13 +69,13 @@
                                         </div>
                                         <% } %>
                                         <% if(post.ACT_K_DEPT == 'Y') {%>
-                                            <div class="form-group">
+                                            <div class="form-group border">
                                                 <label class="sr-only" for="input5">就讀科系</label>
                                                 <input type="text" class="form-control form-control-lg" placeholder="就讀科系..." name="LIST_DEPT" id="input5">
                                             </div>
                                         <% } %>
                                         <% if(post.ACT_K_FOOD == 'Y') {%>
-                                            <div class="form-group">
+                                            <div class="form-group border">
                                                 <label class="sr-only" for="input6">便當</label>
                                                 <select  class="form-control form-control-lg" style="height: 50px;"name="LIST_FOOD" id="input6">
                                                     <option value='' disabled selected style='display:none;'>便當...</option>
@@ -85,26 +85,26 @@
                                             </div>
                                             <% } %>
                                         <% if(post.ACT_K_IDNO == 'Y') {%>
-                                            <div class="form-group">
+                                            <div class="form-group border">
                                                 <label class="sr-only" for="input7">身分證：</label>
                                                 <input type="text" class="form-control form-control-lg" placeholder="身分證..." name="LIST_IDNO" id="input7">
                                             </div>
                                         <% } %>
                                         <% if(post.ACT_K_BIRTH == 'Y') {%>
-                                            <div class="form-group">
+                                            <div class="form-group border">
                                                 <label class="sr-only" for="input8">生日：</label>
                                                 <input class="form-control" id="date" name="date" placeholder="年/月/日" type="text"/>
                                             
                                             </div>
                                             <% } %>
                                             <% if(post.ACT_K_TEL == 'Y') {%>
-                                            <div class="form-group">
+                                            <div class="form-group border">
                                                 <label class="sr-only"for="input9">電話：</label>
                                                 <input type="text" class="form-control form-control-lg"placeholder="電話..." name="LIST_TEL" id="input9">
                                             </div>
                                             <% } %>
                                             <% if(post.ACT_K_ADDR == 'Y') {%>
-                                            <div class="form-group">
+                                            <div class="form-group border">
                                                 <label class="sr-only"for="input10">地址：</label>
                                                 <input type="text" class="form-control form-control-lg"placeholder="地址..." name="LIST_ADDR" id="input10">
                                             </div>
@@ -135,7 +135,8 @@
         <script src="/activitysignup/js/retina-1.1.0.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
-        <script> <% if(error) {%>
+        <script> 
+        <% if(error) {%>
             alert('<%= error %>');
         <% } %>
         $('#input2').on('change', () => {
@@ -181,7 +182,7 @@
     </body>
 
     </html>
-<%- include footer %>
+<%- include newfooter %>
 
 
 

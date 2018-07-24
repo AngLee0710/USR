@@ -209,14 +209,61 @@
         zoom: 12
         });
 
+
         result.forEach((doc, i) => {
+            if(doc.TEAM_NAME == '虎尾科技大學夜梟羅浮群社團')
+                var image = {
+                    url: '/upload/teamIcon-1532276985207.jpeg',
+                    // This marker is 20 pixels wide by 32 pixels high.
+                    size: new google.maps.Size(40, 40),      //顯示圖片大小
+                    origin: new google.maps.Point(0, 0),     //起始位置，通常為0
+                    anchor: new google.maps.Point(19, 40),   //移動marker 數字越大往右和往上移動
+                    scaledSize: new google.maps.Size(40, 40) //圖片實際大小，通常與size一樣大小
+                };
+            else if(doc.TEAM_NAME == '虎科志工')
+                var image = {
+                    url: '/upload/editTeamLogo-1532390121141.png',
+                    // This marker is 20 pixels wide by 32 pixels high.
+                    size: new google.maps.Size(40, 40),      //顯示圖片大小
+                    origin: new google.maps.Point(0, 0),     //起始位置，通常為0
+                    anchor: new google.maps.Point(19, 40),   //移動marker 數字越大往右和往上移動
+                    scaledSize: new google.maps.Size(40, 40) //圖片實際大小，通常與size一樣大小
+                };
+            else
+                var image = {
+                    url: '/images/nfu_icon.png',
+                    // This marker is 20 pixels wide by 32 pixels high.
+                    size: new google.maps.Size(40, 40),      //顯示圖片大小
+                    origin: new google.maps.Point(0, 0),     //起始位置，通常為0
+                    anchor: new google.maps.Point(19, 40),   //移動marker 數字越大往右和往上移動
+                    scaledSize: new google.maps.Size(40, 40) //圖片實際大小，通常與size一樣大小
+                };
             var uluru = {lat: doc.ACT_LOCATION.LOCATION_LAT, lng: doc.ACT_LOCATION.LOCATION_LNG};
-            var marker = new google.maps.Marker({position: uluru, map: map, animation: google.maps.Animation.DROP});
-            var contentString = '<div id="content" class="contentDIV">'+
-                '<div id="siteNotice">'+ 
-                '</div>'+
-                '<h3 id="firstHeading" class="firstHeading"><a href="/achievement/' + result[i]._id + '">' +
-                result[i].ACT_NAME + '</a></h3><p class="mapCotent">' + result[i].ACHI_STORE + '</p></div>';
+            var marker = new google.maps.Marker({
+                position: uluru, 
+                map: map, 
+                icon: image,
+                animation: google.maps.Animation.DROP
+            });
+            if(doc.ACT_NAME == '第三次東仁國中童軍社社課')
+                var contentString = '<div id="content" class="contentDIV">'+
+                    '<div id="siteNotice">'+ 
+                    '</div>'+
+                    '<h3 id="firstHeading" class="firstHeading"><a href="/achievement/2/' + result[i]._id + '">' +
+                    result[i].ACT_NAME + '</a></h3><p class="mapCotent">' + result[i].ACHI_STORE + '</p></div>';
+            else if(doc.ACT_NAME == '2018虎科志工共識營')
+                var contentString = '<div id="content" class="contentDIV">'+
+                    '<div id="siteNotice">'+ 
+                    '</div>'+
+                    '<h3 id="firstHeading" class="firstHeading"><a href="/achievement/2">' +
+                    result[i].ACT_NAME + '</a></h3><p class="mapCotent">' + result[i].ACHI_STORE + '</p></div>';
+            else
+                var contentString = '<div id="content" class="contentDIV">'+
+                    '<div id="siteNotice">'+ 
+                    '</div>'+
+                    '<h3 id="firstHeading" class="firstHeading"><a href="/achievement/' + result[i]._id + '">' +
+                    result[i].ACT_NAME + '</a></h3><p class="mapCotent">' + result[i].ACHI_STORE + '</p></div>';
+            
 
             var infowindow = new google.maps.InfoWindow({
                 content: contentString

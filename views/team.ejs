@@ -55,16 +55,27 @@
     map = new google.maps.Map(document.getElementById('map'), {
       center: {lat: 23.7031129, lng: 120.4279623},
       zoom: 9
-    });
+	});
+	
+	var image = {
+		url: '<%= teams.teamIcon %>',
+		// This marker is 20 pixels wide by 32 pixels high.
+		size: new google.maps.Size(40, 40),      //顯示圖片大小
+		origin: new google.maps.Point(0, 0),     //起始位置，通常為0
+		anchor: new google.maps.Point(19, 40),   //移動marker 數字越大往右和往上移動
+		scaledSize: new google.maps.Size(40, 40) //圖片實際大小，通常與size一樣大小
+	};
 
     result.forEach((doc, i) => {
 	    var uluru = {lat: doc.ACT_LOCATION.LOCATION_LAT, lng: doc.ACT_LOCATION.LOCATION_LNG};
     	var marker = new google.maps.Marker({
 			position: uluru, 
 			map: map,
-			icon: '<%- teams.teamIcon %>',
+			icon: image,
 			animation: google.maps.Animation.DROP
-		});
+	});
+
+		
     	var contentString = '<div id="content">'+
 	        '<div id="siteNotice">'+
 	        '</div>'+

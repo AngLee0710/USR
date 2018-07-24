@@ -450,7 +450,7 @@ module.exports =  (app) => {
 	});
 
 	app.post('/team/edit', checkLogin);
-	app.post('/team/edit', upload.single('editTeamImg'), (req, res) => {
+	app.post('/team/edit', upload.any(), (req, res) => {
 		let team = {
 			name: req.body.name,
 			purpose: req.body.purpose,
@@ -464,9 +464,21 @@ module.exports =  (app) => {
 				email: req.body.email
 			}
 		}
-		if(req.file) 
-			team.teamImg =  '/upload/' + req.file.filename;
+		for(let i = 0 ; i < req.files.length ; i++) {
+			switch(req.files[i].fieldname) {
+				case 'editTeamLogo':
+					team.teamLogo = '/upload/' + req.files[i].filename;
+					break;
+				case 'editTeamIcon':
+					team.teamIcon = '/upload/' + req.files[i].filename;
+					break;
+				case 'editTeamImg':
+					team.teamImg = '/upload/' + req.files[i].filename;
+					break;
+			}
+		}
 
+		console.log(team);
 		Team.edit(req.body.teamID, team, (err, team) => {
 			if(team == 'success'){
 				req.flash('success', '修改成功！！！');

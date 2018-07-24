@@ -63,7 +63,7 @@
 
     $('#delete').click(() => {
       if(nowID == null || activityID == null){
-        alert('尚未選取貼文');
+        alert('尚未選取成果貼文');
         return;
       }
         
@@ -75,6 +75,7 @@
             nowID = null;
             activityID = null;
             nowID_D = null;
+            alert('刪除成果貼文成功');
         }
         else{
           console.log('error');
@@ -85,7 +86,7 @@
 
     $('#update').click(() => {
       if(nowID == null)
-        return alert('尚未選取貼文');
+        return alert('尚未選取成果貼文');
       
       let data =  nowID;
       $('#managePage').hide();

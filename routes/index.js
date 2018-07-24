@@ -36,7 +36,7 @@ module.exports = (app) => {
 		});
 	});
 
-    app.get('/achievement/:id', (req, res) => {
+    app.get('/achievement/2/:id', (req, res) => {
 		achi.getById(req.params.id, (err, doc) => {
 			if(err){
 				req.flash('error', '模組異常');
@@ -46,6 +46,46 @@ module.exports = (app) => {
 				return res.redirect('/');
 			} else {
 				return res.render('newachievement', {
+					title: '成果分享',
+					doc: doc[0],
+					user: req.session.user,
+					success: req.flash('success').toString(),
+					error: req.flash('error').toString()
+				});
+			}
+		});
+    });
+
+    app.get('/achievement/2/', (req, res) => {
+		achi.getById(req.params.id, (err, doc) => {
+			if(err){
+				req.flash('error', '模組異常');
+				return res.redirect('/');
+			} else if(!doc){
+				req.flash('error', '無效網址');
+				return res.redirect('/');
+			} else {
+				return res.render('newachievement2', {
+					title: '成果分享',
+					doc: doc[0],
+					user: req.session.user,
+					success: req.flash('success').toString(),
+					error: req.flash('error').toString()
+				});
+			}
+		});
+    });
+    
+    app.get('/achievement/:id', (req, res) => {
+		achi.getById(req.params.id, (err, doc) => {
+			if(err){
+				req.flash('error', '模組異常');
+				return res.redirect('/');
+			} else if(!doc){
+				req.flash('error', '無效網址');
+				return res.redirect('/');
+			} else {
+				return res.render('achievement', {
 					title: '成果分享',
 					doc: doc[0],
 					user: req.session.user,
@@ -144,6 +184,7 @@ module.exports = (app) => {
                         req.flash('error', '重複報名！！');
                         return res.redirect('/activity/SignUp/' + req.params.id);
                     } else {
+                        console.log(req.body.LIST_CNAME)
                         let activitysignUp = new actSignUp(
                             req.body.LIST_ACT_ID,
                             req.body.LIST_KIND,
@@ -160,6 +201,7 @@ module.exports = (app) => {
                         activitysignUp.save((err) => {
                             if (err) {
                                 console.log(err);
+                                req.flash('error', err);
                                 return res.redirect('/activity/SignUp/' + req.body.LIST_ACT_ID);
                             } else {
                                 req.flash('success', '報名成功!!!');
