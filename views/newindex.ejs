@@ -66,8 +66,8 @@
 							<% } %>
 							<a style="color: white" href="/achievement/<%= doc._id %>"><img class="imgrwd d-block w-100" 
 								src="<%= doc.ACHI_IMG[0].URL %>" alt="First slide"></a>
-								<div class="carousel-caption d-none d-md-block">
-										<div class="wordsize"><h1 style="color: white"><%= doc.ACT_NAME %></h1></div>
+								<div class="carousel-caption d-md-block">
+										<div class="wordsize"><h1 class="wordrwd" style="color: white"><%= doc.ACT_NAME %></h1></div>
 										<p class="word"><%- doc.ACHI_STORE %></p>
 								</div>
 							</div>
@@ -97,15 +97,42 @@
 	
 </html>
 <style>
-	imgrwd{
+	.imgrwd{
 		 height: 800px;
 		 width: 1200px;
 	 }
-@media only screen and (max-width: 768px) {
-     imgrwd{
+	
+	 @media screen and (max-width: 480px) {
+
+  
+  .imgrwd{
 		 height: 400px;
 		 width: 600px;
 	 }
-    
+
+
+}
+
+@media screen and (max-width: 768px) {
+
+
+
+.imgrwd{
+		 height: 400px;
+		 width: 600px;
+	 }
+
+
+}
+
+@media screen and (min-width: 768px) and (max-width: 992px) {
+
+
+
+.imgrwd{
+		 height: 400px;
+		 width: 600px;
+	 }
+
 }
 </style>
