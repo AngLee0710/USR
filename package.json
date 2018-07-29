@@ -5,6 +5,12 @@
   "scripts": {
     "start": "node ./bin/www"
   },
+  "keywords": [
+    "國立虎尾科技大學",
+    "nfu USR",
+    "nfu",
+    "USR"
+  ],
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
     "connect-flash": "^0.1.1",
@@ -20,6 +26,8 @@
     "mongodb": "^3.0.7",
     "mongoose": "*",
     "morgan": "~1.9.0",
-    "multer": "^1.3.0"
+    "multer": "^1.3.0",
+    "open": "0.0.5",
+    "request": "^2.87.0"
   }
 }

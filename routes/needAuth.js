@@ -4,6 +4,7 @@ const multer  = require('multer');
 const fs = require('fs');
 const cheerio = require('cheerio');
 const htmlencode = require('htmlencode');
+const request = require('request');
 
 const User = require('../models/user.js');
 const Team = require('../models/team.js');
@@ -59,6 +60,63 @@ module.exports =  (app) => {
 	app.get('/admin', (req, res) => {
 		res.redirect('/teamManage');
 	});
+
+	app.get('/api/user', checkNotLogin);
+	app.get('/api/user', (req, res) => {
+        let re;
+        if (req.session.user) {
+            re = { statu: 'ok', user: req.session.user };
+            return res.redirect('/admin');
+        }
+        else {
+            re = { statu: 'not login', url: 'https://www.facebook.com/v2.8/dialog/oauth?client_id=' + process.env.appID + '&redirect_uri=' + process.env.redirect + '/api/code&scope=user_posts' };
+			console.log(re.statu);
+			return res.redirect(re.url);
+        }
+	});
+	
+	app.get('/api/code', checkNotLogin);
+    app.get('/api/code', (req, res) => {
+        request('https://graph.facebook.com/v3.1/oauth/access_token?client_id=' + process.env.appID + '&redirect_uri=' + process.env.redirect + '/api/code' + '&client_secret=' + process.env.appKEY + '&code=' + req.query.code, (error, response, body) => {
+			let userdata = JSON.parse(body);
+            req.session.key = userdata.access_token;
+            getUser(userdata.access_token).then((data) => {
+                User.getByFbId(data.id, (err, user) => {
+                    if(err) {
+                        userdata = null;
+                        req.session.key = null;
+                        req.flash('error', '登入失敗');
+                        return res.redirect('/');
+                    } else if(!data.id) {
+						req.flash('error', '登入失敗');
+						req.session.user = null;
+						return res.redirect('/')
+					} else if(user) {
+						req.session.user = user;
+                        req.flash('success', '登入成功');
+                        return res.redirect('/admin');
+                    } else {
+                        let newUser = new User({
+                            fbid: data.id,
+                            name: data.name
+                        })
+                        newUser.save((err, result) => {
+                            if(err) {
+                                req.flash('error', '登入失敗');
+                                return res.redirect('/');
+                            } else {
+								console.log('here');
+								console.log(result);
+                                req.session.user = result;
+                                req.flash('success', '登入成功');
+                                return res.redirect('/admin');
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    });
 
 	app.get('/logout', checkLogin);
 	app.get('/logout', (req, res) => {
@@ -708,4 +766,12 @@ module.exports =  (app) => {
 		}
 		next();
 	}
+
+	function getUser(key) {
+        return new Promise((resolve, reject) => {
+            request('https://graph.facebook.com/v3.1/me?fields=id,name&access_token=' + key, (error, response, body) => {
+                resolve(JSON.parse(body));
+            });
+        });
+    }
 }

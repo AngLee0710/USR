@@ -4,9 +4,12 @@ const actPost = require('../models/activity.js');
 const Leader = require('../models/leader.js');
 const actSignUp = require('../models/actSingUp.js');
 const achi = require('../models/achievement.js');
+const User = require('../models/user.js')
 
 const fs = require('fs');
 const htmlencode = require('htmlencode');
+const request = require('request');
+const open = require('open');
 
 
 module.exports = (app) => {
@@ -306,25 +309,10 @@ module.exports = (app) => {
     //
     //測試
     //
-    app.get('/map', (req, res) => {
-        res.render('googleMap', {
-            title: 'googleMap',
-            user: req.session.user,
-            success: req.flash('success').toString(),
-            error: req.flash('error').toString()
-        });
-    });
+    
 
-    app.get('/photo', (req, res) => {
-        const myPath = process.cwd() + '/public/upload';
-        fs.readdir(myPath, function(err, files) {
-            res.render('photo', {
-                title: '相簿',
-                files: files,
-                user: req.session.user,
-                success: req.flash('success').toString(),
-                error: req.flash('error').toString()
-            });
-        });
+    app.get('/api/logout', (req, res) => {
+        req.session.user = null;
+        return res.redirect('/');
     });
 }

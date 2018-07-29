@@ -5,9 +5,13 @@ const Schema = mongoose.Schema;
 
 
 let userSchema = new Schema({
-	name: String,
-	password: String,
-	email: String
+	FBID: {type: String, default: null},
+	NFUID: {type: String, default: null},
+	NAME: String,
+	EMAIL: {type: String, default: null},
+	BIRTHDAY: {type: Number, default: null},
+	FIRST_NAME: {type: String, default: null},
+	LAST_NAME: {type: String, default: null},
 }, {
 	collection: 'users'
 });
@@ -17,17 +21,23 @@ let userUserModel = dbAuth.user.model('User', userSchema);
 
 function User(user) {
 	this.name = user.name;
-	this.password = user.password;
+	this.email = user.email;
+	this.birthday = user.birthday;
+	this.first_name = user.first_name;
+	this.last_name = user.last_name;
+	this.fbid = user.fbid;
+	this.nfuid = user.nfuid;
 }
 
 User.prototype.save = function(callback) {
-	if(!(this.name && this.password)) {
-		return callback('資料不齊全')
-	}
-
 	let user = {
-		name: this.name,
-		password: this.password,
+		FBID: this.fbid,
+		NFUID: this.nfuid,
+		NAME: this.name,
+		EMAIL: this.email,
+		BIRTHDAY: this.birthday,
+		FIRST_NAME: this.first_name,
+		LAST_NAME: this.last_name 	
 	}
 
 	let newUser = new userOwnerModel(user);
@@ -40,6 +50,18 @@ User.prototype.save = function(callback) {
 	});
 }
 
+User.getByFbId = function(id, callback) {
+	if(id) {
+		userUserModel.findOne({FBID: id}, function(err, user) {
+			if(err) {
+				return callback(err);
+			}
+			return callback(null, user);
+		});
+	} else {
+		return callback(null, null);
+	}
+}
 
 User.get = function(name, callback) {
 	userUserModel.findOne({name: name}, function(err, user) {
