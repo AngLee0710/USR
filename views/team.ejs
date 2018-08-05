@@ -6,48 +6,97 @@
 <div class="row mb-2" style="margin-top: 25px;">
 			<div class=" flex-md-row mb-4 box-shadow">
 				<div class=" d-flex flex-column align-items-start">
-								<div class="col-12">
-
-								<div style="font-size: 200%"><%- teams.name %></div>
-								
-								<div style="font-size: 150%"><br>領隊：<%- teams.leader %></div>
-
-								<div class="txt_family">
-								
-								<div class="team_txt">
-								<p><div class="title_txt" style="font-size: 150%">團隊服務宗旨：</div><br><%- include two_blank %><%-teams.purpose %></p>
-								<br>
-								<span><div class="title_txt" style="font-size: 150%">團隊介紹：</div><br><%- include two_blank %><%- teams.introduction %></span><br />
-								<br>
-								<span><div class="title_txt" style="font-size: 150%">團隊專業介紹：</div><br><%- include two_blank %> <%- teams.pro_introduction %></span><br />							
-								</div>
-								</div>
-								<p><div class="title_txt" style="font-size: 150%">團隊成果共享：</div><br></p>
-								<div id="map"></div>
-								<p><div class="title_txt" style="font-size: 150%">團隊大團拍：</div><br></p>
-								<% if(teams.teamImg) {%>
-								<div class="card flex-md-row mb-4 box-shadow">
-									<div class="card-body flex-column align-items-start padding5">
-										<a href="<%= teams.teamImg %>"><img height="100%" src="<%= teams.teamImg %>" width="100%"></a>
-									</div>
-								</div>
-								<% } %>
-								<div class="title_txt" style="font-size: 150%"><span>團隊聯絡方式： </span></div><br />
-								<span>團隊網站：<a href="http://<%= teams.website %>">點我</a></span><br />
-								<span>聯絡人：<%- teams.connection.name %></span><br />
-								<span>聯絡人電話：0<%= teams.connection.phone %></span><br />
-								<span>聯絡人信箱：<a href="mailto:<%= teams.connection.email %>"><%- teams.connection.email %></a></span><br />
-								<span>點擊數：<%= teams.pv %></span>
+					<div class="col-12">
+						<div style="font-size: 200%">
+							<%- teams.name %>
 						</div>
+						<div style="font-size: 150%">
+							<br>
+							領隊：<%- teams.leader %>
+						</div>
+						<div class="txt_family">
+							<div class="team_txt">
+								<p>
+									<div class="title_txt" style="font-size: 150%">團隊服務宗旨：</div><br><%- include two_blank %><%-teams.purpose %>
+								</p>
+								<br>
+								<span>
+									<div class="title_txt" style="font-size: 150%">
+										團隊介紹：
+									</div>
+									<br>
+									<%- include two_blank %><%- teams.introduction %>
+								</span>
+								<br />
+								<br>
+								<span>
+									<div class="title_txt" style="font-size: 150%">
+										團隊專業介紹：
+									</div>
+									<br>
+									<%- include two_blank %> <%- teams.pro_introduction %>
+								</span>
+								<br />							
+							</div>
+						</div>
+						<p>
+							<div class="title_txt" style="font-size: 150%">
+								團隊成果共享：
+							</div>
+							<br>
+						</p>
+						<div id="map"></div>
+						<p>
+							<div class="title_txt" style="font-size: 150%">
+								團隊大團拍：
+							</div>
+							<br>
+						</p>
+						<% if(teams.teamImg) {%>
+						<div class="card flex-md-row mb-4 box-shadow">
+							<div class="card-body flex-column align-items-start padding5">
+								<a href="<%= teams.teamImg %>"><img height="100%" src="<%= teams.teamImg %>" width="100%"></a>
+							</div>
+						</div>
+						<% } %>
+						<div class="title_txt" style="font-size: 150%">
+							<span>
+								團隊聯絡方式： 
+							</span>
+						</div>
+						<br />
+						<span>
+							團隊網站：<a href="http://<%= teams.website %>">點我</a>
+						</span>
+						<br />
+						<span>
+							聯絡人：<%- teams.connection.name %>
+						</span>
+						<br />
+						<span>
+							聯絡人電話：<%= teams.connection.phone %>
+						</span>
+						<br />
+						<span>
+							聯絡人信箱：<a href="mailto:<%= teams.connection.email %>"><%- teams.connection.email %></a>
+						</span>
+						<br />
+						<span>點擊數：<%= teams.pv %></span><br />
+						<!--檢查是否為隊員-->
+						<% if(!key) {%>
+						<a href="/teamReview/<%= teams._id %>">
+							<input class="btn btn-block btn-primary" type="button" value="加入我們" />
+						</a>
+						<% } %>
 					</div>
-			</div>
-		
-</div>
-</div>
+				</div>
+			</div>	
+		</div>
+	</div>
 </div>
 <script>
   var map;
-  var result = <%- achievement %>
+  var result = <%- achievement %>;
   function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
       center: {lat: result[0].ACT_LOCATION.LOCATION_LAT, lng: result[0].ACT_LOCATION.LOCATION_LNG},
@@ -91,6 +140,14 @@
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6MrbT0cNZgeYP3JUP4R2U-WZDbWVzWM8&callback=initMap"
 	async defer></script>
+<script>
+	<% if(success) {%>
+		alert('<%= success %>');
+	<% } %>
+	<% if(error) {%>
+		alert('<%= error %>');
+	<% } %>
+</script>
 <style>
 	#map {
     	height: 300px;

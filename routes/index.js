@@ -4,7 +4,8 @@ const actPost = require('../models/activity.js');
 const Leader = require('../models/leader.js');
 const actSignUp = require('../models/actSingUp.js');
 const achi = require('../models/achievement.js');
-const User = require('../models/user.js')
+const User = require('../models/user.js');
+const teammate = require('../models/teammate.js');
 
 const fs = require('fs');
 const htmlencode = require('htmlencode');
@@ -122,10 +123,6 @@ module.exports = (app) => {
             if (err)
                 posts = [];
 
-            console.log('page:' + page);
-            console.log('isFirstPage:' + (page - 1) == 0);
-            console.log('isLastPage:' + ((page - 1) * 6 + posts.length) == total);
-
             res.render('activityList', {
                 title: '活動消息',
                 posts: posts,
@@ -160,6 +157,7 @@ module.exports = (app) => {
     });
 
     app.get('/activity/SignUp/:id', (req, res) => {
+        
         actPost.take(req.params.id, (err, post) => {
             let date = new Date();
             date = date.getTime();
@@ -182,12 +180,12 @@ module.exports = (app) => {
     });
 
     app.post('/activity/SignUp/:id', (req, res) => {
-        actPost.take(req.params.id, function(err, actPost) {
+        actPost.take(req.params.id , function(err, actPost) {
             if (err)
                 console.log(err);
             else if (actPost.ACT_B_BEG < new Date().getTime() < actPost.ACT_B_END) {
                 let date = new Date().getTime();
-                actSignUp.check(req.body.LIST_PER, function(err, sign) {
+                actSignUp.check(req.body.LIST_PER, actPost._id  , function(err, sign) {
                     if (err) {
                         console.log(err);
                         return res.redirect('/');
@@ -195,18 +193,17 @@ module.exports = (app) => {
                         req.flash('error', '重複報名！！');
                         return res.redirect('/activity/SignUp/' + req.params.id);
                     } else {
-                        console.log(req.body.LIST_CNAME)
                         let activitysignUp = new actSignUp(
                             req.body.LIST_ACT_ID,
-                            req.body.LIST_KIND,
-                            req.body.LIST_PER,
-                            req.body.LIST_CNAME,
+                            htmlencode.htmlEncode(req.body.LIST_KIND),
+                            htmlencode.htmlEncode(req.body.LIST_PER),
+                            htmlencode.htmlEncode(req.body.LIST_CNAME),
                             req.body.LIST_IDNO,
                             req.body.LIST_BIRTH,
                             req.body.LIST_TEL,
                             req.body.LIST_OCCUP,
                             req.body.LIST_SEX,
-                            req.body.LIST_ADDR
+                            htmlencode.htmlEncode(req.body.LIST_ADDR)
                         )
 
                         activitysignUp.save((err) => {
@@ -262,19 +259,28 @@ module.exports = (app) => {
                 req.flash('error', '隊伍不存在');
                 return res.redirect('/');
             }
-            console.log(team.name);
             achi.getByTeam(team.name, (err, doc) => {
-                if (err)
+                if (err) {
                     return res.redirect('/');
-                else
-                    res.render('team', {
-                        title: team.name,
-                        teams: team,
-                        achievement: JSON.stringify(doc),
-                        user: req.session.user,
-                        success: req.flash('success').toString(),
-                        error: req.flash('error').toString()
+                }
+                else {
+                    teammate.isTeammate(req.session.user, req.params.id, (err, key) => {
+                        if(err) {
+                            req.flash('error', '伺服器異常');
+                            return res.redirect('/');
+                        } else {
+                            return res.render('team', {
+                                title: team.name,
+                                teams: team,
+                                key: key,
+                                achievement: JSON.stringify(doc),
+                                user: req.session.user,
+                                success: req.flash('success').toString(),
+                                error: req.flash('error').toString()
+                            });
+                        }
                     });
+                }
             });
         });
     });
@@ -310,6 +316,9 @@ module.exports = (app) => {
     //測試
     //
     
+    app.get('/google8f9314c57209ba21.html', (req, res) => {
+        res.sendfile('views/google8f9314c57209ba21.html');
+    });
 
     app.get('/api/logout', (req, res) => {
         req.session.user = null;

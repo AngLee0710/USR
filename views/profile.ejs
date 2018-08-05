@@ -1,0 +1,85 @@
+<%- include header %>
+<%- include to_Top %>
+<body>
+    <%- include nav2 %>
+    <form method="POST" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-sm-4"></div>
+            <div class="row col-sm-4 col-12">
+                <div class="form-group col-12">
+                    <label for="input1">大頭照</label>
+                    <img id="blah" class="img-fluid" src="<%- user.PHOTO %>" />
+                    <input type="file" class="form-control" id="input1" value="<%- user.FAMILY_NAME %>" name="photo" accept="image/jpeg, image/png" />
+                </div>
+                <div class="form-group col-sm-6">
+                    <label for="input2">姓：</label>
+                    <input type="text" class="form-control" id="input2" value="<%- user.FAMILY_NAME %>" name="family_name" />
+                </div>
+                <div class="form-group col-sm-6">
+                    <label for="input3">名：</label>
+                    <input type="text" class="form-control" id="input3" value="<%- user.GIVEN_NAME %>" name="given_name" />
+                </div>
+                <div class="form-group col-12">
+                    <label for="input4">姓名：</label>
+                    <input type="text" class="form-control" id="input4" value="<%- user.NAME %>" name="name" />
+                    <input type="hidden" id="input2" value="<%- user._id %>" />
+                </div>
+                <div class="form-group col-12">
+                    <label for="input5">生日：</label>
+                    <input type="date" class="form-control" id="input5" value="<%= user.BIRTHDAY %>" name="birthday" />
+                </div>
+                <div class="form-group col-12">
+                    <label for="input6">信箱：</label>
+                    <input type="text" class="form-control" id="input6" value="<%- user.EMAIL %>" readonly>
+                </div>
+                <div class="form-group col-12">
+                    <label for="input7">手機號碼：</label>
+                    <input type="text" class="form-control" id="input7" value="<%= user.PHONE %>" name="phone" />
+                    <small id="phoneAlert" style="display: none;" class="form-text text-danger">不符合09xxxxxxxx格式</small>
+                    
+                </div>
+                <div class="form-group col-12">
+                    <label for="input8">通訊地址：</label>
+                    <input type="text" class="form-control" id="input8" value="<%- user.ADDR %>" name="address" />
+                    <small class="form-text text-muted">完整的個人資料能加快活動報名速度</small>
+                </div>
+                <input class="btn btn-block btn-primary" type="submit" value="儲存" />
+            </div>
+            <div class="col-sm-4"></div>
+        </div>
+    </form>
+<%- include newfooter %>
+</body>
+<script>
+    <% if(success) {%>
+        alert('<%= success %>');
+    <% } %>
+    <% if(error) {%>
+        alert('<%= error %>');
+    <% } %>
+
+    //正規化手機號碼
+    $('#input7').keyup(()=> {
+        let re = /^\d{10}$/;
+        if(!re.test($('#input7').val()))
+            $('#phoneAlert').show();
+        else 
+            $('#phoneAlert').hide();
+    })
+    
+    //上傳同時預覽圖片
+    $("#input1").change(function() {
+        readURL(this);
+    });
+
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            $('#blah').attr('src', e.target.result);
+        }
+        reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+</html>

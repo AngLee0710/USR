@@ -18,6 +18,7 @@ let achievementSchema = new Schema({
 		LOCATION_LAT: Number,		//googleMapLat
 		LOCATION_LNG: Number,		//googleMapLng
 	},
+	TEAM_ID: String,				//團隊ID
 	TEAM_NAME: String,				//團隊名稱
 	ACHI_IMG: [{NAME: String, URL: String}],
 	ACHI_STORE: String,				//活動介紹
@@ -32,7 +33,7 @@ let achievementOwnerModel = dbAuth.owner.model('achievement', achievementSchema)
 let achievementUserModel = dbAuth.user.model('achievement', achievementSchema);
 
 function achievement(ACT_ID, ACT_NAME, TEAM_NAME, ACT_BEG_DATE,
- ACT_END_DATE, ACT_LOCATION, ACHI_IMG, ACHI_STORE)
+ ACT_END_DATE, ACT_LOCATION, ACHI_IMG, ACHI_STORE, TEAM_ID)
 {
 	this.ACT_ID = ACT_ID;
 	this.ACT_NAME = ACT_NAME;
@@ -42,6 +43,7 @@ function achievement(ACT_ID, ACT_NAME, TEAM_NAME, ACT_BEG_DATE,
 	this.ACT_LOCATION = ACT_LOCATION;
 	this.ACHI_IMG = ACHI_IMG;
 	this.ACHI_STORE = ACHI_STORE;
+	this.TEAM_ID = TEAM_ID;
 }
 
 achievement.prototype.save = function(cb) {
@@ -65,7 +67,8 @@ achievement.prototype.save = function(cb) {
 		ACT_END_DATE: this.ACT_END_DATE,
 		ACT_LOCATION: this.ACT_LOCATION,
 		ACHI_IMG: this.ACHI_IMG,
-		ACHI_STORE: this.ACHI_STORE
+		ACHI_STORE: this.ACHI_STORE,
+		TEAM_ID: this.TEAM_ID
 	}
 
 	let newAchievement = new achievementOwnerModel(achievement);
@@ -114,7 +117,7 @@ achievement.remove = function(id, callback) {
 }
 
 achievement.getByTeam = function(team, callback) {
-	achievementOwnerModel.find({'TEAM_NAME': htmlencode.htmlDecode(team)}, (err, doc) => {
+	achievementUserModel.find({'TEAM_NAME': htmlencode.htmlDecode(team)}, (err, doc) => {
 		if(err)
 			return callback(err, null);
 		else
@@ -143,5 +146,15 @@ achievement.getLimit = function(team, page, limit, callback) {
 		});
 	});
 };
+
+//拿到Team所有的成果
+achievement.getAllOfTeamForManage = function(team, callback) {
+	achievementUserModel.find({'TEAM_ID': team}, {'TEAM_NAME': 1, 'ACT_END_DATE': 1, 'ACT_NAME': 1 }, (err, doc) => {
+		if(err)
+			return callback(err, null);
+		else
+			return callback(null, doc);
+	});
+}
 
 module.exports = achievement;

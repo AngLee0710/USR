@@ -47,6 +47,7 @@ let actPostSchema = new Schema({
 	ACT_TAG: [{ NAME: String }],
 	ACT_ACHI: {type: Boolean, default: false},
 	ACT_C_USER: String,
+	TEAM_ID: String,
 	pv: {type: Number, default: 1}
 }, {
 	collection: 'actPosts'
@@ -57,7 +58,7 @@ let actPostUserModel = dbAuth.user.model('actPost', actPostSchema);
 
 
 function actPost(ACT_SUBJ_NAME, ACT_BEG_DATE, ACT_END_DATE, ACT_DEPTNAME, ACT_LOCATION, ACT_LIMIT_SEX, ACT_LIMIT, ACT_URL, ACT_COMM_USER, ACT_COMM_TEL, ACT_COMM_EMAIL, ACT_B_BEG, ACT_B_END, ACT_K_TEL, ACT_K_DEPT, ACT_K_OCCUP, ACT_K_IDNO, ACT_K_SEX, ACT_K_BIRTH, ACT_K_FOOD, 
-	ACT_K_ADDR, ACT_LIST, ACT_IMGARR, ACT_NOT_SIGN)
+	ACT_K_ADDR, ACT_LIST, ACT_IMGARR, ACT_NOT_SIGN, TEAM_ID)
 {
 	this.ACT_SUBJ_NAME = ACT_SUBJ_NAME;
 	this.ACT_BEG_DATE = ACT_BEG_DATE;
@@ -83,6 +84,7 @@ function actPost(ACT_SUBJ_NAME, ACT_BEG_DATE, ACT_END_DATE, ACT_DEPTNAME, ACT_LO
 	this.ACT_LIST = ACT_LIST;
 	this.ACT_IMGARR = ACT_IMGARR;
 	this.ACT_NOT_SIGN = ACT_NOT_SIGN;
+	this.TEAM_ID = TEAM_ID;
 }
 
 actPost.prototype.save = function(cb) {
@@ -137,7 +139,8 @@ actPost.prototype.save = function(cb) {
 		ACT_K_ADDR: this.ACT_K_ADDR,
 		ACT_IMGARR: this.ACT_IMGARR,
 		ACT_LIST: this.ACT_LIST,
-		ACT_NOT_SIGN: this.ACT_NOT_SIGN
+		ACT_NOT_SIGN: this.ACT_NOT_SIGN,
+		TEAM_ID: this.TEAM_ID
 	}
 
 	let newActPost = new actPostOwnerModel(actPost);
@@ -203,12 +206,13 @@ actPost.getAll = function(callback) {
 }
 
 //全部拿取 key = team
-actPost.getAllOfTeam = function(team, callback) {
-	actPostUserModel.find({ACT_DEPTNAME: team}).sort('-ACT_C_AT').exec(function(err, actPosts) {
+actPost.getAllOfTeamForManage = function(team, callback) {
+	actPostUserModel.find({'TEAM_ID': team}, {'ACT_SUBJ_NAME': 1, 'ACT_DEPTNAME':1, 'ACT_BEG_DATE': 1, 'ACT_END_DATE': 1, 'ACT_C_AT': 1 }).sort('-ACT_C_AT').exec(function(err, actPosts) {
 		if(err)
 			return callback(err, null);
-		else
+		else {
 			return callback(null, actPosts);
+		}
 	});
 }
 
@@ -289,7 +293,7 @@ actPost.takeAllofAchi = function(key ,callback) {
 //限制拿取 // key = team achi
 actPost.takeAllofAchiByTeam = function(team, key ,callback) {
 	let date = new Date().getTime()
-	actPostUserModel.find({ 'ACT_DEPTNAME': htmlencode.htmlEncode(team), 'ACT_ACHI': key, 'ACT_END_DATE': {$lt: date } }).sort('-ACT_C_AT').exec(function(err, actPosts) {
+	actPostUserModel.find({ 'TEAM_ID': team, 'ACT_ACHI': key, 'ACT_END_DATE': {$lt: date } }).sort('-ACT_C_AT').exec(function(err, actPosts) {
 		if(err)
 			return callback(err, null);
 		else

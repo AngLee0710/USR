@@ -270,7 +270,7 @@
                     <label for="inputID30">主辨隊伍：</label>
                     <select multiple class="form-control" id="inputID30" name="ACT_DEPTNAME">
                         <% teams.forEach((team, index) => { %>
-                            <option value="<%- team.name %>"><%- team.name %></option>
+                            <option value="<%= team._id %>"><%- team.name %></option>
                         <% }) %>
                     </select>
                 </div>
@@ -298,7 +298,7 @@
     var mapUrl2 = '&key=AIzaSyA6MrbT0cNZgeYP3JUP4R2U-WZDbWVzWM8';
     $('#inputID3').click(function() {
         $.get(mapUrl + $('#inputID2').val() + mapUrl2, function(result) {
-            $('#inputID4').val(result.results[0].formatted_address)
+            $('#inputID4').val(result.results[0].formatted_address);
             $('#inputID32').val(result.results[0].geometry.location.lat);
             $('#inputID33').val(result.results[0].geometry.location.lng);
         });

@@ -33,7 +33,7 @@
                     <div class="row">
                         <div class="col-12" >
                             <div class="form-top">
-                                    <h2 color="white"style="text-align:center">活動名稱：<span><%= post.ACT_SUBJ_NAME %><i class="fa fa-pencil"></i></span></h2> 
+                                    <h2 color="white"style="text-align:center">活動名稱：<span><%- post.ACT_SUBJ_NAME %><i class="fa fa-pencil"></i></span></h2> 
                             </div>
                         </div>
                         <div class="col-lg-3 col-md-3 col-xs-1"></div>
@@ -43,7 +43,7 @@
                                 <form role="form" action="" method="post" class="registration-form">
                                     <div class="form-group border">
                                         <label class="sr-only" for="input1">姓名</label>
-                                        <input type="text" name="LIST_CNAME" placeholder="姓名..." class="form-control form-control-lg" id="input1">
+                                        <input type="text" name="LIST_CNAME" placeholder="姓名..." class="form-control form-control-lg" id="input1" value="<%- user.NAME %>">
                                     </div>
                                     <div class="form-group border">
                                             <label for="input2"class="sr-only">身分：</label>
@@ -55,8 +55,8 @@
                                             </select>
                                     </div>
                                     <div class="form-group border">
-                                        <label class="sr-only" for="input3" id="input3_text">學號</label>
-                                        <input type="text" name="LIST_PER" placeholder="學號..." class="form-control form-control-lg" id="input3">
+                                        <label class="sr-only" for="input3" id="input3_text">信箱</label>
+                                        <input type="email" name="LIST_PER" placeholder="信箱..." class="form-control form-control-lg" id="input3" value="<%- user.EMAIL %>">
                                     </div>
                                     <% if(post.ACT_K_SEX == 'Y') {%>
                                         <div class="form-group border">
@@ -93,28 +93,25 @@
                                         <% if(post.ACT_K_BIRTH == 'Y') {%>
                                             <div class="form-group border">
                                                 <label class="sr-only" for="input8">生日：</label>
-                                                <input class="form-control" id="date" name="date" placeholder="年/月/日" type="text"/>
+                                                <input class="form-control" id="date" name="date" placeholder="年/月/日" type="text" value="<%= new Date(user.BIRTHDAY).getFullYear() + '/' + (new Date(user.BIRTHDAY).getMonth() + 1) + '/' + new Date(user.BIRTHDAY).getDate() %>"/>
                                             
                                             </div>
                                             <% } %>
                                             <% if(post.ACT_K_TEL == 'Y') {%>
                                             <div class="form-group border">
                                                 <label class="sr-only"for="input9">電話：</label>
-                                                <input type="text" class="form-control form-control-lg"placeholder="電話..." name="LIST_TEL" id="input9">
+                                                <input type="text" class="form-control form-control-lg"placeholder="電話..." name="LIST_TEL" value="<%= user.PHONE %>" id="input9">
                                             </div>
                                             <% } %>
                                             <% if(post.ACT_K_ADDR == 'Y') {%>
                                             <div class="form-group border">
                                                 <label class="sr-only"for="input10">地址：</label>
-                                                <input type="text" class="form-control form-control-lg"placeholder="地址..." name="LIST_ADDR" id="input10">
+                                                <input type="text" class="form-control form-control-lg"placeholder="地址..." name="LIST_ADDR" value="<%- user.ADDR %>" id="input10">
                                             </div>
                                             <% } %>
                                     <input type="hidden" name="LIST_ACT_ID" value="<%= post._id %>">
                                     <p style="font-size: 18px;">點擊「送出」即表示你同意我們的<a href="/personalInfo">個資授權同意書</a>。</p>
-                                    <button type="submit" class="btn">送出</button>
-
-
-                                   
+                                    <button type="submit" class="btn">送出</button>               
                                 </form>
                                 
                             </div>
@@ -139,28 +136,29 @@
         <% if(error) {%>
             alert('<%= error %>');
         <% } %>
-        $('#input2').on('change', () => {
-            var text = '';
+        // $('#input2').on('change', () => {
+        //     var text = '';
     
-            switch($('#input2').val()) {
-                case 'S':
-                    document.getElementById("input3").setAttribute("placeholder","學號...");
-                    text = '學號：';
-                    document.getElementById("input5").setAttribute("placeholder","就讀科系...");
-                    break;
-                case 'T':
-                    document.getElementById("input3").setAttribute("placeholder","教職員編號...");
-                    text = '教職員編號：';
-                    document.getElementById("input5").setAttribute("placeholder","就職單位...");
-                    break;
-                case 'O':
-                    document.getElementById("input3").setAttribute("placeholder","信箱...");
-                    text = '信箱：';
-                    document.getElementById("input5").setAttribute("placeholder","公司/學校名稱...");
-                    break;
-            }
-            $('#input3_text').text(text);
-        });</script>
+        //     switch($('#input2').val()) {
+        //         case 'S':
+        //             document.getElementById("input3").setAttribute("placeholder","學號...");
+        //             text = '學號：';
+        //             document.getElementById("input5").setAttribute("placeholder","就讀科系...");
+        //             break;
+        //         case 'T':
+        //             document.getElementById("input3").setAttribute("placeholder","教職員編號...");
+        //             text = '教職員編號：';
+        //             document.getElementById("input5").setAttribute("placeholder","就職單位...");
+        //             break;
+        //         case 'O':
+        //             document.getElementById("input3").setAttribute("placeholder","信箱...");
+        //             text = '信箱：';
+        //             document.getElementById("input5").setAttribute("placeholder","公司/學校名稱...");
+        //             break;
+        //     }
+        //     $('#input3_text').text(text);
+        // });
+        </script>
         <script>
                 $(document).ready(function(){
                   var date_input=$('input[name="date"]'); //our date input has the name "date"

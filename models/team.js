@@ -2,9 +2,6 @@
 const mongoose = require('mongoose');
 const dbAuth = require('./db');
 const Schema = mongoose.Schema;
-const Leader = require('./leader.js')
-
-const htmlencode = require('htmlencode');
 
 let teamSchema = new Schema({
 	name: String,
@@ -16,14 +13,13 @@ let teamSchema = new Schema({
 	connection: {
 		name: String,
 		email: String,
-		phone: Number
+		phone: String
 	},
 	teamImg: String,
 	teamLogo: String,
 	teamIcon: String,
-	team_C_USER: String,
 	achievement: [{title: String, date: String}],
-	pv: {type: Number, default: 1}
+	pv: {type: Number, default: 1},
 }, {
 	collection: 'teams'
 });
@@ -83,7 +79,7 @@ Team.prototype.save = function(cb) {
 		achievement: [],
 		teamImg: this.teamImg,
 		teamLogo: this.teamLogo,
-		teamIcon: this.teamIcon
+		teamIcon: this.teamIcon,
 	};
 
 	let newTeam = new teamOwnerModel(team);
@@ -93,13 +89,24 @@ Team.prototype.save = function(cb) {
 			console.log(err);
 			return cb('資料庫存取問題發生問題！！！');
 		}
-		 else
-			return cb(null);
+		 else {
+			return cb(null, team);
+		 }
 	});
 }
 
 Team.check = function(name,callback) {
 	teamUserModel.findOne({name: name}, function(err, team) {
+		if(err)
+			return callback(err, null);
+		else
+			return callback(null, team);
+	});
+}
+
+//檢查隊伍是否存在
+Team.checkById = function(id, callback) {
+	teamUserModel.findOne({'_id': id}, {'name': 1, 'connection': 1}, function(err, team) {
 		if(err)
 			return callback(err, null);
 		else
@@ -157,7 +164,6 @@ Team.edit = function(id, team, callback) {
 	}
 }
 
-//刪除
 Team.remove = function(id, callback) {
 	teamOwnerModel.deleteOne({'_id': id}, (err) => {
 		if(err)
@@ -189,6 +195,65 @@ Team.getLimit = function(name, page, limit, callback) {
 			});
 	});
 }
+
+//給隊伍管理頁面使用
+Team.getByIdForManage = function(id, callback) {
+	teamUserModel.findOne( { '_id': id }, { '_id': 1, 'name': 1, 'leader': 1 }, function(err, team) {
+		if(err)
+			return callback(err, null);
+		else {
+			return callback(null, team);
+		}
+	});
+}
+
+//給成員管理頁面使用
+Team.getByIdForMember = function(id, callback) {
+	teamUserModel.findOne( { '_id': id }, { '_id': 1, 'name': 1 }, function(err, team) {
+		if(err)
+			return callback(err, null);
+		else {
+			return callback(null, team);
+		}
+	});
+}
+
+Team.getByRoot = function(root, callback) {
+	teamUserModel.find( { 'root': root }, { '_id': 1, 'name': 1 }, function(err, team) {
+		if(err)
+			return callback(err, null);
+		else
+			return callback(null, team);
+	});
+}
+
+Team.getByTeamName = function(name, callback) {
+	teamUserModel.findOne( { 'name': name }, { '_id': 1 }, function(err, team) {
+		if(err)
+			return callback(err, null);
+		else
+			return callback(null, team);
+	});
+}
+
+Team.getNameById = function(id, callback) {
+	teamUserModel.findOne( { '_id': id }, { 'name': 1 }, function(err, team) {
+		if(err)
+			return callback(err, null);
+		else
+			return callback(null, team);
+	});
+}
+
+Team.getByRootForManage = function(root, callback) {
+	teamUserModel.find( { 'root': root }, { '_id': 1, 'name': 1, 'leader': 1 }, function(err, team) {
+		if(err)
+			return callback(err, null);
+		else
+			return callback(null, team);
+	});
+}
+
 
 
 module.exports = Team;

@@ -97,12 +97,17 @@
 	
 </html>
 <style>
+	
 	.imgrwd{
 		 height: 800px;
 		 width: 1200px;
 	 }
+
+	.word {
+		height: 20px;
+	}
 	
-	 @media screen and (max-width: 480px) {
+@media screen and (max-width: 480px) {
 
   
   .imgrwd{
@@ -136,3 +141,11 @@
 
 }
 </style>
+<script>
+	<% if(success) {%>
+		alert('<%= success %>');
+	<% } %>
+	<% if(error) {%>
+		alert('<%= error %>');
+	<% } %>
+</script>

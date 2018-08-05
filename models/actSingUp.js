@@ -8,8 +8,8 @@ const Schema = mongoose.Schema;
 
 
 let actSignUpSchema = new Schema({
-    LIST_ACT_ID: Schema.Types.ObjectId,
-    LIST_PER: {type: String, unique: true},
+    LIST_ACT_ID: String,
+    LIST_PER: {type: String},
     LIST_KIND: String,
     LIST_CNAME: String,
     LIST_IDNO: {type: String, default: null},
@@ -84,8 +84,8 @@ actSignUp.prototype.save = function(callback) {
     });
 }
 
-actSignUp.check = function(per, callback) {
-    actSignUpUserModel.findOne({LIST_PER: per}, function(err, sign) {
+actSignUp.check = function(per, act_id, callback) {
+    actSignUpUserModel.findOne({LIST_PER: per, LIST_ACT_ID: act_id}, function(err, sign) {
         if(err)
             return callback(err);
         else if(sign){

@@ -1,0 +1,376 @@
+<%- include manageHeader %>
+<body class="fixed-nav sticky-footer bg-dark" id="page-top">
+  <%- include manageNav %>
+<div class="content-wrapper userDiv">
+    <div class="container-fluid">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="/"><img>管理平台</a>
+        </li>
+        <li class="breadcrumb-item active"><%= title %></li>
+      </ol>
+      <div class="row">
+      </div>
+      <form>
+          <div class="form-group">
+            <label for="selectTeam">選擇隊伍：</label>
+            <select class="form-control" id="selectTeam">
+              <option value="">尚未選取</option>
+              <% if(teamList.length) {%>
+                <% teamList.forEach((team, i) => { %>
+                  <option value="<%= team._id %>"><%- team.name %></option>
+                <% }) %>
+              <% } %>
+            </select>
+          </div>
+      </form>
+      <div id="featrue" class="row col-12" style="display: none;">
+        <!--+permission-->
+        <div class="col-sm-6 col-12">
+          <input id="reviewBtn" class="btn btn-block btn-primary" type="button" value="成員審核" />
+        </div>
+        <div class="col-sm-6 col-12">
+          <input id="permissionBtn" class="btn btn-block btn-warning" type="button" value="權限調整" />
+        </div>
+      </div>
+      <%- include memberManagePage %>
+      <%- include memberPermissionPage %>
+    </div>
+
+    
+    <footer class="sticky-footer">
+      <div class="container">
+        <div class="text-center">
+          <small>Copyright © MaseLab 2018</small>
+        </div>
+      </div>
+    </footer>
+    <a class="scroll-to-top rounded" href="#page-top">
+      <i class="fa fa-angle-up"></i>
+    </a>
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">確定離開?</h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">選擇下方"登出"按鈕，如果你想離開.</div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" type="button" data-dismiss="modal">取消</button>
+            <a class="btn btn-primary" href="/logout">登出</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="/activityManage/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/activityManage/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="/activityManage/js/sb-admin.min.js"></script>
+  </div>
+
+</body>
+</html>
+
+<!--原始js-->
+<script>
+    <% if(success) {%>
+        alert('<%= success %>');
+    <% } %>
+    <% if(error) {%>
+        alert('<%= error %>');
+    <% } %>
+
+    // $('#new').click(() => {
+    //   $('#managePage').hide();
+    //   $('#features').hide();
+    //   $('#newPage').show();
+    //   $('#backDIV').show();
+    // });
+
+    // $('#backBtn').click(() => {
+    //   $('#backDIV').hide();
+    //   $('#features').show();
+    //   $('#newPage').hide();
+    //   $('#editPage').hide();
+    //   $('#managePage').show();
+    //   $('.myInput').val('');
+    //   $(document.getElementsByTagName('iframe')[3].contentWindow.document.body).html('');
+    //   $(document.getElementsByTagName('iframe')[4].contentWindow.document.body).html('');
+    //   $(document.getElementsByTagName('iframe')[5].contentWindow.document.body).html('');
+    //   $("#editInputID7").attr("src", '');
+    // });
+</script>
+
+<script>
+  let a = 0;
+  let b = [];
+  let pre_i = null;
+  let save_i = null;
+  //審核隊伍post
+  $('#selectTeam').change(() => {
+    $("#managePage").hide();
+    $('#permissionPage').hide();
+    $('#permissionManager').hide();
+    $('#featrue').show();
+    $('#supremeDiv').html('');
+    $('#manageDiv').html('');
+    $('#normalDiv').html('');
+    $('#review').html('');
+
+    if($('#selectTeam').val()) {
+      $.post('/review/teammate', { team: $('#selectTeam').val() }, (result) => {
+        // console.log(result.reviews.length);
+        a = result.reviews.length;
+        result.reviews.forEach((review, i) => {
+          let reviewDate = new Date(review.C_T);
+          let year = reviewDate.getFullYear();
+          let month = ((reviewDate.getMonth() + 1) < 10)? ('0' + (reviewDate.getMonth() + 1)):(reviewDate.getMonth() + 1);
+          if(month < 10)
+            month = '0' + month;
+          let day = reviewDate.getDate() < 10? ('0' + reviewDate.getDate()):(reviewDate.getDate() );
+          let dateString = year + '-' + month + '-' + day;
+          let html = `<div id="reviewDIV` + i + `" class="col-sm-4 col-12 border border-secondary">
+                          <img id="reviewImg` + i + `" src="` + result.users[i].PHOTO + `" alt="user" class="img-thumbnail rounded mx-auto d-block user-img" />
+                          <input id="reviewId` + i + `" type="hidden" value="` + review._id + `" /> 
+                          <p class="h5">姓名：` + result.users[i].NAME + `</p>
+                          <p class="h5">信箱：` + result.users[i].EMAIL + `</p>
+                          <p class="h5">申請時間：` + dateString + `</p>
+                      </div>`;
+          $('#review').append(html);
+        });
+        //審核隊伍check
+        for(let i = 0 ; i < a ; i++) {
+          $('#reviewDIV' + i).on('click',() => {
+            if($("#reviewDIV" + i).hasClass('border-secondary')){      
+              $("#reviewDIV" + i).removeClass("border-secondary");
+              $("#reviewDIV" + i).addClass("border-danger");
+              b.push($('#reviewId' + i).val());
+            } else {
+              $("#reviewDIV" + i).removeClass("border-danger");
+              $("#reviewDIV" + i).addClass("border-secondary");
+              b.remove($('#reviewId' + i).val());
+            }
+          });
+        }
+      });
+      $.post('/teammate/get', { team: $('#selectTeam').val() }, (result) => {
+        let supremeHTML = '';
+        let manageHTML = '';
+        let normalHTML = '';
+        result.forEach((user, i) => {
+          switch(user.PERMISSION) {
+            case 1:
+              supremeHTML = 
+                `<div id="userDIV` + i + `" class="col-sm-4 col-12 border border-secondary">
+                    <img id="userImg` + i + `" src="` + user.PHOTO + `" alt="user" class="img-thumbnail rounded mx-auto d-block user-img" />
+                    <input id="userId` + i + `" type="hidden" value="` + user._id + `" /> 
+                    <p class="h5">姓名：` + user.NAME + `</p>
+                    <p class="h5">信箱：` + user.EMAIL + `</p>
+                </div>`;
+                $('#supremeDiv').append(supremeHTML);
+              break;
+            case 2:
+              manageHTML = 
+                `<div id="userDIV` + i + `" class="col-sm-4 col-12 border border-secondary">
+                    <img id="userImg` + i + `" src="` + user.PHOTO + `" alt="user" class="img-thumbnail rounded mx-auto d-block user-img" />
+                    <input id="userId` + i + `" type="hidden" value="` + user._id + `" /> 
+                    <p class="h5">姓名：` + user.NAME + `</p>
+                    <p class="h5">信箱：` + user.EMAIL + `</p>
+                </div>`;
+                $('#manageDiv').append(manageHTML);
+              break;
+            case 3:
+              normalHTML = 
+                `<div id="userDIV` + i + `" class="col-sm-4 col-12 border border-secondary">
+                    <img id="userImg` + i + `" src="` + user.PHOTO + `" alt="user" class="img-thumbnail rounded mx-auto d-block user-img" />
+                    <input id="userId` + i + `" type="hidden" value="` + user._id + `" /> 
+                    <p class="h5">姓名：` + user.NAME + `</p>
+                    <p class="h5">信箱：` + user.EMAIL + `</p>
+                </div>`;
+                $('#normalDiv').append(normalHTML);
+              break;
+          }
+        });
+        for(let i = 0 ; i < result.length ; i++) {
+            $('#userDIV' + i).on('click',() => {
+              if($("#userDIV" + i).hasClass('border-secondary')){      
+                if(pre_i != null) {
+                  $("#userDIV" + pre_i).removeClass("border-danger");
+                  $("#userDIV" + pre_i).addClass("border-secondary");
+                  $("#userDIV" + i).removeClass("border-secondary");
+                  $("#userDIV" + i).addClass("border-danger");    
+                } else {
+                  $("#userDIV" + i).removeClass("border-secondary");
+                  $("#userDIV" + i).addClass("border-danger");
+                }
+                save_i = i;
+                pre_i = i;
+              } else {
+                $("#userDIV" + i).removeClass("border-danger");
+                $("#userDIV" + i).addClass("border-secondary");
+                pre_i = null;
+                save_i = null;
+              }
+            });
+          }
+      });
+    }
+  });
+
+  $('#pass').click(() => {
+    if(!b.length) {
+      alert('未選取會員');
+      return;
+    } else {
+      $.post('/review/teammate/pass', {data: b}, (re) => {
+        if(re != '2') {
+          alert('審核失敗');
+          window.location.reload();
+        } else {
+          alert('審核成功');
+          window.location.reload();
+        }
+      });
+    }
+  });
+
+  $('#reject').click(() => {
+    if(!b.length) {
+      alert('未選取會員');
+      return;
+    } else {
+      $.post('/review/teammate/reject', { data: b}, (re) => {
+          if(re != '2') {
+            alert('審核失敗');
+            window.location.reload();
+          } else {
+            alert('審核成功');
+            window.location.reload();
+          }
+      })
+    }
+  });
+
+  $('#reviewBtn').click(() => {
+    $('#managePage').show();
+    $('#review').show();
+    $('#permissionPage').hide();
+    $('#permissionManager').hide();
+    $('#featrue').hide();
+  });
+
+  $('#permissionBtn').click(() => {
+    $('#managePage').hide();
+    $('#review').hide();
+    $('#permissionPage').show();
+    $('#permissionManager').show();
+    $('#featrue').hide();
+  });
+
+  $('#manager').click(() => {
+    if($('#userId' + save_i).val()) {
+      $.post('/teammate/manage', { team: $('#selectTeam').val(), id: $('#userId' + save_i).val() }, (result) => {
+        if(result == 'serError') {
+          alert('伺服器異常');
+        } else if(result == 'error1') {
+          alert('該隊員已有管理權限');
+        } else if(result == 'error2') {
+          alert('該隊員不屬於團隊');
+        } else {
+          alert('調整成功');
+          location.reload();
+        }
+      });
+    } else {
+      alert('未選取任何成員');
+      return;
+    }  
+  })
+
+  $('#normal').click(() => {
+    if($('#userId' + save_i).val()) {
+      $.post('/teammate/normal', { team: $('#selectTeam').val(), id: $('#userId' + save_i).val() }, (result) => {
+        if(result == 'serError') {
+          alert('伺服器異常');
+        } else if(result == 'error1') {
+          alert('該隊員沒有管理權限');
+        } else if(result == 'error2') {
+          alert('該隊員不屬於團隊');
+        } else if(result == 'error3') {
+          alert('先轉讓最高權限管理者才可降階為一般會員');
+        } else {
+          alert('調整成功');
+          location.reload();
+        }
+      });
+    } else {
+      alert('未選取任何成員');
+      return;
+    } 
+  });
+
+  $('#supreme').click(() => {
+    if($('#userId' + save_i).val()) {
+      $.post('/teammate/giveSupreme', { team: $('#selectTeam').val(), id: $('#userId' + save_i).val() }, (result) => {
+        if(result == 'serError') {
+          alert('伺服器異常');
+        } else if(result == 'error2') {
+          alert('該隊員不屬於團隊');
+        } else if(result == 'error3') {
+          alert('無操作此功能權限');
+        } else {
+          alert('調整成功');
+          location.reload();
+        }
+      });
+    } else {
+      alert('未選取任何成員');
+      return;
+    } 
+  });
+
+  $('#back1').click(processPage);
+
+  $('#back2'). click(processPage);
+
+  function processPage() {
+    $('#review').hide();
+    $('#featrue').show();
+    $('#permissionPage').hide();
+    $('#permissionManager').hide();
+    $('#managePage').hide();
+  }
+
+Array.prototype.remove = function () {
+  let what, a = arguments, L = a.length, ax;
+  while (L && this.length) {
+      what = a[--L];
+      while ((ax = this.indexOf(what)) !== -1) {
+          this.splice(ax, 1);
+      }
+  }
+  return this;
+};
+</script>
+
+
+<style>
+  div.newForm {
+    width: 100%;
+  }
+  .C_Checkbox {
+    margin-left: 0px;
+  }
+  @media only screen and (max-width: 768px) {
+    .userDiv {
+      padding-right: 15px;
+    }
+  }
+</style>
+<style>
+  .user-img {
+    height: 250px;
+  }
+</style>

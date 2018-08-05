@@ -5,13 +5,15 @@ const Schema = mongoose.Schema;
 
 
 let userSchema = new Schema({
-	FBID: {type: String, default: null},
-	NFUID: {type: String, default: null},
-	NAME: String,
-	EMAIL: {type: String, default: null},
-	BIRTHDAY: {type: Number, default: null},
-	FIRST_NAME: {type: String, default: null},
-	LAST_NAME: {type: String, default: null},
+	NFUID: { type: String, default: null },
+	NAME: { type: String },
+	EMAIL: { type: String, default: null, index: { unique: true } },
+	PHOTO: { type: String },
+	PHONE: { type: String, default: null},
+	BIRTHDAY: { type: Number, default: null },
+	FAMILY_NAME: { type: String, default: null },
+	GIVEN_NAME: { type: String, default: null },
+	ADDR: { type: String, default: null },
 }, {
 	collection: 'users'
 });
@@ -20,24 +22,28 @@ let userOwnerModel = dbAuth.owner.model('User', userSchema);
 let userUserModel = dbAuth.user.model('User', userSchema);
 
 function User(user) {
+	this.nfuid = user.nfuid;
 	this.name = user.name;
 	this.email = user.email;
+	this.photo = user.photo;
+	this.phone = user.phone;
 	this.birthday = user.birthday;
-	this.first_name = user.first_name;
-	this.last_name = user.last_name;
-	this.fbid = user.fbid;
-	this.nfuid = user.nfuid;
+	this.family_name = user.family_name;
+	this.given_name = user.given_name;
+	this.addr = user.addr;
 }
 
 User.prototype.save = function(callback) {
 	let user = {
-		FBID: this.fbid,
 		NFUID: this.nfuid,
 		NAME: this.name,
 		EMAIL: this.email,
+		PHOTO: this.photo,
 		BIRTHDAY: this.birthday,
-		FIRST_NAME: this.first_name,
-		LAST_NAME: this.last_name 	
+		FAMILY_NAME: this.family_name,
+		GIVEN_NAME: this.given_name,
+		PHONE: this.phone,
+		ADDR: this.addr
 	}
 
 	let newUser = new userOwnerModel(user);
@@ -50,9 +56,9 @@ User.prototype.save = function(callback) {
 	});
 }
 
-User.getByFbId = function(id, callback) {
-	if(id) {
-		userUserModel.findOne({FBID: id}, function(err, user) {
+User.getByEmail = function(email, callback) {
+	if(email) {
+		userUserModel.findOne({EMAIL: email}, function(err, user) {
 			if(err) {
 				return callback(err);
 			}
@@ -63,12 +69,43 @@ User.getByFbId = function(id, callback) {
 	}
 }
 
-User.get = function(name, callback) {
-	userUserModel.findOne({name: name}, function(err, user) {
+User.getById = function(id, callback) {
+	userUserModel.findOne({_id: id}, function(err, user) {
 		if(err) {
-			return callback(err);
+			return callback(err, null);
+		} else {
+			return callback(null, user);
 		}
-		callback(null, user);
+	});
+}
+
+User.edit = function(id, edit, callback) {
+	userOwnerModel.update({'_id': id}, { $set: edit }, (err) => {
+		if(err) {
+			return callback(err, null)
+		} else {
+			return callback(null, 'success');
+		}
+	});
+}
+
+User.getByIdToReview = function(id, callback) {
+		userUserModel.findOne({ '_id': id }, { '_id': 1, 'NAME': 1, 'EMAIL': 1, 'PHOTO': 1 }, function(err, user) {
+			if(err) {
+				return callback(err, null);
+			} else {
+				return callback(null, user);
+			}
+	});
+}
+
+User.getNamePhotoEmailById = function(id , callback) {
+	userUserModel.findOne({_id: id}, {'NAME': 1, 'PHOTO': 1, 'EMAIL': 1}, function(err, user) {
+		if(err) {
+			return callback(err, null);
+		} else {
+			return callback(null, user);
+		}
 	});
 }
 

@@ -81,10 +81,11 @@
                         nowID = null;
                         nowID_D = null;
                         alert('刪除隊伍成功');
-                    }
-                    else{
+                    } else if(result == 'serError'){
                         console.log('error');
-                        alert('資料庫模組錯誤');
+                        alert('伺服器異常');
+                    } else if (result == 'error') {
+                        alert('權限不符');
                     }
                 });
             });
