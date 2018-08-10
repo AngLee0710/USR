@@ -1,215 +1,188 @@
-<%- include header %>
+<%- include header %> 
 <%- include to_Top %>
-    <link href="/newachievement/carousel.css" rel="stylesheet">
+  <link href="/newachievement/carousel.css" rel="stylesheet">
   <body>
-        <%- include nav2 %>
-
-<br>
-<br>
-      <!-- Marketing messaging and featurettes
-      ================================================== -->
-      <!-- Wrap the rest of the page in another container to center all the content. -->
-
-      <div class="container marketing">
-
-        <div class="row featurette">
-          <div class="col-md-6 order-md-2">
-            <h2>2018虎科志工共識營</h2>
-            <br>
-            <p class="lead" >讓團員們藉由團康活動的方式促進團員們彼此之間的默契，以及解決團隊現在目前遇到的瓶頸，尋找解決的辦法，領導還會帶領團員們體會大自然的生活。</p>
+  <%- include nav2 %>
+  <br>
+  <br>
+    <div class="container marketing">
+      <div class="row featurette">
+        <div class="col-md-6 order-md-2">
+          <!--活動名稱-->
+          <h2>2018虎科志工共識營</h2>
+          <br>
+          <!--活動敘述-->
+          <p class="lead" >讓團員們藉由團康活動的方式促進團員們彼此之間的默契，以及解決團隊現在目前遇到的瓶頸，尋找解決的辦法，領導還會帶領團員們體會大自然的生活。</p>
+        </div>
+        <div class="col-md-6 order-md-1">
+          <img class="featurette-image img-fluid mx-auto logosize" src="/newachievement/img/team.png" alt="Generic placeholder image" >
+        </div>
+      </div>
+      <hr class="featurette-divider">
+      <div style="font-size: 200%;text-align:center;">成果心得分享</div><br>
+      <div class="accordion" id="accordionExample">
+        <!--心得-->
+        <div class="card">
+          <div class="card-header" id="headingOne">
+            <h5 class="mb-0">
+              <div class="container">
+                <div class="row">
+                  <div class="col-md-10 col-6">
+                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                      體驗大自然 <!--分享題目-->
+                    </button>
+                  </div>
+                  <div class="col-md-2 col-6 auther">
+                    作者:李安 <!--分享作者-->
+                  </div>
+                </div>
+              </div>
+            </h5>
           </div>
-          <div class="col-md-6 order-md-1">
-            <img class="featurette-image img-fluid mx-auto logosize" src="/newachievement/img/team.png" alt="Generic placeholder image" >
+          <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+            <div class="card-body">
+                <img class="d-block w-100" src="/newachievement/img/0207.jpg" >
+                <%- include two_blank %>老師帶領學生們體驗大自然，並傳承在以前是怎麼樣用葉子吹出聲音，剛開始還無法掌握葉片之間的震動，所以聲音時有時無，經過不斷的練習，已經可以吹出Do Re Mi Fa Sol La Si，當我嘗試發揮原住民創作歌曲的能力時，我看到遠方的馬在甩動馬尾，彷彿在幫我算節拍，旁邊的小羊在用角撞樹幹，就像是製造節奏，樹林的蟲鳴，就是我的伴奏，我就利用了老師還在講解的那一分鐘，製作出了大自然狂想曲，離開那個地方之後我就很神奇的忘記了那首歌的旋律時甚麼，彷彿是大自然之神，不想將這個神曲讓我帶回去，就讓這首歌的旋律留在大自然界中，希望下次再回到大自然的時候，我能想起這個我曾經創作的的旋律。
+            </div>
           </div>
         </div>
-
-
-        <hr class="featurette-divider">
-
-<div style="font-size: 200%;text-align:center;">成果心得分享</div><br>
-
-          <div class="accordion" id="accordionExample">
-            <div class="card">
-              <div class="card-header" id="headingOne">
-                <h5 class="mb-0">
-                <div class="container">
-                <div class="row">
-                    <div class="col-md-10 col-6">
-                  <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                    體驗大自然
+        <div class="card">
+          <div class="card-header" id="headingTwo">
+            <h5 class="mb-0">
+            <div class="container">
+              <div class="row">
+                <div class="col-md-10 col-6">
+                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                      最後一次
+                    </button>
+                </div>
+                <div class="col-md-2 col-6 auther">
+                    作者:林彥樺
+                </div>
+              </div>
+            </div>
+            </h5>
+          </div>
+          <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+            <div class="card-body">
+              <img class="d-block w-100" src="/newachievement/img/0465.jpg" >
+                <%- include two_blank %>這是我在大學時期最後一次的共識營，一開始對實驗室的學弟都不熟，透過這次的活動更了解每個學弟不同的個性，雖然這個活動只有短短的兩天，卻讓我受益良多，首先是一開始依每個人不同的人個特質分組，讓我看到不同特質的差異，並在團隊分工上擔任不同的職位，之後是當天晚上的晚餐時間，所有人聚在一起，吃著烤肉喝點小酒，聊著這段時間各自的心事。隔天一大早就被太陽叫醒，隨著江教授的腳步，與所有成員一同遊澐水溪，在炎熱太陽的陪伴下，我們在溪中比較安全的區域下水消暑，所有人拋開平日的拘束，像小孩一樣的在溪中戲水，歡樂的時間總是過得特別快，圖中是我們上岸後，我拿著黃金竹輕敲我朋友的頭，就像小孩一樣，覺得玩的不夠盡興，希望再有機會可以拋開平日的拘束。
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header" id="headingThree">
+            <h5 class="mb-0">
+            <div class="container">
+              <div class="row">
+                <div class="col-md-10 col-6">
+                  <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                      交流
                   </button>
                 </div>
                 <div class="col-md-2 col-6 auther">
-                        作者:李安
-                </div>
-                  </div>
-                  </div>
-                </h5>
-              </div>
-          
-              <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-                <div class="card-body">
-                    <img class="d-block w-100" src="/newachievement/img/0207.jpg" >
-                    <%- include two_blank %>老師帶領學生們體驗大自然，並傳承在以前是怎麼樣用葉子吹出聲音，剛開始還無法掌握葉片之間的震動，所以聲音時有時無，經過不斷的練習，已經可以吹出Do Re Mi Fa Sol La Si，當我嘗試發揮原住民創作歌曲的能力時，我看到遠方的馬在甩動馬尾，彷彿在幫我算節拍，旁邊的小羊在用角撞樹幹，就像是製造節奏，樹林的蟲鳴，就是我的伴奏，我就利用了老師還在講解的那一分鐘，製作出了大自然狂想曲，離開那個地方之後我就很神奇的忘記了那首歌的旋律時甚麼，彷彿是大自然之神，不想將這個神曲讓我帶回去，就讓這首歌的旋律留在大自然界中，希望下次再回到大自然的時候，我能想起這個我曾經創作的的旋律。
-            </div>
-              </div>
-            </div>
-            <div class="card">
-              <div class="card-header" id="headingTwo">
-                    <h5 class="mb-0">
-                            <div class="container">
-                            <div class="row">
-                                <div class="col-md-10 col-6">
-                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                 最後一次
-                              </button>
-                            </div>
-                            <div class="col-md-2 col-6 auther">
-                                    作者:林彥樺
-                            </div>
-                              </div>
-                              </div>
-                            </h5>
-              </div>
-              <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-                <div class="card-body">
-                        <img class="d-block w-100" src="/newachievement/img/0465.jpg" >
-                        <%- include two_blank %>這是我在大學時期最後一次的共識營，一開始對實驗室的學弟都不熟，透過這次的活動更了解每個學弟不同的個性，雖然這個活動只有短短的兩天，卻讓我受益良多，首先是一開始依每個人不同的人個特質分組，讓我看到不同特質的差異，並在團隊分工上擔任不同的職位，之後是當天晚上的晚餐時間，所有人聚在一起，吃著烤肉喝點小酒，聊著這段時間各自的心事。
-　　隔天一大早就被太陽叫醒，隨著江教授的腳步，與所有成員一同遊澐水溪，在炎熱太陽的陪伴下，我們在溪中比較安全的區域下水消暑，所有人拋開平日的拘束，像小孩一樣的在溪中戲水，歡樂的時間總是過得特別快，圖中是我們上岸後，我拿著黃金竹輕敲我朋友的頭，就像小孩一樣，覺得玩的不夠盡興，希望再有機會可以拋開平日的拘束。
-
+                  作者:蔣政樺
                 </div>
               </div>
             </div>
-            <div class="card">
-              <div class="card-header" id="headingThree">
-                    <h5 class="mb-0">
-                            <div class="container">
-                            <div class="row">
-                                <div class="col-md-10 col-6">
-                                        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                                交流
-                              </button>
-                            </div>
-                            <div class="col-md-2 col-6 auther">
-                                    作者:蔣政樺
-                            </div>
-                              </div>
-                              </div>
-                            </h5>
-              </div>
-              <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
-                <div class="card-body">
-                        <img class="d-block w-100" src="/newachievement/img/0130.jpg" >
-                        <%- include two_blank %>這是我們這個小組在討論會的情況，我們小組抽到的題目是如何將資訊推廣至偏鄉以及如何將資訊教育作延伸應用，因此我們在討論後提出一個解決方案可以用在這兩個題目中，討論的過程中我們利用了創意設計思考的概念，每個組員都可以盡情的提出構想甚至是天馬行空的想像而不能否決別人，將這些構想發散後經過整理收斂後提出一個可行的方案，我們想透過開課或是路邊擺攤的活動，教授一些簡單的資訊生活應用，比如說可以利用平板手機來記帳或是查天氣預報，簡單又可以立即看到效益的小課程，藉此吸引民眾來參與交流討論會，在交流討論會上，來參與的民眾可以分享自己在使用這些資訊應用的所得，或是提出疑問，提供一個交流精進的平台藉此產生群聚效應。
-這次共識營是我在大學這些年來志工生涯的最後一場大型活動，雖然未來升上碩士班之後也還是會繼續待在虎科志工的團隊裡面，但也會開始把志工這件事情的重心擺在訓練新進的志工上，不要讓虎科志工的香火就此斷絕。
-
-                </div>
-              </div>
+            </h5>
+          </div>
+          <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+            <div class="card-body">
+              <img class="d-block w-100" src="/newachievement/img/0130.jpg" >
+                <%- include two_blank %>這是我們這個小組在討論會的情況，我們小組抽到的題目是如何將資訊推廣至偏鄉以及如何將資訊教育作延伸應用，因此我們在討論後提出一個解決方案可以用在這兩個題目中，討論的過程中我們利用了創意設計思考的概念，每個組員都可以盡情的提出構想甚至是天馬行空的想像而不能否決別人，將這些構想發散後經過整理收斂後提出一個可行的方案，我們想透過開課或是路邊擺攤的活動，教授一些簡單的資訊生活應用，比如說可以利用平板手機來記帳或是查天氣預報，簡單又可以立即看到效益的小課程，藉此吸引民眾來參與交流討論會，在交流討論會上，來參與的民眾可以分享自己在使用這些資訊應用的所得，或是提出疑問，提供一個交流精進的平台藉此產生群聚效應。這次共識營是我在大學這些年來志工生涯的最後一場大型活動，雖然未來升上碩士班之後也還是會繼續待在虎科志工的團隊裡面，但也會開始把志工這件事情的重心擺在訓練新進的志工上，不要讓虎科志工的香火就此斷絕。
             </div>
           </div>
-          <hr class="featurette-divider">
-
-          <div style="font-size: 200%;text-align:center;">成果照片分享</div><br>
-
-          
-          <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-            <ol class="carousel-indicators">
-              <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-              <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-              <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-            </ol>
-            <div class="carousel-inner">
-              <div class="carousel-item active">
-                <img class= "d-block w-100 userImg" src="/newachievement/img/1.jpg" alt="First slide">
-              </div>
-              <div class="carousel-item">
-                <img class="d-block w-100 userImg" src="/newachievement/img/2.jpg" alt="Second slide">
-              </div>
-              <div class="carousel-item">
-                <img class="d-block w-100 userImg" src="/newachievement/img/3.jpg" alt="Third slide">
-              </div>
-            </div>
-            <style>
+        </div>
+      </div>
+      <hr class="featurette-divider">
+      <div style="font-size: 200%;text-align:center;">成果照片分享</div><br>
+      <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+        <ol class="carousel-indicators">
+          <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+          <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+          <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+        </ol>
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img class= "d-block w-100 userImg" src="/newachievement/img/1.jpg" alt="First slide">
+          </div>
+          <div class="carousel-item">
+            <img class="d-block w-100 userImg" src="/newachievement/img/2.jpg" alt="Second slide">
+          </div>
+          <div class="carousel-item">
+            <img class="d-block w-100 userImg" src="/newachievement/img/3.jpg" alt="Third slide">
+          </div>
+        </div>
+          <style>
+            .userImg {
+              height: 400px;
+            }
+            @media only screen and (max-width: 768px) {
               .userImg {
                 height: 400px;
               }
-              @media only screen and (max-width: 768px) {
-                .userImg {
-                  height: 400px;
-                }
-              }
-
-            </style>
-            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-              <span class="sr-only">Previous</span>
-            </a>
-            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-              <span class="carousel-control-next-icon" aria-hidden="true"></span>
-              <span class="sr-only">Next</span>
-            </a>
+            }
+          </style>
+          <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+          </a>
+          <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+          </a>
+      </div>
+      <form method="POST" enctype="multipart/form-data">
+          <div class="form-group">
+            <label for="input1">信箱</label>
+            <input type="email" class="form-control" id="input1" placeholder="name@example.com" value="<%-user.EMAIL %>" readonly>
           </div>
-
-        <!-- /END THE FEATURETTES -->
-
-      </div><!-- /.container -->
- 
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script>window.jQuery || document.write('<script src="../../../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script> -->
+          <div class="form-group">
+              <label for="input2">姓名</label>
+              <input type="email" class="form-control" id="input2" placeholder="name@example.com" value="<%-user.NAME %>" readonly>
+          </div>
+          <div class="form-group">
+            <label for="exampleFormControlTextarea1">Example textarea</label>
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+          </div>
+        </form>
+    </div>
+      
     <script src="/newachievement/js/popper.min.js"></script>
-    <!-- <script src="../../../../dist/js/bootstrap.min.js"></script> -->
-    <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
     <script src="/newachievement/js/holder.min.js"></script>
     <style>
-            .logosize {
+      .logosize {
+        width: 500px;
+        height: 500px;
+      }
+      @media screen and (max-width: 480px) {
+        .logosize {
+          width: 200px;
+          height: 200px;
+          display: block;
+          margin:auto;
+        }
+      }
 
-            width: 500px;
-            height: 500px;
+      @media screen and (max-width: 768px) {
+        .logosize {
+          width: 200px;
+          height: 200px;
+          display: block;
+          margin:auto;
+        }
+      }
 
-            }
-            @media screen and (max-width: 480px) {
+      @media screen and (min-width: 768px) and (max-width: 992px) {
+        .logosize {
+          width: 200px;
+          height: 200px;
+          display: block;
+          margin:auto;
+        }
 
-            .logosize {
-
-            width: 200px;
-            height: 200px;
-            display: block;
-            margin:auto;
-
-            }
-
-            }
-
-            @media screen and (max-width: 768px) {
-
-            .logosize {
-
-            width: 200px;
-            height: 200px;
-            display: block;
-            margin:auto;
-
-            }
-
-            }
-
-            @media screen and (min-width: 768px) and (max-width: 992px) {
-
-            .logosize {
-
-            width: 200px;
-            height: 200px;
-            display: block;
-            margin:auto;
-
-            }
-
-            }
-
+      }
     </style>
   </body>
   <%- include newfooter %>
