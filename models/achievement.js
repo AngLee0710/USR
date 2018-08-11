@@ -57,7 +57,6 @@ achievement.prototype.save = function(cb) {
 		return cb('未上傳照片');
 	else if(!this.ACHI_STORE)
 		return cb('未數入成果分享內容');
-	
 
 	let achievement = {
 		ACT_ID: this.ACT_ID,
@@ -149,11 +148,20 @@ achievement.getLimit = function(team, page, limit, callback) {
 
 //拿到Team所有的成果
 achievement.getAllOfTeamForManage = function(team, callback) {
-	achievementUserModel.find({'TEAM_ID': team}, {'TEAM_NAME': 1, 'ACT_END_DATE': 1, 'ACT_NAME': 1 }, (err, doc) => {
+	achievementUserModel.find({'TEAM_ID': team}, {'TEAM_NAME': 1, 'ACT_END_DATE': 1, 'ACT_NAME': 1, 'ACT_ID': 1 }, (err, doc) => {
 		if(err)
 			return callback(err, null);
 		else
 			return callback(null, doc);
+	});
+}
+
+achievement.getAllAtList = function(callback) {
+	achievementUserModel.find({}, {'ACT_LOCATION': 1, 'TEAM_ID': 1, 'ACHI_STORE': 1, 'ACT_NAME': 1}, (err, actPosts) => {
+		if(err)
+			return callback(err, null);
+		else
+			return callback(null, actPosts);
 	});
 }
 

@@ -6,14 +6,28 @@ const actSignUp = require('../models/actSingUp.js');
 const achi = require('../models/achievement.js');
 const User = require('../models/user.js');
 const teammate = require('../models/teammate.js');
+const achiReview = require('../models/achievementReview.js');
 
-const fs = require('fs');
+// const fs = require('fs');
+// const request = require('request');
+// const open = require('open');
+const multer  = require('multer');
 const htmlencode = require('htmlencode');
-const request = require('request');
-const open = require('open');
+
+const storage = multer.diskStorage({
+	destination: (req, file, cb) => {
+		cb(null, './public/upload');
+	},
+	filename: (req, file, cb) => {
+		cb(null, file.fieldname + '-' + new Date().getTime() + '.' + file.mimetype.split('/')[1]);
+	}
+});
+
+const upload = multer({ storage: storage });
 
 
 module.exports = (app) => {
+    //首頁
     app.get('/', (req, res) => {
         achi.getAll((err, docs) => {
             if (err)
@@ -36,78 +50,149 @@ module.exports = (app) => {
         });
     });
 
+    //成果列表
     app.get('/achievement', (req, res) => {
-		achi.getAll((err, docs) => {
-			res.render('achievementList', {
-				title: '成果共享',
-				docs: JSON.stringify(docs),
-				user: req.session.user,
-				success: req.flash('success').toString(),
-				error: req.flash('error').toString()
-			});
+		achi.getAllAtList((err, docs) => {
+            if(err) {
+                req.flash('error', '伺服器異常');
+                return res.redirect('/');
+            } else {
+                let i = 0;
+                let achi = [];
+                function run() {
+                    if(i >= docs.length) {
+                        return res.render('achievementList', {
+                            title: '成果共享',
+                            docs: JSON.stringify(achi),
+                            user: req.session.user,
+                            success: req.flash('success').toString(),
+                            error: req.flash('error').toString()
+                        });
+                    } else {
+                        Team.getLogoById(docs[i].TEAM_ID, (err, logo) => {
+                            if(err){
+                                req.flash('error', '伺服器異常');
+                                return res.redirect('/');
+                            } else {
+                                if(logo) {
+                                    achi[i] = {
+                                        _id: docs[i]._id,
+                                        ACT_NAME: docs[i].ACT_NAME,
+                                        ACT_LOCATION: docs[i].ACT_LOCATION,
+                                        ACHI_STORE: docs[i].ACHI_STORE,
+                                        teamLogo: logo.teamLogo
+                                    }
+                                    console.log(achi[i]);
+                                }
+                                i++;
+                                run();
+                            }
+                        });
+                    }   
+                };
+                run();
+            }	
 		});
 	});
 
+    //成果單頁
     app.get('/achievement/2/:id', (req, res) => {
 		achi.getById(req.params.id, (err, doc) => {
 			if(err){
-				req.flash('error', '模組異常');
+				req.flash('error', '伺服器異常');
 				return res.redirect('/');
-			} else if(!doc){
+			} else if(!doc.length){
 				req.flash('error', '無效網址');
 				return res.redirect('/');
 			} else {
-				return res.render('newachievement', {
-					title: '成果分享',
-					doc: doc[0],
-					user: req.session.user,
-					success: req.flash('success').toString(),
-					error: req.flash('error').toString()
-				});
+                Team.getTeamInfoForAchi(doc[0].TEAM_ID, (err, team) => {
+                    if(err) {
+                        req.flash('error', '伺服器異常');
+                        return res.redirect('/');
+                    } else {
+                        achiReview.getReviewByAchiId(req.params.id, (err, reviews) => {
+                            if(err) {
+                                req.flash('error', '伺服器異常');
+                                return res.redirect('/achievement');
+                            } else {
+                                return res.render('newachievement2', {
+                                    title: '成果分享',
+                                    doc: doc[0],
+                                    team: team,
+                                    reviews: reviews,
+                                    user: req.session.user,
+                                    success: req.flash('success').toString(),
+                                    error: req.flash('error').toString()
+                                });
+                            }
+                        });
+                    }
+                });
 			}
 		});
     });
 
-    app.get('/achievement/2/', (req, res) => {
+    app.post('/achievement/2/:id', upload.any(), (req, res) => {
 		achi.getById(req.params.id, (err, doc) => {
 			if(err){
-				req.flash('error', '模組異常');
-				return res.redirect('/');
+				req.flash('error', '伺服器異常');
+				return res.redirect('/achievement');
 			} else if(!doc){
 				req.flash('error', '無效網址');
-				return res.redirect('/');
+				return res.redirect('/achievement');
 			} else {
-				return res.render('newachievement2', {
-					title: '成果分享',
-					doc: doc[0],
-					user: req.session.user,
-					success: req.flash('success').toString(),
-					error: req.flash('error').toString()
-				});
+                if(req.session.user) {
+                    User.getById(req.session.user._id, (err, info) => {
+                        if(err) {
+                            req.flash('error', '伺服器異常');
+                            return res.redirect('/achievement/2/' + req.params.id);
+                        } else {
+                            let review = {
+                                user_name: info.NAME,
+                                title: htmlencode.htmlEncode(req.body.title),
+                                review_url: '/upload/' + req.files[0].filename,
+                                content: htmlencode.htmlEncode(req.body.content),
+                                user_id: req.session.user._id,
+                                achi_id: req.params.id
+                            }
+        
+                            let newReview = new achiReview(review);
+        
+                            newReview.save((err) => {
+                                if(err) {
+                                    req.flash('error', '發佈失敗');
+                                    return res.redirect('/achievement/2/' + req.params.id);
+                                } else {
+                                    req.flash('error', '發佈成功');
+                                    return res.redirect('/achievement/2/' + req.params.id);
+                                }
+                            });
+                        }
+                    });
+                } else {
+                    let review = {
+                        title: htmlencode.htmlEncode(req.body.title),
+                        review_url: '/upload/' + req.files[0].filename,
+                        content: htmlencode.htmlEncode(req.body.content),
+                        achi_id: req.params.id
+                    }
+
+                    let newReview = new achiReview(review);
+                    newReview.save((err) => {
+                        if(err) {
+                            req.flash('error', '發佈失敗');
+                            return res.redirect('/achievement/2/' + req.params.id);
+                        } else {
+                            req.flash('error', '發佈成功');
+                            return res.redirect('/achievement/2/' + req.params.id);
+                        }
+                    });
+                }     
 			}
 		});
     });
-    
-    app.get('/achievement/:id', (req, res) => {
-		achi.getById(req.params.id, (err, doc) => {
-			if(err){
-				req.flash('error', '模組異常');
-				return res.redirect('/');
-			} else if(!doc){
-				req.flash('error', '無效網址');
-				return res.redirect('/');
-			} else {
-				return res.render('achievement', {
-					title: '成果分享',
-					doc: doc[0],
-					user: req.session.user,
-					success: req.flash('success').toString(),
-					error: req.flash('error').toString()
-				});
-			}
-		});
-	});
 
+    //關於我們
     app.get('/aboutUs', (req, res) => {
         res.render('aboutUs', {
             title: '關於我們',
@@ -117,6 +202,7 @@ module.exports = (app) => {
         })
     });
 
+    //活動列表
     app.get('/activity', (req, res) => {
         let page = req.query.p ? parseInt(req.query.p) : 1;
         actPost.getLimit(null, page, 6, (err, posts, total) => {
@@ -137,6 +223,7 @@ module.exports = (app) => {
         });
     });
 
+    //活動單頁
     app.get('/activity/:id', (req, res) => {
         actPost.get(req.params.id, (err, post) => {
             if (err) {
@@ -156,6 +243,8 @@ module.exports = (app) => {
         });
     });
 
+
+    //報名
     app.get('/activity/SignUp/:id', (req, res) => {
         
         actPost.take(req.params.id, (err, post) => {
@@ -225,6 +314,7 @@ module.exports = (app) => {
         });
     });
 
+    //報名列表
     app.get('/team', (req, res) => {
         let page = req.query.p ? parseInt(req.query.p) : 1;
 
@@ -249,6 +339,7 @@ module.exports = (app) => {
         });
     });
 
+    //報名單頁
     app.get('/team/:id', (req, res) => {
         Team.get(req.params.id, (err, team) => {
             if (err) {
@@ -285,21 +376,6 @@ module.exports = (app) => {
         });
     });
 
-    app.get('/leader/:id', (req, res) => {
-        Leader.get(req.params.id, (err, leader) => {
-            if (err) {
-                return res.redirect('/');
-            }
-            res.render('leader', {
-                title: '隊長介紹',
-                user: req.session.user,
-                leader: leader,
-                success: req.flash('success').toString(),
-                error: req.flash('error').toString()
-            });
-        });
-    });
-
     //
     //其他
     //
@@ -318,10 +394,5 @@ module.exports = (app) => {
     
     app.get('/google8f9314c57209ba21.html', (req, res) => {
         res.sendfile('views/google8f9314c57209ba21.html');
-    });
-
-    app.get('/api/logout', (req, res) => {
-        req.session.user = null;
-        return res.redirect('/');
     });
 }

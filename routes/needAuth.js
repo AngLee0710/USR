@@ -14,6 +14,7 @@ const Leader = require('../models/leader.js');
 const achi = require('../models/achievement.js');
 const teammateReview = require('../models/teammateReview.js');
 const teammate = require('../models/teammate.js');
+const achiReview = require('../models/achievementReview.js');
 
 const storage = multer.diskStorage({
 	destination: (req, file, cb) => {
@@ -105,7 +106,6 @@ module.exports =  (app) => {
                     res.send(err);
                 } else {
 					let gmailInfo = JSON.parse(body);
-					console.log(gmailInfo);
                     User.getByEmail(gmailInfo.email, (err, user) => {
                         if(err) {
                             req.flash('error', '登入失敗');
@@ -651,7 +651,7 @@ module.exports =  (app) => {
 						return res.redirect('/teamManage');
 						
 					} else {
-						Team.getByTeamName(htmlencode.htmlEncode(team.name), (err, team) => {
+						Team.getIdByTeamName(htmlencode.htmlEncode(team.name), (err, team) => {
 							if(err) {
 								req.flash('error', '伺服器異常');
 								return res.redirect('back');
@@ -863,7 +863,6 @@ module.exports =  (app) => {
 						URL: '/upload/' + file.filename
 					}
 				});
-		
 				actPost.take(req.body.ACT_ID, (err, act) => {
 					if(err){
 						console.log(err);
@@ -880,7 +879,7 @@ module.exports =  (app) => {
 							htmlencode.htmlEncode(req.body.ACHI_DEP),
 							req.body.TEAM_NAME
 						)				
-		
+						
 						newAchi.save((err) => {
 							if(err) {
 								req.flash('error', '伺服器異常');
@@ -1070,7 +1069,7 @@ module.exports =  (app) => {
 			} else {
 				let users = [];
 				reviews.forEach((review, i) => {
-					User.getByIdToReview(review.MEMBER_ID, (err, user) => {
+					User.getInfoByIdToReview(review.MEMBER_ID, (err, user) => {
 						if(err) {
 							return res.send('error');
 						} else {

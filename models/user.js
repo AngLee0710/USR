@@ -56,9 +56,10 @@ User.prototype.save = function(callback) {
 	});
 }
 
+//檢查信箱是否存在
 User.getByEmail = function(email, callback) {
 	if(email) {
-		userUserModel.findOne({EMAIL: email}, function(err, user) {
+		userUserModel.findOne({'EMAIL': email}, {'EMAIL': 1}, function(err, user) {
 			if(err) {
 				return callback(err);
 			}
@@ -69,6 +70,7 @@ User.getByEmail = function(email, callback) {
 	}
 }
 
+//用id拿取個人資訊
 User.getById = function(id, callback) {
 	userUserModel.findOne({_id: id}, function(err, user) {
 		if(err) {
@@ -79,6 +81,7 @@ User.getById = function(id, callback) {
 	});
 }
 
+//修改個人資訊
 User.edit = function(id, edit, callback) {
 	userOwnerModel.update({'_id': id}, { $set: edit }, (err) => {
 		if(err) {
@@ -89,7 +92,8 @@ User.edit = function(id, edit, callback) {
 	});
 }
 
-User.getByIdToReview = function(id, callback) {
+//用id拿取資訊給Review
+User.getInfoByIdToReview = function(id, callback) {
 		userUserModel.findOne({ '_id': id }, { '_id': 1, 'NAME': 1, 'EMAIL': 1, 'PHOTO': 1 }, function(err, user) {
 			if(err) {
 				return callback(err, null);
@@ -99,6 +103,7 @@ User.getByIdToReview = function(id, callback) {
 	});
 }
 
+//用id取得名字大頭貼信箱
 User.getNamePhotoEmailById = function(id , callback) {
 	userUserModel.findOne({_id: id}, {'NAME': 1, 'PHOTO': 1, 'EMAIL': 1}, function(err, user) {
 		if(err) {

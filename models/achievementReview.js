@@ -4,12 +4,14 @@ const dbAuth = require('./db');
 const Schema = mongoose.Schema; 
 
 let reviewSchema = new Schema({
-    ACHI_ID: String,
-    USER_ID: String,
-    REVIEW_URL: String,
-    CONTENT: String,
-    EMOTION: { type: String, default: 'normal' },
-    TITLE: String,
+    ACHI_ID: { type: String },
+    USER_ID: {type: String, default: null},
+    USER_NAME: { type: String },
+    REVIEW_IMG_URL: { type: String },
+    TITLE: { type: String },
+    CONTENT: { type: String },
+    EMOTION: { type: String },
+    A_T: { type: String, default: Date.now}
 }, {
 	collection: 'achievementReview'
 });
@@ -18,20 +20,21 @@ let achievementReviewOwnerModel = dbAuth.owner.model('achievementReview', review
 let achievementReviewUserModel = dbAuth.user.model('achievementReview', reviewSchema);
 
 function achievementReview(review) {
-    this.title = review.title;
     this.content = review.content;
     this.emotion = review.emotion;
     this.review_url = review.review_url;
     this.user_id = review.user_id;
     this.achi_id = review.achi_id;
-
+    this.title = review.title;
+    this.user_name = review.user_name;
 }
 
-teammateReview.prototype.save = function(cb) {
+achievementReview.prototype.save = function(cb) {
 	let review = {
 		ACHI_ID: this.achi_id,
         USER_ID: this.user_id,
-        REVIEW_URL: this.review_url,
+        USER_NAME: this.user_name,
+        REVIEW_IMG_URL: this.review_url,
         CONTENT: this.content,
         EMOTION: this.emotion,
         TITLE: this.title
@@ -49,5 +52,14 @@ teammateReview.prototype.save = function(cb) {
 	});
 }
 
+achievementReview.getReviewByAchiId = function(id, cb) {
+    achievementReviewUserModel.find({'ACHI_ID': id}, (err, docs) => {
+        if(err) {
+            return cb(err, null);
+        } else {
+            return cb(null, docs);
+        }
+    });
+}
 
 module.exports = achievementReview;

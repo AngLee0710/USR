@@ -218,16 +218,8 @@ Team.getByIdForMember = function(id, callback) {
 	});
 }
 
-Team.getByRoot = function(root, callback) {
-	teamUserModel.find( { 'root': root }, { '_id': 1, 'name': 1 }, function(err, team) {
-		if(err)
-			return callback(err, null);
-		else
-			return callback(null, team);
-	});
-}
-
-Team.getByTeamName = function(name, callback) {
+//用隊名取得ID
+Team.getIdByTeamName = function(name, callback) {
 	teamUserModel.findOne( { 'name': name }, { '_id': 1 }, function(err, team) {
 		if(err)
 			return callback(err, null);
@@ -236,6 +228,7 @@ Team.getByTeamName = function(name, callback) {
 	});
 }
 
+//用ID取得隊名
 Team.getNameById = function(id, callback) {
 	teamUserModel.findOne( { '_id': id }, { 'name': 1 }, function(err, team) {
 		if(err)
@@ -245,8 +238,9 @@ Team.getNameById = function(id, callback) {
 	});
 }
 
-Team.getByRootForManage = function(root, callback) {
-	teamUserModel.find( { 'root': root }, { '_id': 1, 'name': 1, 'leader': 1 }, function(err, team) {
+//成果共享單頁隊伍資訊
+Team.getTeamInfoForAchi = function(id, callback) {
+	teamUserModel.findOne( { '_id': id }, { 'name': 1, 'teamLogo': 1 }, function(err, team) {
 		if(err)
 			return callback(err, null);
 		else
@@ -254,6 +248,15 @@ Team.getByRootForManage = function(root, callback) {
 	});
 }
 
+//用id取得logo
+Team.getLogoById = function(id, callback) {
+	teamUserModel.findOne( { '_id': id }, { 'teamLogo': 1 }, function(err, logo) {
+		if(err)
+			return callback(err, null);
+		else
+			return callback(null, logo);
+	});
+}
 
 
 module.exports = Team;
