@@ -9,7 +9,8 @@ let teammateSchema = new Schema({
 	C_T: { type: Number, default: Date.now },
     PERMISSION: { type: Number, default: 3 },
     ACTs: [ { id: String } ],
-    ACHIs: [ { ACHIID: String } ]
+	ACHIs: [ { ACHIID: String } ],
+	DELETE: { type: Boolean, default: false }
 }, {
 	collection: 'teammate'
 });

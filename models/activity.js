@@ -48,7 +48,8 @@ let actPostSchema = new Schema({
 	ACT_ACHI: {type: Boolean, default: false},
 	ACT_C_USER: String,
 	TEAM_ID: String,
-	pv: {type: Number, default: 1}
+	pv: {type: Number, default: 1},
+	delete: { type: Boolean, default: false }
 }, {
 	collection: 'actPosts'
 });
@@ -195,7 +196,7 @@ actPost.take = function(id, callback) {
 	});
 }
 
-//全部拿取 key = null
+//拿取全部活動
 actPost.getAll = function(callback) {
 	actPostUserModel.find({}).sort('-ACT_BEG_DATE').exec(function(err, actPosts) {
 		if(err)
@@ -205,9 +206,9 @@ actPost.getAll = function(callback) {
 	});
 }
 
-//全部拿取 key = team
+//拿取隊伍全部活動給活動管理頁面
 actPost.getAllOfTeamForManage = function(team, callback) {
-	actPostUserModel.find({'TEAM_ID': team}, {'ACT_SUBJ_NAME': 1, 'ACT_DEPTNAME':1, 'ACT_BEG_DATE': 1, 'ACT_END_DATE': 1, 'ACT_C_AT': 1 }).sort('-ACT_C_AT').exec(function(err, actPosts) {
+	actPostUserModel.find({'TEAM_ID': team, 'delete': false}, {'ACT_SUBJ_NAME': 1, 'ACT_DEPTNAME':1, 'ACT_BEG_DATE': 1, 'ACT_END_DATE': 1, 'ACT_C_AT': 1 }).sort('-ACT_C_AT').exec(function(err, actPosts) {
 		if(err)
 			return callback(err, null);
 		else {
@@ -216,7 +217,7 @@ actPost.getAllOfTeamForManage = function(team, callback) {
 	});
 }
 
-//編輯 key = id
+//編輯活動
 actPost.edit = function(id, actPost, callback) {
 	actPostOwnerModel.update({'_id': id}, { $set: actPost }, (err) => {
 		if(err)
@@ -226,9 +227,9 @@ actPost.edit = function(id, actPost, callback) {
 	});
 }
 
-//刪除 key = id
+//標註活動刪除
 actPost.remove = function(id, callback) {
-	actPostOwnerModel.deleteOne({'_id': id}, (err) => {
+	actPostOwnerModel.update({'_id': id}, {$set: {'delete': true}}, (err) => {
 		if(err)
 			return callback('error');
 		else
@@ -236,12 +237,12 @@ actPost.remove = function(id, callback) {
 	});
 }
 
-//限制拿取
+//只拿取limit數量的活動
 actPost.getLimit = function(title, page, limit, callback) {
-	actPostUserModel.count({}, function(err, total) {
+	actPostUserModel.count({'delete': false}, function(err, total) {
 		if(err)
 			return callback(err);
-		actPostUserModel.find({}, null, {skip: (page -1) * limit}).sort('-ACT_BEG_DATE').limit(limit).exec(function(err, actPosts) {
+		actPostUserModel.find({'delete': false}, null, {skip: (page -1) * limit}).sort('-ACT_BEG_DATE').limit(limit).exec(function(err, actPosts) {
 			if(err)
 				return callback(err, null, null);
 			else
@@ -250,7 +251,7 @@ actPost.getLimit = function(title, page, limit, callback) {
 	});
 };
 
-//成果分享創建 key = id
+//成果分享新增時活動標記已新增成果
 actPost.achiCreate = function(id, callback) {
 	actPostOwnerModel.update({'_id': id}, { $set: { 'ACT_ACHI': true } }, (err) => {
 		if(err)
@@ -260,7 +261,7 @@ actPost.achiCreate = function(id, callback) {
 	});
 }
 
-//成果分享刪除 key = id
+//成果分享刪除時活動標記未新增成果
 actPost.achiDelete = function(id, callback) {
 	actPostOwnerModel.update({'_id': id}, { $set: { 'ACT_ACHI': false } }, (err) => {
 		if(err)
@@ -270,30 +271,10 @@ actPost.achiDelete = function(id, callback) {
 	});
 }
 
-//成果拿取 key = team_name achi = ture
-// actPost.getAchiOfTeam = function(team, callback) {
-// 	actPostOwnerModel.find({'ACT_DEPTNAME': team, 'ACT_ACHI': true}, (err, achi) => {
-// 		if(err)
-// 			return callback(err, null);
-// 		else
-// 			return callback(null, achi);
-// 	});
-// }
-
-//限制拿取 // key = achi
-actPost.takeAllofAchi = function(key ,callback) {
-	actPostUserModel.find({ 'ACT_ACHI': key }).sort('-ACT_C_AT').exec(function(err, actPosts) {
-		if(err)
-			return callback(err, null);
-		else
-			return callback(null, actPosts);
-	});
-}
-
-//限制拿取 // key = team achi
+//成果新增用隊伍拿取已結束未新增成果的活動
 actPost.takeAllofAchiByTeam = function(team, key ,callback) {
 	let date = new Date().getTime()
-	actPostUserModel.find({ 'TEAM_ID': team, 'ACT_ACHI': key, 'ACT_END_DATE': {$lt: date } }).sort('-ACT_C_AT').exec(function(err, actPosts) {
+	actPostUserModel.find({ 'TEAM_ID': team, 'ACT_ACHI': key, 'ACT_END_DATE': {$lt: date }, 'delete': false }).sort('-ACT_C_AT').exec(function(err, actPosts) {
 		if(err)
 			return callback(err, null);
 		else

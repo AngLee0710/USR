@@ -11,7 +11,8 @@ let reviewSchema = new Schema({
     TITLE: { type: String },
     CONTENT: { type: String },
     EMOTION: { type: String },
-    A_T: { type: String, default: Date.now}
+    A_T: { type: String, default: Date.now},
+    DELETE: { type: Boolean, default: false }
 }, {
 	collection: 'achievementReview'
 });

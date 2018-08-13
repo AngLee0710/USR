@@ -20,6 +20,7 @@ let teamSchema = new Schema({
 	teamIcon: String,
 	achievement: [{title: String, date: String}],
 	pv: {type: Number, default: 1},
+	delete: { type: Boolean, default: false }
 }, {
 	collection: 'teams'
 });
@@ -164,15 +165,6 @@ Team.edit = function(id, team, callback) {
 	}
 }
 
-Team.remove = function(id, callback) {
-	teamOwnerModel.deleteOne({'_id': id}, (err) => {
-		if(err)
-			return callback('error');
-		else
-			return callback('success');
-	});
-}
-
 Team.getAll = function(callback) {
 	teamUserModel.find({},(err, team) => {
 		if(err)
@@ -182,12 +174,13 @@ Team.getAll = function(callback) {
 	})
 }
 
+//拿取limit數量的團隊
 Team.getLimit = function(name, page, limit, callback) {
-	teamUserModel.count({}, function(err, total) {
+	teamUserModel.count({'delete': false}, function(err, total) {
 		if(err)
 			return callback(err);
 		else
-			teamUserModel.find({}, null, {skip: (page -1) * limit}).sort('-time').limit(limit).exec(function(err, actPosts) {
+			teamUserModel.find({'delete': false}, null, {skip: (page -1) * limit}).sort('-time').limit(limit).exec(function(err, actPosts) {
 				if(err)
 					return callback(err, null, null);
 				else
@@ -196,9 +189,19 @@ Team.getLimit = function(name, page, limit, callback) {
 	});
 }
 
+//移除團隊
+Team.remove = function(id, callback) {
+	teamOwnerModel.update({'_id': id}, { $set: {delete: true} }, (err) => {
+		if(err)
+			return callback('error');
+		else
+			return callback('success');
+	});
+}
+
 //給隊伍管理頁面使用
 Team.getByIdForManage = function(id, callback) {
-	teamUserModel.findOne( { '_id': id }, { '_id': 1, 'name': 1, 'leader': 1 }, function(err, team) {
+	teamUserModel.findOne( { '_id': id, 'delete': false }, { '_id': 1, 'name': 1, 'leader': 1, 'connection': 1 }, function(err, team) {
 		if(err)
 			return callback(err, null);
 		else {
@@ -249,8 +252,8 @@ Team.getTeamInfoForAchi = function(id, callback) {
 }
 
 //用id取得logo
-Team.getLogoById = function(id, callback) {
-	teamUserModel.findOne( { '_id': id }, { 'teamLogo': 1 }, function(err, logo) {
+Team.getIconById = function(id, callback) {
+	teamUserModel.findOne( { '_id': id }, { 'teamIcon': 1 }, function(err, logo) {
 		if(err)
 			return callback(err, null);
 		else

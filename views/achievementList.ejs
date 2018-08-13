@@ -103,15 +103,17 @@
         });
 
         result.forEach((doc, i) => {
-            if(doc.teamLogo)
+            if(doc.teamIcon) {
+                console.log(doc.teamIcon)
                 var image = {
-                    url: doc.teamLogo,
+                    url: doc.teamIcon,
                     // This marker is 20 pixels wide by 32 pixels high.
                     size: new google.maps.Size(40, 40),      //顯示圖片大小
                     origin: new google.maps.Point(0, 0),     //起始位置，通常為0
                     anchor: new google.maps.Point(19, 40),   //移動marker 數字越大往右和往上移動
                     scaledSize: new google.maps.Size(40, 40) //圖片實際大小，通常與size一樣大小
                 };
+            }
             else
                 var image = {
                     url: '/images/nfu_icon.png',

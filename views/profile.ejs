@@ -8,39 +8,39 @@
             <div class="row col-sm-4 col-12">
                 <div class="form-group col-12">
                     <label for="input1">大頭照</label>
-                    <img id="blah" class="img-fluid" src="<%- user.PHOTO %>" />
-                    <input type="file" class="form-control" id="input1" value="<%- user.FAMILY_NAME %>" name="photo" accept="image/jpeg, image/png" />
+                    <img id="blah" class="img-fluid" src="<%- user2.PHOTO %>" />
+                    <input type="file" class="form-control" id="input1" value="<%- user2.FAMILY_NAME %>" name="photo" accept="image/jpeg, image/png" />
                 </div>
                 <div class="form-group col-sm-6">
                     <label for="input2">姓：</label>
-                    <input type="text" class="form-control" id="input2" value="<%- user.FAMILY_NAME %>" name="family_name" />
+                    <input type="text" class="form-control" id="input2" value="<%- user2.FAMILY_NAME %>" name="family_name" />
                 </div>
                 <div class="form-group col-sm-6">
                     <label for="input3">名：</label>
-                    <input type="text" class="form-control" id="input3" value="<%- user.GIVEN_NAME %>" name="given_name" />
+                    <input type="text" class="form-control" id="input3" value="<%- user2.GIVEN_NAME %>" name="given_name" />
                 </div>
                 <div class="form-group col-12">
                     <label for="input4">姓名：</label>
-                    <input type="text" class="form-control" id="input4" value="<%- user.NAME %>" name="name" />
-                    <input type="hidden" id="input2" value="<%- user._id %>" />
+                    <input type="text" class="form-control" id="input4" value="<%- user2.NAME %>" name="name" />
+                    <input type="hidden" id="input2" value="<%- user2._id %>" />
                 </div>
                 <div class="form-group col-12">
                     <label for="input5">生日：</label>
-                    <input type="date" class="form-control" id="input5" value="<%= user.BIRTHDAY %>" name="birthday" />
+                    <input type="date" class="form-control" id="input5" value="<%= birthday %>" name="birthday" />
                 </div>
                 <div class="form-group col-12">
                     <label for="input6">信箱：</label>
-                    <input type="text" class="form-control" id="input6" value="<%- user.EMAIL %>" readonly>
+                    <input type="text" class="form-control" id="input6" value="<%- user2.EMAIL %>" readonly>
                 </div>
                 <div class="form-group col-12">
                     <label for="input7">手機號碼：</label>
-                    <input type="text" class="form-control" id="input7" value="<%= user.PHONE %>" name="phone" />
+                    <input type="text" class="form-control" id="input7" value="<%= user2.PHONE %>" name="phone" />
                     <small id="phoneAlert" style="display: none;" class="form-text text-danger">不符合09xxxxxxxx格式</small>
                     
                 </div>
                 <div class="form-group col-12">
                     <label for="input8">通訊地址：</label>
-                    <input type="text" class="form-control" id="input8" value="<%- user.ADDR %>" name="address" />
+                    <input type="text" class="form-control" id="input8" value="<%- user2.ADDR %>" name="address" />
                     <small class="form-text text-muted">完整的個人資料能加快活動報名速度</small>
                 </div>
                 <input class="btn btn-block btn-primary" type="submit" value="儲存" />

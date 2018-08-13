@@ -12,12 +12,13 @@
             let dataTableForTeam = $('#dataTableForTeam').DataTable({
                 "data": result,
                 "columns": [
-                    { "title": "團隊ID", "data": "id" },
+                    { "title": "#", "data": "id" },
                     { "title": "團隊名稱", "data": "name", 
                         "fnCreatedCell": function(td, cData, rData, rIndex, cIndex) {
                             $(td).html('<a href=/team/' + rData._id + '>' + cData + '</a>');
                         }},
-                    { "title": "團隊領導人", "data": "leader" }
+                    { "title": "團隊聯絡人", "data": "connection.name" },
+                    { "title": "聯絡人電話", "data": "connection.phone"}
                 ]
             });
 

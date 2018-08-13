@@ -14,7 +14,7 @@
                 "data": actData,
                 "responsive": true,
                 "columns": [
-                    { "title": '活動ID', "data": 'id'},
+                    { "title": '#', "data": 'id'},
                     { "title": '活動名稱', "data": 'ACT_SUBJ_NAME', 
                         "fnCreatedCell": function(td, cData, rData, rIndex, cIndex) {
                             $(td).html('<a href=/activity/' + rData._id + '>' + cData + '</a>');

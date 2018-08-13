@@ -18,7 +18,8 @@ let actSignUpSchema = new Schema({
     LIST_OCCUP: {type: String, default: null},
     LIST_SEX: {type: String, default: null},
     LIST_ADDR: {type: String, default: null},
-    time: Number
+    time: Number,
+    DELETE: { type: Boolean, default: false }
 }, {
     collection: 'actSignUp'
 });

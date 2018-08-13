@@ -7,7 +7,8 @@ let reviewSchema = new Schema({
 	TEAM_ID: { type: String },
 	MEMBER_ID: { type: String },
 	C_T: { type: Number },
-	STATE: { type: Number, default: 0 }
+	STATE: { type: Number, default: 0 },
+	DELETE: { type: Boolean, default: false }
 }, {
 	collection: 'teammateReview'
 });

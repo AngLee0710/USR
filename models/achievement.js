@@ -24,7 +24,9 @@ let achievementSchema = new Schema({
 	ACHI_STORE: String,				//活動介紹
 	ACHI_C_AT: {type: Number, default: Date.now},
 	ACHI_C_USER: String,
-	pv: {type: Number, default: 1}
+	pv: {type: Number, default: 1},
+	delete: { type: Boolean, default: false },
+	wait_image: { type: String }
 }, {
 	collection: 'achievement'
 });

@@ -36,6 +36,7 @@
             <div class="form-group col-6">
                 <label for="inputID5">聯絡人電話：</label>
                 <input type="text" placeholder="09xxxxxxxx" class="form-control" id="inputID5" name="phone" onkeyup="return ValidateNumber($(this),value)">
+                <small id="phoneAlert" style="display: none;" class="form-text text-danger">不符合09xxxxxxxx格式</small>
             </div>
             <div class="form-group col-12">
                 <label for="inputID6">團隊信箱：</label>
@@ -43,15 +44,15 @@
             </div>
             <div class="form-group col-12">
                 <label for="file3">團隊LOGO上傳(200 * 200)</label>
-                <input type="file" class="form-control-file" id="file3" name="teamLogo">
+                <input type="file" class="form-control-file" id="file3" name="teamLogo" accept="image/jpeg, image/png">
             </div>
             <div class="form-group col-12">
                 <label for="file2">團隊GoogleMapIcon上傳 (50 * 50)</label>
-                <input type="file" class="form-control-file" id="file2" name="teamIcon">
+                <input type="file" class="form-control-file" id="file2" name="teamIcon" accept="image/jpeg, image/png">
             </div>
             <div class="form-group col-12">
                 <label for="file1">團隊合照上傳</label>
-                <input type="file" class="form-control-file" id="file1" name="teamImg">
+                <input type="file" class="form-control-file" id="file1" name="teamImg" accept="image/jpeg, image/png">
             </div>
             <div class="col-8"></div>
             <div class="col-sm-8 col-0"></div>
@@ -67,12 +68,13 @@
     }
 </style>
 <script type="text/javascript">
-    $('#inputID5').keyup(function() {
-        if(this.value[this.value.length - 1] < '0' || this.value[this.value.length - 1] > '9')
-            this.value = this.value.substring(0, this.value.length - 1);
-        if(this.value.length > 10)
-            this.value = this.value.substring(0, 10);
-    });
+    $('#inputID5').keyup(()=> {
+        let re = /^\d{10}$/;
+        if(!re.test($('#inputID5').val()))
+            $('#phoneAlert').show();
+        else 
+            $('#phoneAlert').hide();
+    })
     function ValidateNumber(e, pnumber)
     {
         if (!/^\d+$/.test(pnumber))

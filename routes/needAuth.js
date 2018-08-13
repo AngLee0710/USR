@@ -119,32 +119,32 @@ module.exports =  (app) => {
 	//
 	//活動
 	//
-	app.get('/activityManageAll', checkLogin);
-	app.get('/activityManageAll', (req, res) => {
-		actPost.getAll((err, posts) => {
-			if(err) {
-				console.log(err);
-				return res.redirect('/');
-			} else {
-				Team.getAll((err, teams) => {
-					if(err) {
-						console.log(err);
-						return res.redirect('/');
-					} else {
+	// app.get('/activityManageAll', checkLogin);
+	// app.get('/activityManageAll', (req, res) => {
+	// 	actPost.getAll((err, posts) => {
+	// 		if(err) {
+	// 			console.log(err);
+	// 			return res.redirect('/');
+	// 		} else {
+	// 			Team.getAll((err, teams) => {
+	// 				if(err) {
+	// 					console.log(err);
+	// 					return res.redirect('/');
+	// 				} else {
 						
-						res.render('activityManage', {
-							title: '活動管理',
-							user: req.session.user,
-							posts: JSON.stringify(posts),
-							teams: teams,
-							success: req.flash('success').toString(),
-							error: req.flash('error').toString()
-						});
-					}
-				});
-			}
-		});
-	});
+	// 					res.render('activityManage', {
+	// 						title: '活動管理',
+	// 						user: req.session.user,
+	// 						posts: JSON.stringify(posts),
+	// 						teams: teams,
+	// 						success: req.flash('success').toString(),
+	// 						error: req.flash('error').toString()
+	// 					});
+	// 				}
+	// 			});
+	// 		}
+	// 	});
+	// });
 
 	app.get('/activityManage', checkLogin);
 	app.get('/activityManage', (req, res) => {
@@ -232,8 +232,8 @@ module.exports =  (app) => {
 				let ACT_COMM_TEL = team.connection.phone;
 				let ACT_COMM_EMAIL = team.connection.email;
 				let ACT_LOCATION = {
-					LOCATION_NAME: req.body.ACT_LOCATION_NAME,
-					LOCATION_ADDR: req.body.ACT_LOCATION_ADDR,
+					LOCATION_NAME: htmlencode.htmlEncode(req.body.ACT_LOCATION_NAME),
+					LOCATION_ADDR: htmlencode.htmlEncode(req.body.ACT_LOCATION_ADDR),
 					LOCATION_LAT: req.body.ACT_LOCATION_LAT,
 					LOCATION_LNG: req.body.ACT_LOCATION_LNG
 				}
@@ -443,19 +443,19 @@ module.exports =  (app) => {
 	//
 	//隊伍
 	//
-	app.get('/teamManageAll', checkLogin);
-	app.get('/teamManageAll', (req, res) => {
-		// let page = req.query.p ? parseInt(req.query.p) : 1;
-		Team.getAll((err, teams) => {
-			res.render('teamManage', {
-				title: '團隊管理',
-				user: req.session.user,
-				teams: JSON.stringify(teams),
-				success: req.flash('success').toString(),
-				error: req.flash('error').toString()
-			});		
-		});
-	});
+	// app.get('/teamManageAll', checkLogin);
+	// app.get('/teamManageAll', (req, res) => {
+	// 	// let page = req.query.p ? parseInt(req.query.p) : 1;
+	// 	Team.getAll((err, teams) => {
+	// 		res.render('teamManage', {
+	// 			title: '團隊管理',
+	// 			user: req.session.user,
+	// 			teams: JSON.stringify(teams),
+	// 			success: req.flash('success').toString(),
+	// 			error: req.flash('error').toString()
+	// 		});		
+	// 	});
+	// });
 
 	app.get('/teamManage', checkLogin);
 	app.get('/teamManage', (req, res) => {
@@ -470,6 +470,7 @@ module.exports =  (app) => {
 					let len = teams.length;
 					function run() {
 						if(len == (i)) {
+							console.log(teamList);
 							return res.render('teamManage', {
 								title: '團隊管理',
 								user: req.session.user,
@@ -478,11 +479,13 @@ module.exports =  (app) => {
 								error: req.flash('error').toString()
 							});	
 						} else {
+							console.log(teams[i].TEAM_ID);
 							Team.getByIdForManage(teams[i].TEAM_ID, (err, team) => {
 								if(err) {
 									req.flash('error', '伺服器異常');
 									return res.redirect('/');
 								} else {
+									console.log(team);
 									teamList[i] = team;
 									i++;
 									
@@ -710,19 +713,12 @@ module.exports =  (app) => {
 				return res.send('serError');
 			} else {
 				if(result) {
-					teammate.removeAllTeammate(req.body.data, (err) => {
-						if(err) {
+					Team.remove(req.body.data, (err) => {
+						if(err == 'error'){
 							console.log(err);
 							return res.send('serError');
-						} else {
-							Team.remove(req.body.data, (err) => {
-								if(err == 'error'){
-									console.log(err);
-									return res.send('serError');
-								} else { 
-									return res.send('success');
-								}
-							});
+						} else { 
+							return res.send('success');
 						}
 					});
 				} else {
@@ -736,29 +732,29 @@ module.exports =  (app) => {
 	//
 	//成果
 	//
-	app.get('/achievementManageAll', checkLogin);
-	app.get('/achievementManageAll', (req, res) => {
-		Team.getAll((err, teams) => {
-			if(err)
-				return res.redirect('/');
-			else {
-				achi.getAll((err, posts) => {
-					if(err)
-						return res.redirect('/');
-					else {
-						res.render('achievementManage', {
-							title: '成果管理',
-							user: req.session.user,
-							teams: teams,
-							posts: JSON.stringify(posts),
-							success: req.flash('success').toString(),
-							error: req.flash('error').toString()
-						});
-					}
-				});
-			}
-		});
-	});
+	// app.get('/achievementManageAll', checkLogin);
+	// app.get('/achievementManageAll', (req, res) => {
+	// 	Team.getAll((err, teams) => {
+	// 		if(err)
+	// 			return res.redirect('/');
+	// 		else {
+	// 			achi.getAll((err, posts) => {
+	// 				if(err)
+	// 					return res.redirect('/');
+	// 				else {
+	// 					res.render('achievementManage', {
+	// 						title: '成果管理',
+	// 						user: req.session.user,
+	// 						teams: teams,
+	// 						posts: JSON.stringify(posts),
+	// 						success: req.flash('success').toString(),
+	// 						error: req.flash('error').toString()
+	// 					});
+	// 				}
+	// 			});
+	// 		}
+	// 	});
+	// });
 
 	app.get('/achievementManage', checkLogin);
 	app.get('/achievementManage', (req, res) => {
@@ -1314,11 +1310,12 @@ module.exports =  (app) => {
 				if(birthdayMonth < 10)
 					birthdayMonth = '0' + birthdayMonth;
 				let birthday = birthdayDate.getFullYear() + '-' + birthdayMonth + '-' + birthdayDate.getDate();
-				req.session.user.BIRTHDAY = birthday;
 				//處理日期-end
 				return res.render('profile', {
 					title: '個人資料',
 					user: req.session.user,
+					user2: user,
+					birthday: birthday,
 					success: req.flash('success').toString(),
 					error: req.flash('error').toString()
 				})
@@ -1355,13 +1352,13 @@ module.exports =  (app) => {
 					}
 
 					//處理圖片_end
-					User.edit(id, editUser, (err, result) => {
+					User.edit(req.session.user._id, editUser, (err, result) => {
 						if(err) {
 							req.flash('error', '修改失敗！！');
-							return res.redirect('/profile/' + id);
+							return res.redirect('/profile');
 						} else if(result) {
 							req.flash('error', '修改成功！！');
-							return res.redirect('/profile/' + id);
+							return res.redirect('/profile');
 						}
 					});
 				}

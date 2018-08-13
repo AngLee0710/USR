@@ -69,19 +69,20 @@ module.exports = (app) => {
                             error: req.flash('error').toString()
                         });
                     } else {
-                        Team.getLogoById(docs[i].TEAM_ID, (err, logo) => {
+                        Team.getIconById(docs[i].TEAM_ID, (err, icon) => {
                             if(err){
                                 req.flash('error', '伺服器異常');
                                 return res.redirect('/');
                             } else {
-                                if(logo) {
+                                if(icon) {
                                     achi[i] = {
                                         _id: docs[i]._id,
                                         ACT_NAME: docs[i].ACT_NAME,
                                         ACT_LOCATION: docs[i].ACT_LOCATION,
                                         ACHI_STORE: docs[i].ACHI_STORE,
-                                        teamLogo: logo.teamLogo
+                                        teamIcon: icon.teamIcon
                                     }
+                                    console.log(icon.teamIcon);
                                 }
                                 i++;
                                 run();
@@ -378,32 +379,29 @@ module.exports = (app) => {
         });
     });
 
-    //報名列表
+    //團隊列表
     app.get('/team', (req, res) => {
         let page = req.query.p ? parseInt(req.query.p) : 1;
 
         Team.getLimit(null, page, 6, (err, teams, total) => {
             if (err) {
                 teams = [];
-            }
-
-            Leader.getAll((err, leaders) => {
-                res.render('teamlist', {
+            } else {
+                return res.render('teamlist', {
                     title: '團隊介紹',
                     teams: teams,
                     page: page,
                     isFirstPage: (page - 1) == 0,
                     isLastPage: ((page - 1) * 6 + teams.length) == total,
-                    leaders: leaders,
                     user: req.session.user,
                     success: req.flash('success').toString(),
                     error: req.flash('error').toString()
                 });
-            });
+            }       
         });
     });
 
-    //報名單頁
+    //團隊單頁
     app.get('/team/:id', (req, res) => {
         Team.get(req.params.id, (err, team) => {
             if (err) {
