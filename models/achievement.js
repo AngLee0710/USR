@@ -156,12 +156,24 @@ achievement.getAllOfTeamForManage = function(team, callback) {
 	});
 }
 
+//拿到所有成果(成果列表使用)
 achievement.getAllAtList = function(callback) {
 	achievementUserModel.find({}, {'ACT_LOCATION': 1, 'TEAM_ID': 1, 'ACHI_STORE': 1, 'ACT_NAME': 1}, (err, actPosts) => {
 		if(err)
 			return callback(err, null);
 		else
 			return callback(null, actPosts);
+	});
+}
+
+achievement.search = function(stuff, callback) {
+	console.log(stuff);
+	achievementUserModel.find({'TEAM_NAME': { $regex: stuff.TEAM_NAME }, 'ACT_NAME': { $regex: stuff.ACT_NAME }, 'ACT_LOCATION.LOCATION_NAME': { $regex: stuff.ACT_LOCATION.LOCATION_NAME }, 'ACT_LOCATION.LOCATION_ADDR': { $regex: stuff.ACT_LOCATION.LOCATION_ADDR }, 'ACT_BEG_DATE': { $gte: stuff.ACT_BEG_DATE_START, $lte: stuff.ACT_BEG_DATE_END } }, {'TEAM_NAME': 1, 'ACT_NAME': 1, 'ACT_LOCATION': 1, 'ACT_BEG_DATE': 1, 'ACT_END_DATE': 1 }, (err, doms) => {
+		if(err) { 
+			return callback(err, null);
+		} else {
+			return callback(null, doms);
+		}
 	});
 }
 

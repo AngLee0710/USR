@@ -31,35 +31,6 @@ module.exports =  (app) => {
 	//
 	//使用者權限
 	//
-	app.get('/login', checkNotLogin);
-	app.get('/login', (req, res) => {
-		res.render('login', {
-			title: '登入頁面',
-			user: req.session.user,
-			success: req.flash('success').toString(),
-			error: req.flash('error').toString()
-		});
-	});
-
-	app.post('/login', checkNotLogin);
-	app.post('/login', (req, res) => {
-		let md5 = crypto.createHash('md5');
-		let password = md5.update(req.body.password).digest('hex');
-		User.get(req.body.name, (err, user) => {
-			if(!user) {
-				req.flash('error', '用戶不存在!');
-				return res.redirect('/login');
-			}
-			if(user.password != password) {
-				req.flash('error', '密碼錯誤!');
-				return res.redirect('/login');
-			}
-			req.session.user = user;
-			req.flash('success', '登錄成功!!');
-			res.redirect('/admin');
-		});
-	});
-
 	app.get('/admin', checkLogin);
 	app.get('/admin', (req, res) => {
 		res.redirect('/teamManage');

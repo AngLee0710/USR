@@ -1,37 +1,47 @@
 <%- include header %>
-<link href="/basic/css/dataTables.bootstrap4.min.css" rel="stylesheet">
-<script charset="utf-8" src="/dataTable/jquery.dataTables.min.js"></script>
-<script charset="utf-8" src="/basic/js/dataTables.bootstrap4.min.js"></script>
 <body>
 <%- include nav2 %>
 <div id="ifSearch" class="row" style="display: none;">
     <div class="col-sm-3 col-1"></div>
     <div class="col-sm-6 col-10">
-        <div class="form-group">
-            <label for="search1">活動名稱：</label>
-            <input type="text" class="form-control" id="search1" placeholder="範例：2018共識營">
-        </div>
-        <div class="form-group">
-            <label for="search2">執行團隊：</label>
-            <input type="text" class="form-control" id="search2" placeholder="範例：虎科志工">
-        </div>
-        <div class="form-group">
-            <label for="search3">活動地點：</label>
-            <input type="text" class="form-control" id="search3" placeholder="範例：606台灣嘉義縣中埔鄉深坑村內灣2號 或 嘉義縣">
-        </div>
-        <div class="form-group">
-            <label for="search4">活動開始日期(起)：</label>
-            <input type="date" class="form-control" id="search4" />
-            <label for="search5">活動開始日期(迄)：</label>
-            <input type="date" class="form-control" id="search5" />
-        </div>
-        <div class="form-group">
-            <label for="search6">活動結束日期(起)：</label>
-            <input type="date" class="form-control" id="search6" />
-            <label for="search7">活動結束日期(迄)：</label>
-            <input type="date" class="form-control" id="search7" />
-        </div>
-        <div id="search" class="row" style="display: none;">
+        <form method="post" action="/achievement/search">
+            <div class="form-group">
+                <label for="search1">活動名稱：</label>
+                <input type="text" class="form-control" name="name" id="search1" >
+            </div>
+            <div class="form-group">
+                <label for="search2">執行團隊：</label>
+                <input type="text" class="form-control" name="team" id="search2">
+            </div>
+            <div class="form-group">
+                <label for="search3">活動地名：</label>
+                <input type="text" class="form-control" name="place_name" id="search3">
+            </div>
+            <div class="form-group">
+                <label for="search3">活動地址：</label>
+                <input type="text" class="form-control" name="place_addr" id="search3">
+            </div>
+            <div class="form-group">
+                <label for="search4">活動開始日期(起)：</label>
+                <input type="date" class="form-control" name="act_b_start" id="search4" />
+                <label for="search5">活動開始日期(迄)：</label>
+                <input type="date" class="form-control" name="act_b_end" id="search5" />
+            </div>
+            <div class="form-group">
+                <label for="search6">活動結束日期(起)：</label>
+                <input type="date" class="form-control" name="act_e_start" id="search6" />
+                <label for="search7">活動結束日期(迄)：</label>
+                <input type="date" class="form-control" name="act_e_end" id="search7" />
+            </div>
+            <div class="col-12">
+                <input id="searchBtn" class="btn btn-block def-btn btn-primary" style="margin-bottom: 10px;" type="submit" value="查詢" />
+            </div>
+            <div class="col-12">
+                <input id="goMapBtn" class="btn btn-block btn-warning" type="button" value="返回" />
+            </div>
+        </form>
+        
+        <!-- <div id="search" class="row" style="display: none;">
             <div class="col-sm-6 col-12">
                 <input id="searchBtn" class="btn btn-block def-btn" style="margin-bottom: 10px;" type="button" value="查詢" />
                 <input id="continueSearchBtn" class="btn btn-block def-btn" type="button" value="繼續查詢" style="margin-top: 0px;" />
@@ -39,19 +49,13 @@
             <div class="col-sm-6 col-12">
                 <input id="goMapBtn" class="btn btn-block" type="button" value="返回" />
             </div>
-        </div>      
+        </div>       -->
     </div>
     <div class="col-sm-3 col-1"></div>
 </div>
 <div id="switchIfSearch" class="row">
     <input id="switchIfSearchBtn" class="btn btn-block btn-primary" type="button" value="條件查詢" />
 </div>
-<!-- <div id="achiTableDiv" class="row" style="display: none; padding-top: 2px;">
-    <div class="col-12">
-        <table id="achiTable" class="table table-responsive-sm table-striped table-bordered text-nowrap" style="width: 100%">
-        </table>
-    </div>
-</div> -->
 <div id="map"></div>
 <style>
     body {
@@ -60,58 +64,7 @@
 </style>
 <script>
     const data = <%- docs %>;
-    const monthForamt = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
-    const achiTable = $("#achiTable").DataTable({
-            "data": data,
-            "processing" : true,
-            "responsive": true,
-            "columns": [
-                { "title": "活動名稱", "data": "ACT_NAME" },
-                { "title": "活動執行團隊", "data": "TEAM_NAME" },
-                { "title": "活動執行地點", "data": "ACT_LOCATION.LOCATION_ADDR" },
-                { "title": "活動開始時間", "data": "ACT_BEG_DATE", 
-                    "fnCreatedCell": function(td, cData, rData, rIndex, cIndex) {
-                        var date = new Date(parseInt(cData));
-                        var month,hour,minute = '00';
-                        var day = parseInt(date.getDate());
 
-                        if(day < 10)
-                            day = '0' + day;
-                            
-                        if(parseInt(date.getHours()) < 10)
-                            hour = '0' + date.getHours();
-                        else
-                            hour = date.getHours();
-
-                        if(parseInt(date.getMinutes()) < 10)
-                            minute = '0' + date.getMinutes();
-                        else
-                            minute = date.getMinutes();
-                        $(td).html(date.getFullYear() + '年' + monthForamt[date.getMonth()] + '月' + day + '日  '+ hour + ':' + minute);
-                    }},
-                { "title": "活動結束時間", "data": "ACT_END_DATE", 
-                    "fnCreatedCell": function(td, cData, rData, rIndex, cIndex) {
-                        var date = new Date(parseInt(cData));
-                        var month,hour,minute = '00';
-                        var day = parseInt(date.getDate());
-
-                        if(day < 10)
-                            day = '0' + day;
-                            
-                        if(parseInt(date.getHours()) < 10)
-                            hour = '0' + date.getHours();
-                        else
-                            hour = date.getHours();
-
-                        if(parseInt(date.getMinutes()) < 10)
-                            minute = '0' + date.getMinutes();
-                        else
-                            minute = date.getMinutes();
-                        $(td).html(date.getFullYear() + '年' + monthForamt[date.getMonth()] + '月' + day + '日  '+ hour + ':' + minute);
-                    }},
-            ]
-        });
-    
     $('#switchIfSearchBtn').click(() => {
         $('#map').hide();
         $('#ifSearch').show();
@@ -138,79 +91,18 @@
         $('#achiTableDiv').hide();
         $('#continueSearchBtn').hide()
     });
-
-    $('#searchBtn').click(() => {
-        let input = [];
-        input.push($('#search1').val());
-        input.push($('#search2').val());
-        input.push($('#search3').val());
-        input.push($('#search4').val());
-        input.push($('#search5').val());
-        input.push($('#search6').val());
-        input.push($('#search7').val());
-        console.log(input);
-        $('#ifSearch').hide(); 
-        $('#achiTableDiv').show();
-        $('#continueSearchBtn').show();
-        $('#searchBtn').hide();
-        achiTable
-            .columns( 0 )
-            .search( input[0] )
-            .columns( 1 )
-            .search( input[1] )
-            .columns( 2 )
-            .search( input[2] )
-            .draw();
-        achiTable.draw();
-    });
-    $.fn.dataTable.ext.search.push(
-        function( settings, data, dataIndex ) {
-            let min  = parseInt(Date.parse($('#search4').val()), 10);
-            let max  = parseInt(Date.parse($('#search5').val()), 10);
-            let createdAt = data[3] || 0; // Our date column in the table
-
-            if ( ( isNaN( min ) && isNaN( max ) ) ||
-                ( isNaN( min ) && createdAt <= max ) ||
-                ( min <= createdAt && isNaN( max ) ) ||
-                ( min <= createdAt && createdAt <= max ) )
-            {
-                console.log('true');
-                return true;
-            }
-            console.log('false');
-            return false;
-        }
-    );
-    $.fn.dataTable.ext.search.push(
-        function( settings, data, dataIndex ) {
-            let min  = parseInt(Date.parse($('#search6').val()), 10);
-            let max  = parseInt(Date.parse($('#search7').val()), 10);
-            let createdAt = data[4] || 0; // Our date column in the table
-            
-            if ( ( isNaN( min ) && isNaN( max ) ) ||
-                ( isNaN( min ) && createdAt <= max ) ||
-                ( min <= createdAt && isNaN( max ) ) ||
-                ( min <= createdAt && createdAt <= max ) )
-            {
-                console.log('true');
-                return true;
-            }
-            console.log('false');
-            return false;
-        }
-    );
 </script>
+
 <script>
     var map;
     var result = <%- docs %>
     function initMap() {
         map = new google.maps.Map(document.getElementById('map'), {
         center: {lat: 23.7031129, lng: 120.4279623},
-        zoom: 12
+        zoom: 9
         });
 
         result.forEach((doc, i) => {
-            console.log(doc);
             if(doc.teamLogo)
                 var image = {
                     url: doc.teamLogo,

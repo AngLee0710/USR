@@ -99,6 +99,9 @@
             <% if(!user) {%>
               <label for="input1">姓名</label>
               <input type="text" class="form-control" id="input1" name="name" placeholder="姓名..." />
+            <% } else { %>
+              <label for="input1">姓名</label>
+              <input type="text" class="form-control" id="input1" name="name" placeholder="姓名..." value="<%- user.NAME %>" />
             <% } %>
           </div>
           <div class="form-group">
@@ -139,7 +142,15 @@
         $('#preview_progressbarTW_img').show();
       });
     </script>
-      
+    <script>
+      <% if(success) {%>
+        alert('<%= success %>');
+      <% } %>
+      <% if(error) {%>
+        alert('<%= error %>');
+      <% } %>
+    </script>
+
     <script src="/newachievement/js/popper.min.js"></script>
     <script src="/newachievement/js/holder.min.js"></script>
     <style>

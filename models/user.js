@@ -59,7 +59,7 @@ User.prototype.save = function(callback) {
 //檢查信箱是否存在
 User.getByEmail = function(email, callback) {
 	if(email) {
-		userUserModel.findOne({'EMAIL': email}, {'EMAIL': 1}, function(err, user) {
+		userUserModel.findOne({'EMAIL': email}, {'EMAIL': 1, 'NAME': 1}, function(err, user) {
 			if(err) {
 				return callback(err);
 			}

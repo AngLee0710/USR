@@ -1,0 +1,40 @@
+<%- include header %>
+<body>
+    <%- include nav2 %>
+    <div class="row">
+        <% if(!doms.length) {%>
+            <div class="col-12">
+                <span class="h3">查無結果！！！</span>
+            </div>
+        <% } else { %>
+            <table class="table table-responsive-sm text-nowrap">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">活動名稱</th>
+                        <th scope="col">執行團隊</th>
+                        <th scope="col">活動地名</th>
+                        <th scope="col">活動地址</th>
+                        <th scope="col">活動開始時間</th>
+                        <th scope="col">活動結果時間</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% doms.forEach((dom, i) => { %>
+                        <tr>
+                            <th scope="row"><a href="/achievement/2/<%= dom._id %>"><%- dom.ACT_NAME %></a></th>
+                            <td><%- dom.TEAM_NAME %></td>
+                            <td><%- dom.ACT_LOCATION.LOCATION_NAME %></td>
+                            <td><%- dom.ACT_LOCATION.LOCATION_ADDR %></td>
+                            <td><%- new Date(dom.ACT_BEG_DATE).getFullYear() + '/' + ((new Date(dom.ACT_BEG_DATE).getMonth() < 10)? '0' + (new Date(dom.ACT_BEG_DATE).getMonth() + 1): (new Date(dom.ACT_BEG_DATE).getMonth() + 1)) + '/' + ((new Date(dom.ACT_BEG_DATE).getDate() < 10)? '0' + new Date(dom.ACT_BEG_DATE).getDate(): new Date(dom.ACT_BEG_DATE).getDate()) %></td>
+                            <td><%- new Date(dom.ACT_END_DATE).getFullYear() + '/' + ((new Date(dom.ACT_END_DATE).getMonth() < 10)? '0' + (new Date(dom.ACT_END_DATE).getMonth() + 1): (new Date(dom.ACT_END_DATE).getMonth() + 1)) + '/' + ((new Date(dom.ACT_END_DATE).getDate() < 10)? '0' + new Date(dom.ACT_END_DATE).getDate(): new Date(dom.ACT_END_DATE).getDate()) %></td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        <% } %>
+        <div class="col-12">
+            <a href="/achievement"><input type="button" class="btn btn-block btn-primary" value="返回" /></a>
+        </div>
+    </div>
+<%- include newfooter %>
+</body>
