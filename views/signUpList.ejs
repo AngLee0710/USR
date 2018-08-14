@@ -1,0 +1,99 @@
+<%- include header %>
+<body>
+    <%- include nav2 %>
+    <div class="row">
+        <table class="table table-responsive-sm text-nowrap">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">姓名</th>
+                    <th scope="col">學號</th>
+                    <th scope="col">就讀班級</th>
+                    <th scope="col">身分</th>
+                    <% if(post.ACT_K_BIRTH == 'Y') {%>
+                        <th scope="col">生日</th>
+                    <% } %>
+                    <% if(post.ACT_K_TEL == 'Y') {%>
+                        <th scope="col">電話</th>
+                    <% } %>
+                    <% if(post.ACT_K_SEX == 'Y') {%>
+                        <th scope="col">性別</th>
+                    <% } %>
+                    <% if(post.ACT_K_IDNO == 'Y') {%>
+                        <th scope="col">身分證</th>
+                    <% } %>
+                    <% if(post.ACT_K_FOOD == 'Y') {%>
+                        <th scope="col">便當</th>
+                    <% } %>
+                    <% if(post.ACT_K_ADDR == 'Y') {%>
+                        <th scope="col">地址</th>
+                    <% } %>
+                </tr>
+            </thead>
+            <tbody>
+                    <% lists.forEach((list, i) => { %>
+                        <tr>
+                            <th scope="row"><%= i + 1 %></th>
+                            
+                            <td><%- list.LIST_CNAME %></td>
+                            
+                            <% if(list.LIST_STDID) {%>
+                                <td><%- list.LIST_STDID %></td>
+                            <% } else { %>
+                                <td>無</td>
+                            <% } %>
+    
+                            <% if(list.LIST_CLASS) {%>
+                                <td><%- list.LIST_CLASS %></td>
+                            <% } else { %>
+                                <td>無</td>
+                            <% } %>
+    
+                            <% if(list.LIST_KIND == 'S') { %>
+                                <td>校內學生</td>
+                            <% } else if(list.LIST_KIND == 'T') { %>
+                                <td>校內教職人員</td>
+                            <% } else if(list.LIST_KIND == 'O') { %>
+                                <td>其他</td>
+                            <% } %>
+    
+                            <% if(post.ACT_K_BIRTH == 'Y') {%>
+                                <td><%= new Date(list.LIST_BIRTH).getFullYear() + '/' + (new Date(list.LIST_BIRTH).getMonth() + 1) + '/' + new Date(list.LIST_BIRTH).getDate() %></td>
+                            <% } %>
+    
+                            <% if(post.ACT_K_TEL == 'Y') { %>
+                                <td><%- list.LIST_TEL %></td>
+                            <% } %>
+    
+                            <% if(post.ACT_K_SEX == 'Y') { %>
+                                <% if(list.LIST_SEX == 1) { %>
+                                    <td>男</td>
+                                <% } else {%>
+                                    <td>女</td> 
+                                <% } %>
+                            <% } %>
+    
+                            <% if(post.ACT_K_IDNO == 'Y') { %>
+                                <td><%- list.LIST_IDNO %></td>
+                            <% } %>
+    
+                            <% if(post.ACT_K_FOOD == 'Y') {%>
+                                <% if(list.LIST_FOOD == 'P') { %>
+                                <td>葷</td>
+                                <% } else { %>
+                                <td>素</td>
+                                <% } %>
+                            <% } %>
+    
+                            <% if(post.ACT_K_ADDR == 'Y') {%>
+                                <td><%- list.LIST_ADDR %></td>
+                            <% } %>
+                        </tr>
+                    <% }) %>
+                </tbody>
+        </table>
+        <input class="btn btn-block btn-primary" type="button" value="返回" onclick="history.go(-1)" />
+    </div>
+    <%- include newfooter %>
+</body>
+</html>

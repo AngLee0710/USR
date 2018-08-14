@@ -64,11 +64,11 @@
 							<% } else { %>
 								<div class="carousel-item">
 							<% } %>
-							<a style="color: white" href="/achievement/<%= doc._id %>"><img class="imgrwd d-block w-100" 
+							<a style="color: white" href="/achievement/2/<%= doc._id %>"><img class="imgrwd d-block w-100" 
 								src="<%= doc.ACHI_IMG[0].URL %>" alt="First slide"></a>
 								<div class="carousel-caption d-md-block">
-										<div class="wordsize"><h1 class="wordrwd" style="color: white"><%= doc.ACT_NAME %></h1></div>
-										<p class="word"><%- doc.ACHI_STORE %></p>
+									<div class="wordsize"><h1 class="wordrwd" style="color: white"><%= doc.ACT_NAME %></h1></div>
+									<p class="word"><%- doc.ACHI_STORE %></p>
 								</div>
 							</div>
 						<% }); %>

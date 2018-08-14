@@ -44,8 +44,6 @@ teammateReview.prototype.save = function(cb) {
 }
 
 teammateReview.check = function(team, member, cb) {
-	console.log(team);
-	console.log(member);
 	teammateReviewUserModel.findOne( {'TEAM_ID': team, 'MEMBER_ID': member}, (err, review) => {
 		if(err) {
 			console.log(err);

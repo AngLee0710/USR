@@ -63,6 +63,12 @@
     }
 </style>
 <script>
+    <% if(success) {%>
+        alert('<%= success %>');
+    <% } %>
+    <% if(error) {%>
+        alert('<%= error %>');
+    <% } %>
     const data = <%- docs %>;
 
     $('#switchIfSearchBtn').click(() => {
@@ -104,7 +110,6 @@
 
         result.forEach((doc, i) => {
             if(doc.teamIcon) {
-                console.log(doc.teamIcon)
                 var image = {
                     url: doc.teamIcon,
                     // This marker is 20 pixels wide by 32 pixels high.

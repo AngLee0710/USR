@@ -89,7 +89,7 @@ achievement.prototype.save = function(cb) {
 }
 
 achievement.getAll = function(callback) {
-	achievementUserModel.find({}).sort('-ACHI_C_AT').exec(function(err, actPosts) {
+	achievementUserModel.find({'delete': false}).sort('-ACHI_C_AT').exec(function(err, actPosts) {
 		if(err)
 			return callback(err, null);
 		else
@@ -108,7 +108,7 @@ achievement.getById = function(id, callback) {
 
 //刪除 key = id
 achievement.remove = function(id, callback) {
-	achievementOwnerModel.deleteOne({'_id': id}, (err) => {
+	achievementOwnerModel.update({'_id': id}, {$set:{delete: true}}, (err) => {
 		if(err)
 			return callback('error');
 		else{
@@ -117,8 +117,8 @@ achievement.remove = function(id, callback) {
 	});
 }
 
-achievement.getByTeam = function(team, callback) {
-	achievementUserModel.find({'TEAM_NAME': htmlencode.htmlDecode(team)}, (err, doc) => {
+achievement.getByTeamId = function(id, callback) {
+	achievementUserModel.find({'TEAM_ID': id, 'delete': false}, (err, doc) => {
 		if(err)
 			return callback(err, null);
 		else
@@ -136,10 +136,10 @@ achievement.edit = function(id, update, callback) {
 }
 
 achievement.getLimit = function(team, page, limit, callback) {
-	actPostUserModel.count({}, function(err, total) {
+	actPostUserModel.count({'delete': false}, function(err, total) {
 		if(err)
 			return callback(err);
-		actPostUserModel.find({TEAM_NAME: team}, null, {skip: (page -1) * limit}).sort('-ACHI_C_AT').limit(limit).exec(function(err, actPosts) {
+		actPostUserModel.find({'TEAM_NAME': team, 'delete': false}, null, {skip: (page -1) * limit}).sort('-ACHI_C_AT').limit(limit).exec(function(err, actPosts) {
 			if(err)
 				return callback(err, null, null);
 			else
@@ -150,7 +150,7 @@ achievement.getLimit = function(team, page, limit, callback) {
 
 //拿到Team所有的成果
 achievement.getAllOfTeamForManage = function(team, callback) {
-	achievementUserModel.find({'TEAM_ID': team}, {'TEAM_NAME': 1, 'ACT_END_DATE': 1, 'ACT_NAME': 1, 'ACT_ID': 1 }, (err, doc) => {
+	achievementUserModel.find({'TEAM_ID': team, 'delete': false}, {'TEAM_NAME': 1, 'ACT_END_DATE': 1, 'ACT_NAME': 1, 'ACT_ID': 1 }, (err, doc) => {
 		if(err)
 			return callback(err, null);
 		else
@@ -160,7 +160,7 @@ achievement.getAllOfTeamForManage = function(team, callback) {
 
 //拿到所有成果(成果列表使用)
 achievement.getAllAtList = function(callback) {
-	achievementUserModel.find({}, {'ACT_LOCATION': 1, 'TEAM_ID': 1, 'ACHI_STORE': 1, 'ACT_NAME': 1}, (err, actPosts) => {
+	achievementUserModel.find({'delete': false}, {'ACT_LOCATION': 1, 'TEAM_ID': 1, 'ACHI_STORE': 1, 'ACT_NAME': 1}, (err, actPosts) => {
 		if(err)
 			return callback(err, null);
 		else
@@ -169,8 +169,7 @@ achievement.getAllAtList = function(callback) {
 }
 
 achievement.search = function(stuff, callback) {
-	console.log(stuff);
-	achievementUserModel.find({'TEAM_NAME': { $regex: stuff.TEAM_NAME }, 'ACT_NAME': { $regex: stuff.ACT_NAME }, 'ACT_LOCATION.LOCATION_NAME': { $regex: stuff.ACT_LOCATION.LOCATION_NAME }, 'ACT_LOCATION.LOCATION_ADDR': { $regex: stuff.ACT_LOCATION.LOCATION_ADDR }, 'ACT_BEG_DATE': { $gte: stuff.ACT_BEG_DATE_START, $lte: stuff.ACT_BEG_DATE_END } }, {'TEAM_NAME': 1, 'ACT_NAME': 1, 'ACT_LOCATION': 1, 'ACT_BEG_DATE': 1, 'ACT_END_DATE': 1 }, (err, doms) => {
+	achievementUserModel.find({'TEAM_NAME': { $regex: stuff.TEAM_NAME }, 'ACT_NAME': { $regex: stuff.ACT_NAME }, 'ACT_LOCATION.LOCATION_NAME': { $regex: stuff.ACT_LOCATION.LOCATION_NAME }, 'ACT_LOCATION.LOCATION_ADDR': { $regex: stuff.ACT_LOCATION.LOCATION_ADDR }, 'ACT_BEG_DATE': { $gte: stuff.ACT_BEG_DATE_START, $lte: stuff.ACT_BEG_DATE_END }, 'delete': false }, {'TEAM_NAME': 1, 'ACT_NAME': 1, 'ACT_LOCATION': 1, 'ACT_BEG_DATE': 1, 'ACT_END_DATE': 1 }, (err, doms) => {
 		if(err) { 
 			return callback(err, null);
 		} else {

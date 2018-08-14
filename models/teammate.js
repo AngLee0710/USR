@@ -45,7 +45,7 @@ teammate.prototype.save = function(cb) {
 
 //根據使用者ID顯示隊伍
 teammate.getTeamIdByUserId = function(user, cb) {
-	teammateUserModel.find( {'MEMBER_ID': user, 'PERMISSION': { $lte: 2 }}, {'TEAM_ID' : 1} ).sort('C_T').exec((err, teamsID) => {
+	teammateUserModel.find( {'MEMBER_ID': user, 'DELETE': false ,'PERMISSION': { $lte: 2 }}, {'TEAM_ID' : 1} ).sort('C_T').exec((err, teamsID) => {
 		if(err) {
 			console.log(err);
 			return cb(err, null);
@@ -100,8 +100,8 @@ teammate.isManager = function(user, team, cb) {
 }
 
 //刪除隊伍時，刪除隊伍內所有隊員
-teammate.removeAllTeammate = function(team, cb) {
-	teammateOwnerModel.deleteMany( { 'TEAM_ID': team }, (err) => {
+teammate.removeAllTeammate = function(team, users, cb) {
+	teammateOwnerModel.update({ 'TEAM_ID': team, 'MEMBER_ID': users }, {$set:{'DELETE': true}}, (err) => {
 		if(err) {
 			console.log(err);
 			return cb(err, 'error');

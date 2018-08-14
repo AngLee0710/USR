@@ -15,6 +15,7 @@ const achi = require('../models/achievement.js');
 const teammateReview = require('../models/teammateReview.js');
 const teammate = require('../models/teammate.js');
 const achiReview = require('../models/achievementReview.js');
+const actSignUp = require('../models/actSingUp.js');
 
 const storage = multer.diskStorage({
 	destination: (req, file, cb) => {
@@ -40,7 +41,7 @@ module.exports =  (app) => {
 	app.get('/google/login', (req, res) => {
         let googleOauthUrl = "https://accounts.google.com/o/oauth2/v2/auth?" + 
         "scope=https://www.googleapis.com/auth/userinfo.email&"+
-        "redirect_uri=http://localhost:3000/google/callback&"+
+        "redirect_uri=" + process.env.website + "/google/callback&"+
         "response_type=code&"+
         "client_id=" + process.env.googleID;
         return res.redirect(googleOauthUrl);
@@ -63,7 +64,7 @@ module.exports =  (app) => {
                 client_secret: process.env.googleKEY,
                 grant_type:"authorization_code",
                 //要跟Google Console裡填的一樣喔
-                redirect_uri:"http://localhost:3000/google/callback"
+                redirect_uri:process.env.website + "/google/callback"
             }
         };
         request(token_option, function(err, resposne, body) {
@@ -119,32 +120,6 @@ module.exports =  (app) => {
 	//
 	//活動
 	//
-	// app.get('/activityManageAll', checkLogin);
-	// app.get('/activityManageAll', (req, res) => {
-	// 	actPost.getAll((err, posts) => {
-	// 		if(err) {
-	// 			console.log(err);
-	// 			return res.redirect('/');
-	// 		} else {
-	// 			Team.getAll((err, teams) => {
-	// 				if(err) {
-	// 					console.log(err);
-	// 					return res.redirect('/');
-	// 				} else {
-						
-	// 					res.render('activityManage', {
-	// 						title: '活動管理',
-	// 						user: req.session.user,
-	// 						posts: JSON.stringify(posts),
-	// 						teams: teams,
-	// 						success: req.flash('success').toString(),
-	// 						error: req.flash('error').toString()
-	// 					});
-	// 				}
-	// 			});
-	// 		}
-	// 	});
-	// });
 
 	app.get('/activityManage', checkLogin);
 	app.get('/activityManage', (req, res) => {
@@ -342,7 +317,6 @@ module.exports =  (app) => {
 				console.log(err);
 				return res.redirect('/activityManage');
 			} else {
-				console.log(team);
 				let ACT_COMM_USER = team.connection.name;
 				let ACT_COMM_TEL = team.connection.phone;
 				let ACT_COMM_EMAIL = team.connection.email;
@@ -387,47 +361,6 @@ module.exports =  (app) => {
 				});
 			}
 		});
-		// if(ACT_NOT_SING) { //如果不開放報名
-		// 	console.log('我在這');
-		// 	let activityPost = {
-		// 		ACT_SUBJ_NAME: htmlencode.htmlEncode(req.body.ACT_SUBJ_NAME),
-		// 		ACT_BEG_DATE: ACT_BEG_DATE_POCH,
-		// 		ACT_END_DATE: ACT_END_DATE_POCH,
-		// 		ACT_DEPTNAME: htmlencode.htmlEncode(req.body.ACT_DEPTNAME),
-		// 		ACT_LOCATION: ACT_LOCATION,
-		// 		ACT_LIMIT_SEX: htmlencode.htmlEncode(req.body.ACT_LIMIT_SEX),
-		// 		ACT_LIMIT: req.body.ACT_LIMIT,
-		// 		ACT_URL: htmlencode.htmlEncode(req.body.ACT_URL),
-		// 		ACT_COMM_USER: ACT_COMM_USER,
-		// 		ACT_COMM_TEL: ACT_COMM_TEL,
-		// 		ACT_COMM_EMAIL: ACT_COMM_EMAIL,			
-		// 		ACT_B_BEG: ACT_B_BEG_POCH,
-		// 		ACT_B_END: ACT_B_END_POCH,
-		// 		ACT_K_TEL: htmlencode.htmlEncode(req.body.ACT_K_TEL),
-		// 		ACT_K_DEPT: htmlencode.htmlEncode(req.body.ACT_K_DEPT),
-		// 		ACT_K_OCCUP: htmlencode.htmlEncode(req.body.ACT_K_OCCUP),
-		// 		ACT_K_IDNO: htmlencode.htmlEncode(req.body.ACT_K_IDNO),
-		// 		ACT_K_SEX: htmlencode.htmlEncode(req.body.ACT_K_SEX),
-		// 		ACT_K_BIRTH: htmlencode.htmlEncode(req.body.ACT_K_BIRTH),
-		// 		ACT_K_FOOD: htmlencode.htmlEncode(req.body.ACT_K_FOOD),
-		// 		ACT_K_ADDR: htmlencode.htmlEncode(req.body.ACT_K_ADDR),
-		// 		ACT_LIST: htmlencode.htmlEncode(req.body.ACT_LIST),
-		// 		imgArray: imgArray
-		// 	}
-		// 	actPost.edit(req.body.editID, activityPost, (err, errr) => {
-		// 		if(errr == 'success'){
-		// 			req.flash('success', '修改成功！！！');
-		// 			return res.redirect('/activityManage')
-		// 		}
-		// 		else {
-		// 			console.log(err);
-		// 			req.flash('error', '修改失敗！！！');
-		// 			return res.redirect('/activityManage')
-		// 		}
-		// 	});
-		// } else {
-			
-		// }
 	});
 
 	app.post('/activity/delete', checkLogin);
@@ -440,22 +373,36 @@ module.exports =  (app) => {
 		});
 	});
 
+	//查看報名名單
+	app.get('/signUpList/:id', checkLogin);
+	app.get('/signUpList/:id', (req, res) => {
+		actSignUp.getList(req.params.id, (err, lists) => {
+			if(err) {
+				req.flash('error', '伺服器異常');
+				return res.redirect('/activityManage');
+			} else {
+				actPost.take(req.params.id, (err, post) => {
+					if(err) {
+						req.flash('error', '伺服器異常');
+						return res.redirect('/activityManage');
+					} else {
+						return res.render('signUpList', {
+							title: '名單',
+							lists: lists,
+							post: post,
+							user: req.session.user._id,
+							success: req.flash('success').toString(),
+							error: req.flash('error').toString()
+						});
+					}
+				});
+			}
+		});
+	});
+
 	//
 	//隊伍
 	//
-	// app.get('/teamManageAll', checkLogin);
-	// app.get('/teamManageAll', (req, res) => {
-	// 	// let page = req.query.p ? parseInt(req.query.p) : 1;
-	// 	Team.getAll((err, teams) => {
-	// 		res.render('teamManage', {
-	// 			title: '團隊管理',
-	// 			user: req.session.user,
-	// 			teams: JSON.stringify(teams),
-	// 			success: req.flash('success').toString(),
-	// 			error: req.flash('error').toString()
-	// 		});		
-	// 	});
-	// });
 
 	app.get('/teamManage', checkLogin);
 	app.get('/teamManage', (req, res) => {
@@ -470,7 +417,6 @@ module.exports =  (app) => {
 					let len = teams.length;
 					function run() {
 						if(len == (i)) {
-							console.log(teamList);
 							return res.render('teamManage', {
 								title: '團隊管理',
 								user: req.session.user,
@@ -479,13 +425,11 @@ module.exports =  (app) => {
 								error: req.flash('error').toString()
 							});	
 						} else {
-							console.log(teams[i].TEAM_ID);
 							Team.getByIdForManage(teams[i].TEAM_ID, (err, team) => {
 								if(err) {
 									req.flash('error', '伺服器異常');
 									return res.redirect('/');
 								} else {
-									console.log(team);
 									teamList[i] = team;
 									i++;
 									
@@ -713,12 +657,38 @@ module.exports =  (app) => {
 				return res.send('serError');
 			} else {
 				if(result) {
-					Team.remove(req.body.data, (err) => {
-						if(err == 'error'){
+					teammate.getAllTeammate(req.body.data, (err, members) => {
+						if(err) {
 							console.log(err);
 							return res.send('serError');
-						} else { 
-							return res.send('success');
+						} else {
+							let i = 0;
+							let mates = [];
+							function run() {
+								if(i == members.length) {
+									teammate.removeAllTeammate(req.body.data, mates, (err, s) => {
+										if(err) {
+											console.log(err);
+											return res.send('serError');
+										} else {
+											console.log(mates);
+											Team.remove(req.body.data, (err) => {
+												if(err == 'error'){
+													console.log(err);
+													return res.send('serError');
+												} else { 
+													return res.send('success');
+												}
+											});
+										}
+									});
+								} else {
+									mates.push(members[i].MEMBER_ID);
+									i++;
+									run();
+								}
+							}
+							run();
 						}
 					});
 				} else {
@@ -732,29 +702,6 @@ module.exports =  (app) => {
 	//
 	//成果
 	//
-	// app.get('/achievementManageAll', checkLogin);
-	// app.get('/achievementManageAll', (req, res) => {
-	// 	Team.getAll((err, teams) => {
-	// 		if(err)
-	// 			return res.redirect('/');
-	// 		else {
-	// 			achi.getAll((err, posts) => {
-	// 				if(err)
-	// 					return res.redirect('/');
-	// 				else {
-	// 					res.render('achievementManage', {
-	// 						title: '成果管理',
-	// 						user: req.session.user,
-	// 						teams: teams,
-	// 						posts: JSON.stringify(posts),
-	// 						success: req.flash('success').toString(),
-	// 						error: req.flash('error').toString()
-	// 					});
-	// 				}
-	// 			});
-	// 		}
-	// 	});
-	// });
 
 	app.get('/achievementManage', checkLogin);
 	app.get('/achievementManage', (req, res) => {
@@ -1059,8 +1006,6 @@ module.exports =  (app) => {
 	//送出通過審核名單-通過
 	app.post('/review/teammate/pass', checkLogin);
 	app.post('/review/teammate/pass', (req, res) => {
-		// console.log(req.body.data);
-		// console.log(req.body.data.length);
 		if(req.body.data.length) {
 			req.body.data.forEach((id, i) => {
 				teammateReview.allow(id, (err, review) => {
@@ -1125,7 +1070,6 @@ module.exports =  (app) => {
 				console.log(err);
 				return res.send('serError');
 			} else {
-				// console.log(teammates); array
 				let userList = [];
 				let i = 0;
 				function run() {
@@ -1142,7 +1086,6 @@ module.exports =  (app) => {
 							userOB.EMAIL = user.EMAIL;
 							userList[i] = userOB;
 							if( (i + 1) == teammates.length) {
-								console.log(userList);
 								return res.send(userList);
 							} else {
 								i++;

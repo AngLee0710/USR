@@ -29,41 +29,42 @@
 					<div class="col-12">
 						<h2>活動資訊</h2>
 						<div class="card" style="width: 100%;">
-							<span class="mypandding"><h3>活動時間：<br><%- include two_blank %><%= new Date(parseInt(post.ACT_BEG_DATE)).toLocaleString() %> 
+							<span class="mypandding">
+								<h3>活動時間：<br><%- include two_blank %><%= new Date(parseInt(post.ACT_BEG_DATE)).toLocaleString() %> 
 								<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<%- include two_blank %><%- include two_blank %>至 <br>
 								<%- include two_blank %><%= new Date(parseInt(post.ACT_END_DATE)).toLocaleString() %></h3>
-							<h3>活動地點：<br><%- include two_blank %><%- post.ACT_LOCATION.LOCATION_NAME %></h3>
-							<h3>性別限制：<br><%- include two_blank %>
-								<% if(post.ACT_LIMIT_SEX == '1') {%>
-								男
-								<% }else if(post.ACT_LIMIT_SEX == '2') {%>
-								女
-								<%} else {%>
-								不限
-								<%　} %></h3>
-							<h3>人數限制：<br>&nbsp<%- include two_blank %><%= post.ACT_LIMIT %>人</h3>
-							<h3>報名時間：<br><%- include two_blank %><%= new Date(parseInt(post.ACT_B_BEG)).toLocaleString() %> 
+								<h3>活動地點：<br><%- include two_blank %><%- post.ACT_LOCATION.LOCATION_NAME %></h3>
+							<% if(post.ACT_NOT_SIGN) { %>
+								<h3>性別限制：<br><%- include two_blank %>
+									<% if(post.ACT_LIMIT_SEX == '1') {%>
+									男
+									<% }else if(post.ACT_LIMIT_SEX == '2') {%>
+									女
+									<%} else {%>
+									不限
+									<%　} %></h3>
+								<h3>人數限制：<br>&nbsp<%- include two_blank %><%= post.ACT_LIMIT %>人</h3>
+								<h3>報名時間：<br><%- include two_blank %><%= new Date(parseInt(post.ACT_B_BEG)).toLocaleString() %> 
 								<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<%- include two_blank %><%- include two_blank %>至 <br>
 								<%- include two_blank %><%= new Date(parseInt(post.ACT_B_END)).toLocaleString() %></h3>
-							</span></div>
-						
-						
-						
+							<% } %>
+						</span></div>
 						<h2>活動介紹</h2>
 						<div class="card" style="width: 100%;">
 						<span class="mypandding"><h3><%- include two_blank %><%- post.ACT_LIST %></h3></span>
-						</div>
-
-					
-							<h2>聯絡窗口</h2>
+						</div>	
+							<% if(post.ACT_NOT_SIGN) { %>
+								<h2>聯絡窗口</h2>
 								<div class="card" style="width: 100%;" >
 							<span class="mypandding"><h3>
 									主辦隊伍：<br>&nbsp<%- include two_blank %><%- post.ACT_DEPTNAME %><br>
 									聯絡人：<br>&nbsp<%- include two_blank %><%- post.ACT_COMM_USER %><br>
 									聯絡電話：<br>&nbsp<%- include two_blank %><%- post.ACT_COMM_TEL %><br>
 									聯絡信箱：<br>&nbsp<%- include two_blank %><a href="mailto:<%= post.ACT_COMM_EMAIL %>">聯絡我們</a>
-							</h3></span>	
-							<a href="/activity/SignUp/<%= post._id %>"><button type="button" style="position:sticky" class="btn btn-primary btn-lg btn-block">我想報名</button></a> 		
+							</h3></span>
+								<a href="/activity/SignUp/<%= post._id %>"><button type="button" style="position:sticky" class="btn btn-primary btn-lg btn-block">我想報名</button></a> 	
+							<% } %>
+								
 							</div>
 
 						</div>

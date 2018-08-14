@@ -82,7 +82,6 @@ module.exports = (app) => {
                                         ACHI_STORE: docs[i].ACHI_STORE,
                                         teamIcon: icon.teamIcon
                                     }
-                                    console.log(icon.teamIcon);
                                 }
                                 i++;
                                 run();
@@ -95,15 +94,8 @@ module.exports = (app) => {
 		});
     });
     
+    //成果查詢
     app.post('/achievement/search', (req, res) => {
-        // console.log(req.body.name);
-        // console.log(req.body.team);
-        // console.log(req.body.place_name);
-        // console.log(req.body.place_addr);
-        // console.log(req.body.act_b_start);
-        // console.log(req.body.act_b_end);
-        // console.log(req.body.act_e_start);
-        // console.log(req.body.act_e_end);
 
         let act_b_start = new Date(req.body.act_b_start).getTime();
         let act_b_end = new Date(req.body.act_b_end).getTime();
@@ -138,6 +130,7 @@ module.exports = (app) => {
 
         achi.search(search, (err, doms) => {
             if(err) {
+                console.log(err);
                 req.flash('error', '伺服器異常');
                 return res.redirect('/achievement');
             } else {
@@ -294,17 +287,18 @@ module.exports = (app) => {
             if (err) {
                 console.log(err);
                 return res.redirect('/');
-            }
-            Team.get(post.ACT_DEPTNAME, (err, team) => {
-                res.render('activity', {
-                    title: post.title,
-                    team: team,
-                    post: post,
-                    user: req.session.user,
-                    success: req.flash('success').toString(),
-                    error: req.flash('error').toString()
+            } else {
+                Team.get(post.ACT_DEPTNAME, (err, team) => {
+                    return res.render('activity', {
+                        title: post.title,
+                        team: team,
+                        post: post,
+                        user: req.session.user,
+                        success: req.flash('success').toString(),
+                        error: req.flash('error').toString()
+                    });
                 });
-            });
+            }
         });
     });
 
@@ -317,15 +311,27 @@ module.exports = (app) => {
             date = date.getTime();
             if (err) {
                 console.log(err);
-                return res.redirect('/');
+                req.flash('error', '伺服器異常')
+                return res.redirect('/activity/' + req.params.id);
             } else if ((post.ACT_B_BEG < date) && (post.ACT_B_END > date)) {
-                res.render('activitySignUp', {
-                    title: 'USR報名表單',
-                    post: post,
-                    user: req.session.user,
-                    success: req.flash('success').toString(),
-                    error: req.flash('error').toString()
+                User.getById(req.session.user._id, (err, info) => {
+                    if(err) {
+                        console.log(err);
+                        req.flash('error', '伺服器異常')
+                        return res.redirect('/activity/' + req.params.id);
+                    } else {
+                        return res.render('activitySignUp', {
+                            title: 'USR報名表單',
+                            post: post,
+                            info: info,
+                            user: req.session.user,
+                            success: req.flash('success').toString(),
+                            error: req.flash('error').toString()
+                        });
+                    }
+                    
                 });
+                
             } else {
                 req.flash('error', '非開放報名時間！！！');
                 return res.redirect('/activity/' + req.params.id);
@@ -353,11 +359,13 @@ module.exports = (app) => {
                             htmlencode.htmlEncode(req.body.LIST_PER),
                             htmlencode.htmlEncode(req.body.LIST_CNAME),
                             req.body.LIST_IDNO,
-                            req.body.LIST_BIRTH,
+                            new Date(req.body.LIST_BIRTH).getTime(),
                             req.body.LIST_TEL,
                             req.body.LIST_OCCUP,
                             req.body.LIST_SEX,
-                            htmlencode.htmlEncode(req.body.LIST_ADDR)
+                            htmlencode.htmlEncode(req.body.LIST_ADDR),
+                            htmlencode.htmlEncode(req.body.LIST_STDID),
+                            htmlencode.htmlEncode(req.body.LIST_CLASS)
                         )
 
                         activitysignUp.save((err) => {
@@ -387,7 +395,7 @@ module.exports = (app) => {
             if (err) {
                 teams = [];
             } else {
-                return res.render('teamlist', {
+                return res.render('teamList', {
                     title: '團隊介紹',
                     teams: teams,
                     page: page,
@@ -411,30 +419,31 @@ module.exports = (app) => {
             if (!team) {
                 req.flash('error', '隊伍不存在');
                 return res.redirect('/');
+            }else {
+                achi.getByTeamId(team._id, (err, doc) => {
+                    if (err) {
+                        return res.redirect('/');
+                    }
+                    else {
+                        teammate.isTeammate(req.session.user, req.params.id, (err, key) => {
+                            if(err) {
+                                req.flash('error', '伺服器異常');
+                                return res.redirect('/');
+                            } else { 
+                                return res.render('team', {
+                                    title: team.name,
+                                    teams: team,
+                                    key: key,
+                                    achievement: JSON.stringify(doc),
+                                    user: req.session.user,
+                                    success: req.flash('success').toString(),
+                                    error: req.flash('error').toString()
+                                });
+                            }
+                        });
+                    }
+                });
             }
-            achi.getByTeam(team.name, (err, doc) => {
-                if (err) {
-                    return res.redirect('/');
-                }
-                else {
-                    teammate.isTeammate(req.session.user, req.params.id, (err, key) => {
-                        if(err) {
-                            req.flash('error', '伺服器異常');
-                            return res.redirect('/');
-                        } else {
-                            return res.render('team', {
-                                title: team.name,
-                                teams: team,
-                                key: key,
-                                achievement: JSON.stringify(doc),
-                                user: req.session.user,
-                                success: req.flash('success').toString(),
-                                error: req.flash('error').toString()
-                            });
-                        }
-                    });
-                }
-            });
         });
     });
 

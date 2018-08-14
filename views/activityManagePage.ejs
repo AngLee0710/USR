@@ -289,93 +289,13 @@
               })
             });
 
-            $('#signUp').click(() => {
+            $('#checkSign').click(() => {
               if(nowID_D == null){
                 alert('尚未選取貼文');
                 return;
               } else {
-                var dataTableForAct = $('#dataTableForAct').DataTable({
-                "data": actData,
-                "responsive": true,
-                "columns": [
-                    { "title": '活動ID', "data": 'id'},
-                    { "title": '活動名稱', "data": 'ACT_SUBJ_NAME', 
-                        "fnCreatedCell": function(td, cData, rData, rIndex, cIndex) {
-                            $(td).html('<a href=/activity/' + rData._id + '>' + cData + '</a>');
-                        }},
-                    { "title": '執行團隊', "data": 'ACT_DEPTNAME'}, 
-                    { "title": '活動開始時間', "data": 'ACT_BEG_DATE', 
-                        "fnCreatedCell": function(td, cData, rData, rIndex, cIndex) {
-                            var date = new Date(parseInt(cData));
-                            var month = '00';
-                            var hour = '00';
-                            var day = parseInt(date.getDate());
-                            var minute = '00';
-
-                            if(day < 10)
-                              day = '0' + day;
-                                 
-                            if(parseInt(date.getHours()) < 10)
-                              hour = '0' + date.getHours();
-                            else
-                              hour = date.getHours();
-
-                            if(parseInt(date.getMinutes()) < 10)
-                              minute = '0' + date.getMinutes();
-                            else
-                              minute = date.getMinutes();
-                            $(td).html(date.getFullYear() + '年' + monthForamt[date.getMonth()] + '月' + day + '日  '+ hour + ':' + minute);
-                        }},
-                    { "title": '活動結束時間', "data": 'ACT_END_DATE', 
-                    "fnCreatedCell": function(td, cData, rData, rIndex, cIndex) {
-                            var date = new Date(parseInt(cData));
-                            var month = '00';
-                            var hour = '00';
-                            var day = parseInt(date.getDate());
-                            var minute = '00';
-
-                            if(day < 10)
-                              day = '0' + day;
-                           
-
-                            if(parseInt(date.getHours()) < 10)
-                              hour = '0' + date.getHours();
-                            else
-                              hour = date.getHours();
-
-                            if(parseInt(date.getMinutes()) < 10)
-                              minute = '0' + date.getMinutes();
-                            else
-                              minute = date.getMinutes();
-                            $(td).html(date.getFullYear() + '年' + monthForamt[date.getMonth()] + '月' + day + '日  '+ hour + ':' + minute);
-                        }},
-                    { "title": '活動發佈日期', "data": 'ACT_C_AT',
-                        "fnCreatedCell": function(td, cData, rData, rIndex, cIndex) {
-                            var date = new Date(parseInt(cData));
-                            var month = '00';
-                            var hour = '00';
-                            var day = parseInt(date.getDate());
-                            var minute = '00';
-
-                            if(day < 10)
-                              day = '0' + day;
-                            
-                   
-                            if(parseInt(date.getHours()) < 10)
-                              hour = '0' + date.getHours();
-                            else
-                              hour = date.getHours();
-
-                            if(parseInt(date.getMinutes()) < 10)
-                              minute = '0' + date.getMinutes();
-                            else
-                              minute = date.getMinutes();
-                            $(td).html(date.getFullYear() + '年' + monthForamt[date.getMonth()] + '月' + day + '日  '+ hour + ':' + minute);
-                        }}
-                ]
-            });
+                document.location.href="/signUpList/" + nowID;
               }
-
             });
         })();
     });

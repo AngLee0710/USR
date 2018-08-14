@@ -99,56 +99,6 @@
   var result = <%- achievement %>;
   if(result.length) {
 	function initMap() {
-		map = new google.maps.Map(document.getElementById('map'), {
-		center: {lat: result[0].ACT_LOCATION.LOCATION_LAT, lng: result[0].ACT_LOCATION.LOCATION_LNG},
-		zoom: 11
-		});
-		
-		var image = {
-			url: '<%= teams.teamIcon %>',
-			// This marker is 20 pixels wide by 32 pixels high.
-			size: new google.maps.Size(40, 40),      //顯示圖片大小
-			origin: new google.maps.Point(0, 0),     //起始位置，通常為0
-			anchor: new google.maps.Point(19, 40),   //移動marker 數字越大往右和往上移動
-			scaledSize: new google.maps.Size(40, 40) //圖片實際大小，通常與size一樣大小
-		};
-
-		result.forEach((doc, i) => {
-			var uluru = {lat: doc.ACT_LOCATION.LOCATION_LAT, lng: doc.ACT_LOCATION.LOCATION_LNG};
-			var marker = new google.maps.Marker({
-				position: uluru, 
-				map: map,
-				icon: image,
-				animation: google.maps.Animation.DROP
-		});
-
-		
-    	var contentString = '<div id="content">'+
-	        '<div id="siteNotice">'+
-	        '</div>'+
-	        '<h3 id="firstHeading" class="firstHeading"><a href="/achievement/' + result[i]._id + '">' +
-	         result[i].ACT_NAME + '</a></h3></div>';
-
-    	var infowindow = new google.maps.InfoWindow({
-          content: contentString
-        });
-
-    	marker.addListener('click', function() {
-	      infowindow.open(map, marker);
-	    });
-    });
-  }
-
-  } else {
-	function initMap() {
-			map = new google.maps.Map(document.getElementById('map'), {
-			center: {lat: 23.703108, lng: 120.4279623},
-			zoom: 11
-		});
-  }
-  
-  }
-  function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
       center: {lat: result[0].ACT_LOCATION.LOCATION_LAT, lng: result[0].ACT_LOCATION.LOCATION_LNG},
       zoom: 11
@@ -171,24 +121,42 @@
 			icon: image,
 			animation: google.maps.Animation.DROP
 	});
-
 		
-    	var contentString = '<div id="content">'+
-	        '<div id="siteNotice">'+
-	        '</div>'+
-	        '<h3 id="firstHeading" class="firstHeading"><a href="/achievement/' + result[i]._id + '">' +
-	         result[i].ACT_NAME + '</a></h3></div>';
+		var contentString = '<div id="content" class="contentDIV">'+
+			'<div id="siteNotice">'+ 
+			'</div>'+
+			'<h3 id="firstHeading" class="firstHeading"><a href="/achievement/2/' + result[i]._id + '">' +
+			result[i].ACT_NAME + '</a></h3><p class="mapCotent">' + result[i].ACHI_STORE + '</p></div>';
 
     	var infowindow = new google.maps.InfoWindow({
           content: contentString
         });
 
-    	marker.addListener('click', function() {
-	      infowindow.open(map, marker);
-	    });
+    	marker.addListener('mouseover', function() {
+                infowindow.open(map, marker);
+            });
+
+		marker.addListener('click', function() {
+			infowindow.open(map, marker);
+			setTimeout(function () { infowindow.close(); }, 3000);
+		});
+
+		marker.addListener('mouseout', function() {
+			setTimeout(function () { infowindow.close(); }, 3000);
+		});
     });
   }
 
+  } else {
+	function initMap() {
+			map = new google.maps.Map(document.getElementById('map'), {
+			center: {lat: 23.703108, lng: 120.4279623},
+			zoom: 11
+		});
+  }
+  
+  }
+  
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6MrbT0cNZgeYP3JUP4R2U-WZDbWVzWM8&callback=initMap"
 	async defer></script>
@@ -202,7 +170,26 @@
 </script>
 <style>
 	#map {
-    	height: 300px;
+        height: 300px;
+    }
+    .mapCotent {
+        height: 50px;
+        overflow : hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+    @media only screen and (max-width: 768px) {
+
+        .def_btn {
+            margin-bottom: 10px;
+        }
+
+        .contentDIV {
+            width: 300px;
+            height: 150px;
+        }
     }
 </style>
 <%- include newfooter %>
